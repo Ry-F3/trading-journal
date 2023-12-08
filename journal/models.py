@@ -16,7 +16,7 @@ class Trade(models.Model):
     symbol = models.CharField(max_length=10)
     date = models.DateField()
     status = models.CharField(max_length=10, choices=TRADE_STATUS_CHOICES, default='open')
-    long_short = models.CharField(max_length=29, choices=LONG_SHORT_CHOICES, default='not_selected')
+    long_or_short = models.CharField(max_length=29, choices=LONG_SHORT_CHOICES, default='long')
     position = models.CharField(max_length=10)
     margin = models.FloatField()
     leverage = models.FloatField()

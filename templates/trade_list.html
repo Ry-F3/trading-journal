@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>Document</title>
+    <style>
+       
+        body {
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <body>
     <!-- trade_list.html -->
 
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -31,14 +38,7 @@
                 <td>{{ trade.symbol }}</td>
                 <td>{{ trade.date }}</td>
                 <td>{{ trade.status }}</td>
-                <td>
-                    {% if trade.long_or_short == 'not_selected' %}
-                    <!-- Display a line or some indication for not selected -->
-                    <span style="color: gray;">-----</span>
-                    {% else %}
-                    {{ trade.get_long_or_short_display }}
-                    {% endif %}
-                </td>
+                <td>{{ trade.long_or_short }}</td>
                 <td>{{ trade.position }}</td>
                 <td>{{ trade.margin }}</td>
                 <td>{{ trade.leverage }}</td>
