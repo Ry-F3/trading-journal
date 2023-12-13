@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content wrapper, pushes the footer to the bottom */
+.content-wrapper {
+    flex: 1;
+}
+
+/* Footer styling */
+footer {
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #ccc; /* Add a border to separate the footer from the content */
+}
+
+.hide-cell {
+    display: none;
+}
+
+.hidden-cell {
+    display: table-cell;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px; /* adjust as needed */
+}
+
+
+.color_g {
+    color: rgb(255, 0, 0) !important;
+}

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
+
+{% block content %}
+<div class="p-5 m-3">
+    <table class="table">
+        <tbody>
+
+            <tr>
+
+                <th>Symbol</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>L / S</th>
+                <th>Position</th>
+                <th>Margin</th>
+                <th>Leverage</th>
+                <th>Open $</th>
+                <th>Closed $</th>
+                <th>Return PnL</th>
+
+            </tr>
+
+        <tbody>
+            {%for trade in trades%}
+            <tr>
+                <td>
+                    {{ trade.symbol }}
+                </td>
+                <td>
+                    {{ trade.date }}
+
+                </td>
+                <td>{{ trade.status }}</td>
+                <td>{{ trade.long_short }}</td>
+                <td>{{ trade.position }}</td>
+                <td>{{ trade.margin }}</td>
+                <td>{{ trade.leverage }}</td>
+                <td>{{ trade.open_price }}</td>
+                <td>{{ trade.current_price }}</td>
+                <td>{{ trade.return_pnl }}</td>
+            </tr>
+
+            {% endfor %}
+            <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
+            <div id="createTradeForm">
+                <form action="post">
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.symbol.id_for_label }}" class="form-label"></label>
+                            {{ form.symbol }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.date.id_for_label }}" class="form-label"></label>
+                            {{ form.date }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.status.id_for_label }}" class="form-label"></label>
+                            {{ form.status }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.status.id_for_label }}" class="form-label"></label>
+                            {{ form.long_short }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.margin.id_for_label }}" class="form-label"></label>
+                            {{ form.position }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.margin.id_for_label }}" class="form-label"></label>
+                            {{ form.margin }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.leverage.id_for_label }}" class="form-label"></label>
+                            {{ form.leverage }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.open_price.id_for_label }}" class="form-label"></label>
+                            {{ form.open_price }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.current_price.id_for_label }}" class="form-label"></label>
+                            {{ form.current_price }}
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="hide-cell">
+                            <label for="{{ form.return_pnl.id_for_label }}" class="form-label"></label>
+                            {{ form.return_pnl }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="hide-cell">
+                            <button type="submit" class="btn btn-success">Save Trade</button>
+                        </div>
+                    </td>
+                </form>
+            </div>
+        </tbody>
+    </table>
+   
+</div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        const createTradeForm = document.getElementById('createTradeForm');
+        const showCreateTradeForm = document.getElementById('showCreateTradeForm');
+        const hideCells = document.querySelectorAll('.hide-cell');
+
+        showCreateTradeForm.addEventListener('click', function () {
+            createTradeForm.classList.toggle('hidden-form');
+
+            // Toggle the visibility of the hide-cell elements
+            hideCells.forEach(function (cell) {
+                cell.classList.toggle('hidden-cell');
+            });
+        });
+    });
+</script>
+
+
+{% endblock content %}
