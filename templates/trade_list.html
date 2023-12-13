@@ -45,7 +45,8 @@
             {% endfor %}
             <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
             <div id="createTradeForm">
-                <form action="post">
+                <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
+                    {% csrf_token %}
                     <td>
                         <div class="hide-cell">
                             <label for="{{ form.symbol.id_for_label }}" class="form-label"></label>
@@ -116,7 +117,7 @@
             </div>
         </tbody>
     </table>
-   
+
 </div>
 
 <script defer>
