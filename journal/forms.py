@@ -4,7 +4,9 @@ from .models import Trade
 class TradeForm(forms.ModelForm):
     class Meta:
         model = Trade
+        exclude = ['user']
         fields = '__all__'
+        widgets = {'id': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(TradeForm, self).__init__(*args, **kwargs)

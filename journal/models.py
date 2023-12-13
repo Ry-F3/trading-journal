@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Trade(models.Model):
     STATUS_CHOICES = [
@@ -11,6 +12,7 @@ class Trade(models.Model):
         ('short', 'Short'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     symbol = models.CharField(max_length=50)  # Explore Symbols API
     date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='open')

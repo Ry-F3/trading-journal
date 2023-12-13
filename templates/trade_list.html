@@ -6,9 +6,7 @@
 <div class="p-5 m-3">
     <table class="table">
         <tbody>
-
             <tr>
-
                 <th>Symbol</th>
                 <th>Date</th>
                 <th>Status</th>
@@ -19,19 +17,12 @@
                 <th>Open $</th>
                 <th>Closed $</th>
                 <th>Return PnL</th>
-
             </tr>
-
         <tbody>
             {%for trade in trades%}
-            <tr>
-                <td>
-                    {{ trade.symbol }}
-                </td>
-                <td>
-                    {{ trade.date }}
-
-                </td>
+            <tr id="tradeRow{{ trade.id }}">
+                <td>{{ trade.symbol }}</td>
+                <td>{{ trade.date }}</td>
                 <td>{{ trade.status }}</td>
                 <td>{{ trade.long_short }}</td>
                 <td>{{ trade.position }}</td>
@@ -40,6 +31,10 @@
                 <td>{{ trade.open_price }}</td>
                 <td>{{ trade.current_price }}</td>
                 <td>{{ trade.return_pnl }}</td>
+                <td>
+                    <!-- Delete button -->
+                    <button class="btn btn-danger" onclick="deleteTrade('{{ trade.id }}')">Delete</button>
+                </td>
             </tr>
 
             {% endfor %}
@@ -135,6 +130,46 @@
             });
         });
     });
+    
+    function deleteTrade(tradeId) {
+        // Get the CSRF token from the page
+        const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+        // Using fetch to send a DELETE request to the server
+        fetch(`/delete-trade/${tradeId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            credentials: 'include', // Include credentials (e.g., cookies) in the request
+        })
+            .then(response => response.json())
+            .then(data => handleDeleteResponse(data, tradeId))
+            .catch(error => console.error('Error:', error));
+    }
+
+    function handleDeleteResponse(data, tradeId) {
+        // Handle the response from the server
+        if (data.success) {
+            // If the deletion was successful, remove the row from the UI
+            const row = document.getElementById(`tradeRow${tradeId}`);
+            if (row) {
+                row.remove();
+            }
+            // Add a message or log to indicate success
+            console.log('Trade successfully deleted:', tradeId);
+            // Refresh the page
+            window.location.reload();
+        } else {
+            // Handle errors or provide feedback to the user
+            console.error('Deletion failed:', data.error);
+            // You might want to display an error message to the user
+        }
+    }
+
+    
+
 </script>
 
 
