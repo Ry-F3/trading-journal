@@ -21,7 +21,22 @@ class TradeForm(forms.ModelForm):
         self.fields['open_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Open Price'})
         self.fields['current_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Current Price'})
         self.fields['return_pnl'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Return PnL'})
+        
+        self.fields['open_price'].widget.attrs['step'] = 'any'  # Allow any step value
+        self.fields['open_price'].widget.attrs['min'] = 0  # Set the minimum allowed value if needed
+        self.fields['open_price'].widget.attrs['max'] = 1000  # Set the maximum allowed value if needed
 
+        self.fields['margin'].widget.attrs['step'] = 'any'  # Allow any step value
+        self.fields['margin'].widget.attrs['min'] = 0  # Set the minimum allowed value if needed
+        self.fields['margin'].widget.attrs['max'] = 1000  # Set the maximum allowed value if needed
+
+        self.fields['current_price'].widget.attrs['step'] = 'any'  # Allow any step value
+        self.fields['current_price'].widget.attrs['min'] = 0  # Set the minimum allowed value if needed
+        self.fields['current_price'].widget.attrs['max'] = 1000  # Set the maximum allowed value if needed
+
+        self.fields['return_pnl'].widget.attrs['step'] = 'any'  # Allow any step value
+        self.fields['return_pnl'].widget.attrs['min'] = -1000  # Set the minimum allowed value if needed
+        self.fields['return_pnl'].widget.attrs['max'] = 1000  #
 
         # Set choices for 'status' and 'long_short' fields
         self.fields['status'].choices = Trade.STATUS_CHOICES

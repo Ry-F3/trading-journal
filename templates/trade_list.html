@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 {% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
 
 {% block content %}
@@ -86,7 +87,13 @@
 
 </div>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{% static 'js/form.js' %}"></script>
+
 <script defer>
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const createTradeForm = document.getElementById('createTradeForm');
         const showCreateTradeForm = document.getElementById('showCreateTradeForm');
@@ -148,7 +155,7 @@
         } else {
             // Handle errors or provide feedback to the user
             console.error('Deletion failed:', data.error);
-            
+
         }
     }
 
