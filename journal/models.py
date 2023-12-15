@@ -17,9 +17,40 @@ class Trade(models.Model):
     date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='open')
     long_short = models.CharField(max_length=5, choices=LONG_SHORT_CHOICES)
-    position = models.TextField()
+    position = models.DecimalField(max_digits=10, decimal_places=2)
     margin = models.DecimalField(max_digits=10, decimal_places=2)
     leverage = models.DecimalField(max_digits=5, decimal_places=2)
     open_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
+    row_number = models.SlugField(unique=True, editable=False)
+
+    
+    row_number = models.SlugField(unique=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.row_number:
+            max_row = Trade.objects.aggregate(models.Max('row_number'))['row_number__max']
+            max_row = int(max_row or 0)  # Convert max_row to an integer
+            self.row_number = max_row + 1
+
+        super().save(*args, **kwargs)
+        print(f"Saved Trade with row_number: {self.row_number}")
+
+    def delete(self, *args, **kwargs):
+        # Get the row_number of the trade being deleted
+        deleted_row_number = self.row_number
+
+        super().delete(*args, **kwargs)
+        print(f"Deleted Trade with row_number: {deleted_row_number}")
+
+        # After deletion, re-order the remaining rows
+        remaining_trades = Trade.objects.all().order_by('row_number')
+
+        for index, trade in enumerate(remaining_trades, start=1):
+            trade.row_number = index
+            trade.save()
+            print(f"Updated Trade with row_number: {trade.row_number}")
+            
+    def __str__(self):
+        return f"{self.symbol} - {self.row_number}"

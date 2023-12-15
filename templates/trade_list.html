@@ -3,6 +3,7 @@
 {% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
 
 {% block content %}
+
 <div class="p-5 m-3">
     <table class="table">
         <tbody>
@@ -11,11 +12,11 @@
                 <th>Date</th>
                 <th>Status</th>
                 <th>L / S</th>
-                <th>Position</th>
+                <th>Risk</th>
                 <th>Margin</th>
                 <th>Leverage</th>
-                <th>Open $</th>
-                <th>Closed $</th>
+                <th>Open</th>
+                <th>Closed</th>
                 <th>Return PnL</th>
             </tr>
         <tbody>
@@ -25,91 +26,59 @@
                 <td>{{ trade.date }}</td>
                 <td>{{ trade.status }}</td>
                 <td>{{ trade.long_short }}</td>
-                <td>{{ trade.position }}</td>
-                <td>{{ trade.margin }}</td>
-                <td>{{ trade.leverage }}</td>
-                <td>{{ trade.open_price }}</td>
-                <td>{{ trade.current_price }}</td>
-                <td>{{ trade.return_pnl }}</td>
+                <td>{{ trade.position }}%</td>
+                <td>${{ trade.margin }}</td>
+                <td>{{ trade.leverage }}x</td>
+                <td>${{ trade.open_price }}</td>
+                <td>${{ trade.current_price }}</td>
+                <td>${{ trade.return_pnl }}</td>
                 <td>
                     <!-- Delete button -->
-                    <button class="btn btn-secondary btn-sm square-btn bg-black" onclick="deleteTrade('{{ trade.id }}')">X</button>
+                    <button class="btn btn-secondary btn-sm square-btn bg-black"
+                        onclick="deleteTrade('{{ trade.id }}')">X</button>
                 </td>
             </tr>
 
             {% endfor %}
             <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
-            <div id="createTradeForm">
+            <div id="createTradeForm" class="hidden-form">
                 <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
                     {% csrf_token %}
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.symbol.id_for_label }}" class="form-label"></label>
-                            {{ form.symbol }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.date.id_for_label }}" class="form-label"></label>
-                            {{ form.date }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.status.id_for_label }}" class="form-label"></label>
-                            {{ form.status }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell m-3">
-                            <label for="{{ form.status.id_for_label }}" class="form-label"></label>
-                            {{ form.long_short }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.margin.id_for_label }}" class="form-label"></label>
-                            {{ form.position }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.margin.id_for_label }}" class="form-label"></label>
-                            {{ form.margin }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.leverage.id_for_label }}" class="form-label"></label>
-                            {{ form.leverage }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.open_price.id_for_label }}" class="form-label"></label>
-                            {{ form.open_price }}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.current_price.id_for_label }}" class="form-label"></label>
-                            {{ form.current_price }}
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="hide-cell">
-                            <label for="{{ form.return_pnl.id_for_label }}" class="form-label"></label>
-                            {{ form.return_pnl }}
-                        </div>
-
-                    </td>
-
-                    <div class="hide-cell save-button">
-                        <label for="{{ form.return_pnl.id_for_label }}" class="form-label"></label>
-                        <button type="submit" class="btn btn-success">Save</button>
-                    </div>
-                    <br>
+                    <tr>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.symbol }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.date }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.status }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.long_short }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.position }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.margin }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.leverage }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.open_price }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.current_price }}</div>
+                        </td>
+                        <td class="hide-cell">
+                            <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
+                        </td>
+                        <td class="hide-cell save-button" colspan="2">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </td>
+                    </tr>
                 </form>
             </div>
         </tbody>
@@ -156,7 +125,7 @@
             .catch(error => console.error('Error:', error));
     }
 
-    function handleDeleteResponse(data, tradeId) {
+    function handleDeleteResponse(data, tradeId, deletedRowNumber) {
         // Handle the response from the server
         if (data.success) {
             // If the deletion was successful, remove the row from the UI
@@ -164,20 +133,27 @@
             if (row) {
                 row.remove();
             }
+
+            // Update row numbers in the UI after deletion
+            const rows = document.querySelectorAll('.trade-row');
+            rows.forEach((row, index) => {
+                const rowNumberElement = row.querySelector('.row-number');
+                if (rowNumberElement) {
+                    rowNumberElement.innerText = index + 1;
+                }
+            });
+
             // Add a message or log to indicate success
             console.log('Trade successfully deleted:', tradeId);
-            // Refresh the page
-            window.location.reload();
         } else {
             // Handle errors or provide feedback to the user
             console.error('Deletion failed:', data.error);
-            // You might want to display an error message to the user
+            
         }
     }
 
-
-
 </script>
+
 
 
 {% endblock content %}

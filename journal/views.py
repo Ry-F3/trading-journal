@@ -11,8 +11,17 @@ from django.http import JsonResponse
 def delete_trade(request, trade_id):
     try:
         trade = Trade.objects.get(id=trade_id, user=request.user)
+        deleted_row_number = trade.row_number  # Store the row number before deletion
         trade.delete()
-        return JsonResponse({'success': True})
+
+        # After deletion, re-order the remaining rows
+        remaining_trades = Trade.objects.filter(user=request.user).order_by('row_number')
+
+        for index, remaining_trade in enumerate(remaining_trades, start=1):
+            remaining_trade.row_number = index
+            remaining_trade.save()
+
+        return JsonResponse({'success': True, 'deleted_row_number': deleted_row_number})
     except Trade.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
 
@@ -29,9 +38,10 @@ def trade_list(request):
         form = TradeForm()
 
     # Filter trades based on the logged-in user
-    trades = Trade.objects.filter(user=request.user)
+    trades = Trade.objects.filter(user=request.user).order_by('row_number')
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
+
 
 class HomeView(View):
     template_name = 'base.html'
@@ -43,4 +53,3 @@ class HomeView(View):
         else:
             # If the user is not authenticated, redirect to the login page
             return redirect('account/login')
-
