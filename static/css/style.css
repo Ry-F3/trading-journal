@@ -23,8 +23,8 @@ footer {
 }
 
 .square-btn {
-    width: 30px; 
-    height: 30px; /* Set the height to be the same as the width for a square button */
+    width: 30px !important; 
+    height: 30px !important; /* Set the height to be the same as the width for a square button */
   }
 
 .hide-cell {
@@ -34,6 +34,14 @@ footer {
 .hidden-cell {
     display: table-cell;
    
+}
+
+.edit-button {
+    display: none;
+}
+
+.trade-row:hover .edit-button {
+    display: inline-block;
 }
 
 .footer {

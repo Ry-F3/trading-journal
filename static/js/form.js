@@ -1,3 +1,4 @@
+// Form Calculations
 $(document).ready(function () {
     // jQuery code
     $('#id_leverage, #id_margin, #id_open_price, #id_current_price').on('input', function () {
@@ -42,7 +43,7 @@ $(document).ready(function () {
                 $('#id_return_pnl').val(returnPnlNegative.toFixed(2));
             }
 
-            
+
 
             console.log('Calculating return pnl');
             // Log relevant variables
@@ -57,4 +58,7 @@ $(document).ready(function () {
             $('#id_return_pnl').val('');
         }
     }
+
 });
+
+

@@ -46,4 +46,3 @@ class TradeForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Add additional cleaning logic if needed
         return cleaned_data
-

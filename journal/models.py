@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 
 class Trade(models.Model):
@@ -37,7 +37,8 @@ class Trade(models.Model):
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}")
 
-    def delete(self, *args, **kwargs):
+def delete(self, *args, **kwargs):
+    with transaction.atomic():
         # Get the row_number of the trade being deleted
         deleted_row_number = self.row_number
 
@@ -51,6 +52,24 @@ class Trade(models.Model):
             trade.row_number = index
             trade.save()
             print(f"Updated Trade with row_number: {trade.row_number}")
+
+        # Update max_row after deletion
+        max_row = Trade.objects.aggregate(models.Max('row_number'))['row_number__max']
+
+        if max_row is not None:
+            max_row = int(max_row)
+        else:
+            max_row = 0
+
+        # If there are no remaining trades, set max_row to 0
+        if max_row == deleted_row_number:
+            max_row = 0
+
+        # Set row_number for the deleted trade to the new maximum + 1
+        self.row_number = max_row + 1
+        self.save()
+        print(f"Updated Trade with row_number: {self.row_number}")
+
             
     def __str__(self):
         return f"{self.symbol} - {self.row_number}"
