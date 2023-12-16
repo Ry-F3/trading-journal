@@ -35,8 +35,7 @@
                 <td>${{ trade.return_pnl }}</td>
                 <td>
                     <!-- Delete button -->
-                    <button class="btn btn-secondary btn-sm square-btn bg-black"
-                        onclick="deleteTrade('{{ trade.id }}')">X</button>
+                    <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button" data-trade-id="{{ trade.id }}">X</button>
                 </td>
             </tr>
 
@@ -89,78 +88,8 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="{% static 'js/form.js' %}"></script>
-
-<script defer>
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const createTradeForm = document.getElementById('createTradeForm');
-        const showCreateTradeForm = document.getElementById('showCreateTradeForm');
-        const hideCells = document.querySelectorAll('.hide-cell');
-        const createTradeButton = document.getElementById('showCreateTradeForm');
-
-        showCreateTradeForm.addEventListener('click', function () {
-            createTradeForm.classList.toggle('hidden-form');
-
-            // Toggle the visibility of the hide-cell elements
-            hideCells.forEach(function (cell) {
-                cell.classList.toggle('hidden-cell');
-            });
-
-            // Hide the "Create Trade" button
-            createTradeButton.style.display = 'none';
-        });
-    });
-
-
-    function deleteTrade(tradeId) {
-        // Get the CSRF token from the page
-        const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-        // Using fetch to send a DELETE request to the server
-        fetch(`/delete-trade/${tradeId}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            credentials: 'include', // Include credentials (e.g., cookies) in the request
-        })
-            .then(response => response.json())
-            .then(data => handleDeleteResponse(data, tradeId))
-            .catch(error => console.error('Error:', error));
-    }
-
-    function handleDeleteResponse(data, tradeId, deletedRowNumber) {
-        // Handle the response from the server
-        if (data.success) {
-            // If the deletion was successful, remove the row from the UI
-            const row = document.getElementById(`tradeRow${tradeId}`);
-            if (row) {
-                row.remove();
-            }
-
-            // Update row numbers in the UI after deletion
-            const rows = document.querySelectorAll('.trade-row');
-            rows.forEach((row, index) => {
-                const rowNumberElement = row.querySelector('.row-number');
-                if (rowNumberElement) {
-                    rowNumberElement.innerText = index + 1;
-                }
-            });
-
-            // Add a message or log to indicate success
-            console.log('Trade successfully deleted:', tradeId);
-        } else {
-            // Handle errors or provide feedback to the user
-            console.error('Deletion failed:', data.error);
-
-        }
-    }
-
-</script>
-
+<script src="{% static 'js/calculations.js' %}"></script>
+<script src="{% static 'js/formFunction.js' %}"></script>
 
 
 {% endblock content %}

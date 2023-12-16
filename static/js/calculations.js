@@ -43,8 +43,6 @@ $(document).ready(function () {
                 $('#id_return_pnl').val(returnPnlNegative.toFixed(2));
             }
 
-
-
             console.log('Calculating return pnl');
             // Log relevant variables
             console.log('Margin:', margin);
@@ -58,6 +56,10 @@ $(document).ready(function () {
             $('#id_return_pnl').val('');
         }
     }
+
+    //
+
+    
 
 });
 
