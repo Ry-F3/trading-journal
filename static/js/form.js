@@ -7,51 +7,37 @@ $(document).ready(function () {
 
     // Function to calculate return_pnl
     function calculateReturnPnl() {
-        // calculation logic goes here
         var leverage = parseFloat($('#id_leverage').val()) || 0;
         var margin = parseFloat($('#id_margin').val()) || 0;
-        var originalMargin = parseFloat($('#id_margin').val()) || 0;
         var openPrice = parseFloat($('#id_open_price').val()) || 0;
         var currentPrice = parseFloat($('#id_current_price').val()) || 0;
 
         // Check if all required numeric fields have values
-        var allFieldsFilled = leverage && margin && openPrice && currentPrice;
-
-        var leverageMultiplier_result;
-        
+        var allFieldsFilled = margin && openPrice && currentPrice;
 
         if (allFieldsFilled) {
-            // Calculate the return_pnl value
-            if (leverage > 1) {
-                leverageMultiplier = margin * leverage;
-                leverageMultiplier_result = leverageMultiplier -  originalMargin;
-                console.log(leverageMultiplier_result)
-            } else if (leverage = 1) {
-                leverageMultiplier = margin * leverage;
-                leverageMultiplier_result = leverageMultiplier;  // Set the result here as well
-                console.log(leverageMultiplier_result)
-            } 
+            // Calculate percentage increase
+            var percentageIncrease = ((currentPrice - openPrice) / openPrice) * leverage * 100;
 
-            margin = leverageMultiplier_result
-            var stock = margin / openPrice;
-            var returnPnl = (currentPrice - openPrice) * stock;
+            // Format percentageIncrease with two decimal places
+            percentageIncrease = percentageIncrease.toFixed(2);
 
-            // Format returnPnl with two decimal places
-            margin = margin.toFixed(2);
-            openPrice = openPrice.toFixed(2);
-            currentPrice = currentPrice.toFixed(2);
-            returnPnl = returnPnl.toFixed(2);
+            // Log percentage increase
+            console.log('Percentage Increase:', percentageIncrease, '%');
+
+            // Calculate Return PnL
+            var returnPnl = (percentageIncrease / 100) * margin;
 
             // Update the return_pnl field
-            $('#id_return_pnl').val(returnPnl);
+            $('#id_return_pnl').val(returnPnl.toFixed(2));
 
             console.log('Calculating return pnl');
             // Log relevant variables
-            console.log('Leverage:', leverage);
             console.log('Margin:', margin);
             console.log('Open Price:', openPrice);
             console.log('Current Price:', currentPrice);
-            console.log('Return PnL:', returnPnl);
+            console.log('Return PnL:', returnPnl.toFixed(2));
+            console.log('Percentage Increase:', percentageIncrease, '%');
         } else {
             console.log('Not all required numeric fields have values. Cannot calculate return pnl.');
             // Clear the return pnl field if input is incomplete
