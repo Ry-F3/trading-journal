@@ -33,14 +33,6 @@
                 <td>${{ trade.open_price }}</td>
                 <td>${{ trade.current_price }}</td>
                 <td>${{ trade.return_pnl }}</td>
-
-                <td>
-                    <!-- Edit button with pencil icon -->
-                    <button class="square-btn" onclick="editTrade('{{ trade.id }}')">
-                        <i class="fas fa-pencil-alt"></i>
-                    </button>
-                </td>
-
                 <td>
                     <!-- Delete button -->
                     <button class="btn btn-secondary btn-sm square-btn bg-black"
@@ -99,7 +91,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="{% static 'js/form.js' %}"></script>
 
-
 <script defer>
 
 
@@ -117,44 +108,9 @@
                 cell.classList.toggle('hidden-cell');
             });
 
-            // Fetch the next available row number from the server
-            fetch('/get_next_row_number/')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const nextRowNumber = data.next_row_number;
-
-                        // Update the form fields to reflect the new row number
-                        $('#id_symbol').val(data.trade_details.symbol);
-                        $('#id_date').val(data.trade_details.date);
-                        $('#id_status').val(data.trade_details.status);
-                        $('#id_long_short').val(data.trade_details.long_short);
-                        $('#id_position').val(data.trade_details.position);
-                        $('#id_margin').val(data.trade_details.margin);
-                        $('#id_leverage').val(data.trade_details.leverage);
-                        $('#id_open_price').val(data.trade_details.open_price);
-                        $('#id_current_price').val(data.trade_details.current_price);
-                        $('#id_return_pnl').val(data.trade_details.return_pnl);
-
-                        // Update the form action URL if needed
-                        const formAction = `/create-trade/${nextRowNumber}/`; // Adjust the URL pattern
-                        createTradeForm.action = formAction;
-
-                        // Display the form for editing
-                        $(createTradeForm).removeClass('hidden-form');
-
-                        // Log success
-                        console.log('Form should be populated and visible now');
-                    } else {
-                        console.error('Error fetching next row number:', data.error);
-                    }
-
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                });
+            // Hide the "Create Trade" button
+            createTradeButton.style.display = 'none';
         });
-
     });
 
 
@@ -175,162 +131,31 @@
             .then(data => handleDeleteResponse(data, tradeId))
             .catch(error => console.error('Error:', error));
     }
-    function handleDeleteResponse(data, tradeId) {
+
+    function handleDeleteResponse(data, tradeId, deletedRowNumber) {
         // Handle the response from the server
         if (data.success) {
             // If the deletion was successful, remove the row from the UI
             const row = document.getElementById(`tradeRow${tradeId}`);
             if (row) {
                 row.remove();
-
-                // Fetch the next available row number from the server
-                fetch('/get_next_row_number/')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const nextRowNumber = data.next_row_number;
-
-                            // Update row numbers in the UI after deletion
-                            const rows = document.querySelectorAll('.trade-row');
-                            rows.forEach((row, index) => {
-                                const newTradeId = index + 1;
-                                row.id = `tradeRow${newTradeId}`;
-                                const buttons = row.getElementsByTagName('button');
-                                // Update the deleteTrade and editTrade functions with the new tradeId
-                                for (let i = 0; i < buttons.length; i++) {
-                                    if (buttons[i].onclick) {
-                                        const functionName = buttons[i].onclick.toString().split('\'')[1];
-                                        buttons[i].setAttribute('onclick', `${functionName}('${newTradeId}')`);
-                                    }
-                                }
-                            });
-
-                            // Update the form fields to reflect the new row number
-                            $('#id_symbol').val('');
-                            $('#id_date').val('');
-                            $('#id_status').val('');
-                            $('#id_long_short').val('');
-                            $('#id_position').val('');
-                            $('#id_margin').val('');
-                            $('#id_leverage').val('');
-                            $('#id_open_price').val('');
-                            $('#id_current_price').val('');
-                            $('#id_return_pnl').val('');
-                            // ... (update other form fields)
-
-                            // Update the form action URL if needed
-                            const formAction = `/create-trade/${nextRowNumber}/`; // Adjust the URL pattern
-                            createTradeForm.action = formAction;
-
-                            // Display the form for editing
-                            $(createTradeForm).removeClass('hidden-form');
-
-                            // Log success
-                            console.log('Form should be populated and visible now');
-                        } else {
-                            console.error('Error fetching next row number:', data.error);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                    });
-            } else {
-                console.error('Row not found in the DOM:', `tradeRow${tradeId}`);
             }
+
+            // Update row numbers in the UI after deletion
+            const rows = document.querySelectorAll('.trade-row');
+            rows.forEach((row, index) => {
+                const rowNumberElement = row.querySelector('.row-number');
+                if (rowNumberElement) {
+                    rowNumberElement.innerText = index + 1;
+                }
+            });
+
+            // Add a message or log to indicate success
+            console.log('Trade successfully deleted:', tradeId);
         } else {
             // Handle errors or provide feedback to the user
             console.error('Deletion failed:', data.error);
-        }
-    }
 
-    function editTrade(rowNumber) {
-        if (rowNumber !== null) {
-            console.log('Attempting to fetch trade details for row:', rowNumber);
-            fetch(`/get_trade_details_by_row/${rowNumber}/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        console.log('Fetched trade details:', data.trade_details);
-
-                        // Update the form fields with the received data
-                        $('#id_symbol').val(data.trade_details.symbol);
-                        $('#id_date').val(data.trade_details.date);
-                        $('#id_status').val(data.trade_details.status);
-                        $('#id_long_short').val(data.trade_details.long_short);
-                        $('#id_position').val(data.trade_details.position);
-                        $('#id_margin').val(data.trade_details.margin);
-                        $('#id_leverage').val(data.trade_details.leverage);
-                        $('#id_open_price').val(data.trade_details.open_price);
-                        $('#id_current_price').val(data.trade_details.current_price);
-                        $('#id_return_pnl').val(data.trade_details.return_pnl);
-
-                        // Display the form for editing
-                        $(createTradeForm).removeClass('hidden-form');
-
-
-                        // Log success
-                        console.log('Form should be populated and visible now');
-                    } else {
-                        console.error('Error fetching trade details:', data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                });
-        }
-    }
-
-
-    function handleEditResponse(data, rowNumber) {
-        console.log('Handling edit response for row:', rowNumber);
-        const editedRow = document.getElementById(`tradeRow${rowNumber}`);
-        const createTradeForm = document.getElementById('createTradeForm');
-        const hideCells = document.querySelectorAll('.hide-cell');
-        const createTradeButton = document.getElementById('showCreateTradeForm');
-
-        if (editedRow) {
-            if (data.success) {
-                // If the edit was successful, update the row in the UI
-                if (data.trade_details) {
-                    // Update the form fields with the received data
-                    $('#id_symbol').val(data.trade_details.symbol);
-                    $('#id_date').val(data.trade_details.date);
-                    $('#id_status').val(data.trade_details.status);
-                    $('#id_long_short').val(data.trade_details.long_short);
-                    $('#id_position').val(data.trade_details.position);
-                    $('#id_margin').val(data.trade_details.margin);
-                    $('#id_leverage').val(data.trade_details.leverage);
-                    $('#id_open_price').val(data.trade_details.open_price);
-                    $('#id_current_price').val(data.trade_details.current_price);
-                    $('#id_return_pnl').val(data.trade_details.return_pnl);
-
-                    createTradeForm.classList.remove('hidden-form');
-                    hideCells.forEach(function (cell) {
-                        cell.classList.remove('hidden-cell');
-                    });
-                    createTradeButton.style.display = 'none';
-
-                    // Log to indicate success
-                    console.log('Trade successfully edited:', data.trade_details);
-                } else {
-                    console.error('Edited trade row data is missing:', data);
-                }
-            } else {
-                // Handle errors or provide feedback to the user
-                console.error('Edit failed:', data.error);
-            }
-        } else {
-            console.error('Edited row not found in the DOM:', `tradeRow${rowNumber}`);
         }
     }
 
