@@ -16,20 +16,33 @@ $(document).ready(function () {
         var allFieldsFilled = margin && openPrice && currentPrice;
 
         if (allFieldsFilled) {
-            // Calculate percentage increase
-            var percentageIncrease = ((currentPrice - openPrice) / openPrice) * leverage * 100;
+            // Calculate percentage Change
+            var percentageChange = ((currentPrice - openPrice) / openPrice) * leverage * 100;
 
-            // Format percentageIncrease with two decimal places
-            percentageIncrease = percentageIncrease.toFixed(2);
+            // Format percentageChange with two decimal places
+            percentageChange = percentageChange.toFixed(2);
 
-            // Log percentage increase
-            console.log('Percentage Increase:', percentageIncrease, '%');
+            // Log percentage Change
+            console.log('Percentage Change:', percentageChange, '%');
 
             // Calculate Return PnL
-            var returnPnl = (percentageIncrease / 100) * margin;
+            var returnPnl;
 
-            // Update the return_pnl field
-            $('#id_return_pnl').val(returnPnl.toFixed(2));
+            if (percentageChange >= 0) {
+                // Positive percentage Change, use the formula for positive returns
+                returnPnl = (percentageChange / 100) * margin;
+                // Update the return_pnl field
+                $('#id_return_pnl').val(returnPnl.toFixed(2));
+            } else {
+                // Negative percentage Change, use the formula for negative returns
+                returnPnl = (percentageChange / 100) * margin;
+                returnPnlNegative = returnPnl;
+                console.log(returnPnlNegative)
+                // Update the return_pnl field
+                $('#id_return_pnl').val(returnPnlNegative.toFixed(2));
+            }
+
+            
 
             console.log('Calculating return pnl');
             // Log relevant variables
@@ -37,7 +50,7 @@ $(document).ready(function () {
             console.log('Open Price:', openPrice);
             console.log('Current Price:', currentPrice);
             console.log('Return PnL:', returnPnl.toFixed(2));
-            console.log('Percentage Increase:', percentageIncrease, '%');
+            console.log('Percentage Change:', percentageChange, '%');
         } else {
             console.log('Not all required numeric fields have values. Cannot calculate return pnl.');
             // Clear the return pnl field if input is incomplete
