@@ -8,7 +8,8 @@ $(document).ready(function () {
     // Add an event listener for the delete button
     $('.delete-trade-button').click(function () {
         const tradeId = $(this).data('trade-id');
-        deleteTrade(tradeId);
+        const rowNumber = $(this).data('row-number');
+        deleteTrade(tradeId, rowNumber);
     });
 
     showCreateTradeForm.click(function () {
@@ -22,7 +23,7 @@ $(document).ready(function () {
     });
 });
 
-function deleteTrade(tradeId) {
+function deleteTrade(tradeId, rowNumber) {
     // Get the CSRF token from the page
     const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
 
@@ -38,7 +39,7 @@ function deleteTrade(tradeId) {
             withCredentials: true, // Include credentials (e.g., cookies) in the request
         },
         success: function (data) {
-            handleDeleteResponse(data, tradeId);
+            handleDeleteResponse(data, tradeId, rowNumber);
         },
         error: function (error) {
             console.error('Error:', error);
@@ -46,7 +47,7 @@ function deleteTrade(tradeId) {
     });
 }
 
-function handleDeleteResponse(data, tradeId) {
+function handleDeleteResponse(data, tradeId, rowNumber) {
     const rowId = `tradeRow${tradeId}`;
 
     // Handle the response from the server
@@ -59,14 +60,15 @@ function handleDeleteResponse(data, tradeId) {
 
         // Update row numbers and IDs in the UI after deletion
         updateRowNumbersAndIds();
-        
+
         // Add a message or log to indicate success
-        console.log('Trade successfully deleted:', tradeId);
+        console.log(`Trade successfully deleted: Trade ID - ${tradeId}, Row Number - ${rowNumber}`);
     } else {
         // Handle errors or provide feedback to the user
         console.error('Deletion failed:', data.error);
     }
 }
+
 
 function handleSaveResponse(data, tradeId) {
     // Handle the response from the server after saving
@@ -81,21 +83,3 @@ function handleSaveResponse(data, tradeId) {
         console.error('Save failed:', data.error);
     }
 }
-
-// Helper function to update row numbers and IDs in the UI
-function updateRowNumbersAndIds() {
-    $('.trade-row').each(function (index) {
-        const rowNumberElement = $(this).find('.row-number');
-        if (rowNumberElement.length) {
-            // Update row numbers to match trade IDs
-            const newTradeId = $(this).data('trade-id');
-            rowNumberElement.text(newTradeId);
-        }
-
-        // Update the trade ID and row ID based on the updated row_number
-        const updatedTradeId = $(this).data('trade-id');
-        const updatedRowId = `tradeRow${updatedTradeId}`;
-        $(this).attr('id', updatedRowId);
-    });
-}
-

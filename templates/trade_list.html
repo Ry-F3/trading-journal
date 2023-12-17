@@ -22,7 +22,7 @@
             </tr>
         <tbody>
             {%for trade in trades%}
-            <tr id="tradeRow{{ trade.id }}">
+            <tr id="tradeRow{{ trade.id }}" data-trade-id="{{ trade.id }}">
                 <td>{{ trade.symbol }}</td>
                 <td>{{ trade.date }}</td>
                 <td>{{ trade.status }}</td>
@@ -35,11 +35,13 @@
                 <td>${{ trade.return_pnl }}</td>
                 <td>
                     <!-- Delete button -->
-                    <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button" data-trade-id="{{ trade.id }}">X</button>
+                    <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
+                        data-trade-id="{{ trade.id }}" data-row-number="{{ trade.row_number }}">X</button>
                 </td>
             </tr>
 
             {% endfor %}
+             <!-- Create Trade button -->
             <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
             <div id="createTradeForm" class="hidden-form">
                 <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
@@ -75,6 +77,7 @@
                         <td class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
                         </td>
+                         <!-- Save button -->
                         <td class="hide-cell save-button" colspan="2">
                             <button type="submit" class="btn btn-success">Save</button>
                         </td>
@@ -84,6 +87,13 @@
         </tbody>
     </table>
 
+</div>
+
+<div class="p-5 m-3">
+    <h1>Trades</h1>
+    {% for trade in trades %}
+    <p>Trade ID: {{ trade.id }} Row Number: {{ trade.row_number }}</p>
+    {% endfor %}
 </div>
 
 

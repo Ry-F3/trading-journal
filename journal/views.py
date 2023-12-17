@@ -6,6 +6,19 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+
+class HomeView(View):
+    template_name = 'base.html'
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            # If the user is already authenticated, redirect to the home page
+            return render(request, self.template_name)
+        else:
+            # If the user is not authenticated, redirect to the login page
+            return redirect('account/login')
+
+
 @login_required
 @permission_required('your_app.delete_trade', raise_exception=True)
 def delete_trade(request, trade_id):
@@ -42,14 +55,3 @@ def trade_list(request):
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 
-
-class HomeView(View):
-    template_name = 'base.html'
-
-    def get(self, request):
-        if request.user.is_authenticated:
-            # If the user is already authenticated, redirect to the home page
-            return render(request, self.template_name)
-        else:
-            # If the user is not authenticated, redirect to the login page
-            return redirect('account/login')
