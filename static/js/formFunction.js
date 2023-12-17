@@ -23,7 +23,8 @@ $(document).ready(function () {
     });
 });
 
-function deleteTrade(tradeId, rowNumber) {
+// Function to handle the deletion of a trade
+function deleteTrade(tradeId, rowNumber, callback) {
     // Get the CSRF token from the page
     const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
 
@@ -40,12 +41,29 @@ function deleteTrade(tradeId, rowNumber) {
         },
         success: function (data) {
             handleDeleteResponse(data, tradeId, rowNumber);
+            if (callback) {
+                // Call the callback function if provided
+                callback();
+            }
         },
         error: function (error) {
             console.error('Error:', error);
         },
     });
 }
+
+// Add an event listener for the delete button
+$('.delete-trade-button').click(function () {
+    const tradeId = $(this).data('trade-id');
+    const rowNumber = $(this).data('row-number');
+    
+    // Call deleteTrade and pass a callback function to reload the page
+    deleteTrade(tradeId, rowNumber, function() {
+        // Reload the page
+        window.location.reload();
+    });
+});
+
 
 function handleDeleteResponse(data, tradeId, rowNumber) {
     const rowId = `tradeRow${tradeId}`;
@@ -82,4 +100,15 @@ function handleSaveResponse(data, tradeId) {
         // Handle errors or provide feedback to the user
         console.error('Save failed:', data.error);
     }
+}
+
+
+function updateRowNumbersAndIds() {
+    // Code to update row numbers and IDs in the UI
+    // For example, you can iterate through rows and update their IDs and data attributes
+    $('.delete-trade-button').each(function (index) {
+        const tradeId = $(this).data('trade-id');
+        $(this).data('row-number', index + 1);
+        $(this).closest('tr').attr('id', `tradeRow${tradeId}`);
+    });
 }
