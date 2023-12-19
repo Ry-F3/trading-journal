@@ -54,9 +54,9 @@ def trade_list(request):
                 trade.save()
                 
             if save_type == 'overwrite':
-                overwrite_id = request.POST.get('current_trade_id')
-                overwrite_row = request.POST.get('current_row_number')
-                
+                overwrite_id = request.POST.get('current_trade_id', None)
+                overwrite_row = request.POST.get('current_row_number', None)
+
                 #  # Get the form data
                 edited_trade_data = {
                     'symbol': request.POST.get('symbol'),
@@ -74,9 +74,13 @@ def trade_list(request):
                 # Print debugging information
                 print(f"Overwrite ID: {overwrite_id}, Row: {overwrite_row}")
                 print("Edited Trade Data:", edited_trade_data)
-                
-                # Call save_overwrite with the edited_trade_data
-                trade.save_overwrite(overwrite_id=overwrite_id, overwrite_row=overwrite_row, edited_trade_data=edited_trade_data)
+
+                if overwrite_id is not None and overwrite_row is not None:
+                    # Your overwrite logic here
+                    trade.save_overwrite(overwrite_id=overwrite_id, overwrite_row=overwrite_row, edited_trade_data=edited_trade_data)
+                else:
+                    # Your regular save logic here
+                    trade.save()
 
         else:
             

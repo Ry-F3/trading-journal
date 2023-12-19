@@ -6,6 +6,7 @@ $(document).ready(function () {
     let editMode = false;  // Flag to track if the user is in edit mode
     let currentRowNumber;  // Variable to store the current row number in edit mode
     let currentTradeId;
+    console.log(editMode);
 
     // Code for handling "Edit Trade" button click
     $(document).on('click', '.edit-trade-button', function () {

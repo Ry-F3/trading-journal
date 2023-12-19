@@ -25,24 +25,18 @@ class Trade(models.Model):
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
     row_number = models.SlugField(unique=True, editable=False)
 
-    
+
     def save(self, *args, **kwargs):
         if not self.row_number:
-            existing_trade_rows = Trade.objects.values_list('row_number', flat=True).filter(user=self.user).order_by('row_number')
-            existing_trade_rows = set(existing_trade_rows)
+            existing_trade_rows = Trade.objects.filter(user=self.user).values_list('row_number', flat=True).order_by('row_number')
+            existing_trade_rows = [int(row_number) for row_number in existing_trade_rows]
 
-            # Find the first gap in the sequence of row_numbers
-            max_row = 0
-            for row_number in existing_trade_rows:
-                if int(row_number) > max_row + 1:  # Convert row_number to int for comparison
-                    # Found a gap, use max_row + 1 as the new row_number
-                    self.row_number = max_row + 1
-                    break
-                max_row = int(row_number)  # Convert max_row to int for comparison
-
-            # If there is no gap, use max_row + 1
-            if not self.row_number:
-                self.row_number = max_row + 1
+            # If there are existing rows, use the maximum row_number + 1
+            if existing_trade_rows:
+                self.row_number = max(existing_trade_rows) + 1
+            else:
+                # If no existing rows, start from 1
+                self.row_number = 1
 
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}")
