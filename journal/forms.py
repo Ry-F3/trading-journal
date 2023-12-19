@@ -6,7 +6,7 @@ class TradeForm(forms.ModelForm):
         model = Trade
         exclude = ['user']
         fields = '__all__'
-        widgets = {'id': forms.HiddenInput()}
+        # widgets = {'id': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(TradeForm, self).__init__(*args, **kwargs)

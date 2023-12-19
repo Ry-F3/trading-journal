@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 
+
 class HomeView(View):
     template_name = 'base.html'
 
@@ -45,8 +46,43 @@ def trade_list(request):
         if form.is_valid():
             trade = form.save(commit=False)
             trade.user = request.user  # Set the user to the logged-in user
-            trade.save()
+            
+            save_type = request.POST.get('save_type', 'regular')
+
+            if save_type == 'regular':
+                # Save the trade as usual
+                trade.save()
+                
+            if save_type == 'overwrite':
+                overwrite_id = request.POST.get('current_trade_id')
+                overwrite_row = request.POST.get('current_row_number')
+                
+                #  # Get the form data
+                edited_trade_data = {
+                    'symbol': request.POST.get('symbol'),
+                    'date': request.POST.get('date'),
+                    'status': request.POST.get('status'),
+                    'long_short': request.POST.get('long_short'),
+                    'position': request.POST.get('position'),
+                    'margin': request.POST.get('margin'),
+                    'leverage': request.POST.get('leverage'),
+                    'open_price': request.POST.get('open_price'),
+                    'current_price': request.POST.get('current_price'),
+                    'return_pnl': request.POST.get('return_pnl'),
+                }
+                
+                # Print debugging information
+                print(f"Overwrite ID: {overwrite_id}, Row: {overwrite_row}")
+                print("Edited Trade Data:", edited_trade_data)
+                
+                # Call save_overwrite with the edited_trade_data
+                trade.save_overwrite(overwrite_id=overwrite_id, overwrite_row=overwrite_row, edited_trade_data=edited_trade_data)
+
+        else:
+            
+
             return redirect('trade_list')
+
     else:
         form = TradeForm()
 
@@ -55,10 +91,16 @@ def trade_list(request):
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 
+
+
+
 @login_required
-def get_trade_details_by_row(request, row_number):
+def get_trade_details(request, row_number, trade_id):
     try:
-        trade = Trade.objects.get(row_number=row_number, user=request.user)
+        # Print row_number and trade_id for debugging purposes
+        print(f"Row Number: {row_number}, Trade ID: {trade_id}")
+        
+        trade = Trade.objects.get(row_number=row_number, id=trade_id, user=request.user)
         trade_details = {
             'symbol': str(trade.symbol),
             'date': str(trade.date),

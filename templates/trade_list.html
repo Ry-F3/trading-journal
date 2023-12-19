@@ -36,8 +36,8 @@
                 <td>
                     <!-- Edit Trade button -->
                     <button class="btn btn-secondary btn-sm square-btn bg-black edit-trade-button"
-                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"
-                        ><i class="fas fa-pencil-alt"></i></button>
+                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i
+                            class="fas fa-pencil-alt"></i></button>
                 </td>
                 <td>
                     <!-- Delete button -->
@@ -83,9 +83,19 @@
                         <td class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
                         </td>
+                        
+                        <!-- Hidden field for current trade ID -->
+                        <input type="hidden" name="current_trade_id" id="currentTradeId" value="">
+
+                        <!-- Hidden field for current row number -->
+                        <input type="hidden" name="current_row_number" id="currentRowNumber" value="">
+
+                        <!-- Hidden field for save type -->
+                        <input type="hidden" name="save_type" id="saveType" value="">
+
                         <!-- Save button -->
-                        <td class="hide-cell save-button" colspan="2">
-                            <button type="submit" class="btn btn-success">Save</button>
+                        <td class="hide-cell" colspan="2">
+                            <button id="save" type="submit" class="btn btn-success save-button">Save</button>
                         </td>
                     </tr>
                 </form>

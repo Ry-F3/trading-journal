@@ -28,12 +28,46 @@ class Trade(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.row_number:
-            max_row = Trade.objects.aggregate(models.Max('row_number'))['row_number__max']
-            max_row = int(max_row or 0)  # Convert max_row to an integer
-            self.row_number = max_row + 1
+            existing_trade_rows = Trade.objects.values_list('row_number', flat=True).filter(user=self.user).order_by('row_number')
+            existing_trade_rows = set(existing_trade_rows)
+
+            # Find the first gap in the sequence of row_numbers
+            max_row = 0
+            for row_number in existing_trade_rows:
+                if int(row_number) > max_row + 1:  # Convert row_number to int for comparison
+                    # Found a gap, use max_row + 1 as the new row_number
+                    self.row_number = max_row + 1
+                    break
+                max_row = int(row_number)  # Convert max_row to int for comparison
+
+            # If there is no gap, use max_row + 1
+            if not self.row_number:
+                self.row_number = max_row + 1
 
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}")
+
+
+    def save_overwrite(self, overwrite_id, overwrite_row, edited_trade_data=None):
+        """
+        Overwrite the trade with the specified ID and row.
+
+        If `edited_trade_data` is provided, update the trade with the new data.
+        """
+        try:
+            existing_trade = Trade.objects.get(id=overwrite_id, row_number=overwrite_row)
+        except Trade.DoesNotExist:
+            print(f"Trade with ID {overwrite_id} and row {overwrite_row} does not exist.")
+            return
+
+        if edited_trade_data:
+            for key, value in edited_trade_data.items():
+                setattr(existing_trade, key, value)
+
+        existing_trade.save()
+        print(f"Trade overwritten successfully.")
+
+
 
     def delete(self, *args, **kwargs):
         # Get the row_number of the trade being deleted

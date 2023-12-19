@@ -3,8 +3,10 @@ $(document).ready(function () {
     const createTradeForm = $('#createTradeForm');
     const showCreateTradeForm = $('#showCreateTradeForm');
     const hideCells = $('.hide-cell');
-    const createTradeButton = $('#createTradeButton'); // Corrected selector
+    const createTradeButton = $('#createTradeButton');
 
+    let createTradeFormActive = false; // Flag to track if the createTrade form is active
+    console.log(createTradeFormActive);
 
     // Add an event listener for the delete button
     $('.delete-trade-button').click(function () {
@@ -14,6 +16,8 @@ $(document).ready(function () {
     });
 
     showCreateTradeForm.click(function () {
+        createTradeFormActive = !createTradeFormActive; // Toggle the flag
+        console.log(createTradeFormActive);
         createTradeForm.toggleClass('hidden-form');
 
         // Toggle the visibility of the hide-cell elements
@@ -21,75 +25,101 @@ $(document).ready(function () {
 
         // Hide the "Create Trade" button
         createTradeButton.hide();
-    });
 
+        // Add or remove the 'save-button' class to the td element based on createTradeFormActive
+        $('#save').toggleClass('save-button', createTradeFormActive);
+        $('#save').removeClass('save-edit-button', createTradeFormActive);
 
-});
-
-
-// Function to handle the deletion of a trade
-function deleteTrade(tradeId, rowNumber, callback) {
-    // Get the CSRF token from the page
-    const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
-
-    // Using $.ajax to send a DELETE request to the server
-    $.ajax({
-        url: `/delete-trade/${tradeId}/`,
-        type: 'DELETE',
-        contentType: 'application/json',
-        headers: {
-            'X-CSRFToken': csrfToken,
-        },
-        xhrFields: {
-            withCredentials: true, // Include credentials (e.g., cookies) in the request
-        },
-        success: function (data) {
-            handleDeleteResponse(data, tradeId, rowNumber);
-            if (callback) {
-                // Call the callback function if provided
-                callback();
-            }
-        },
-        error: function (error) {
-            console.error('Error:', error);
-        },
-    });
-}
-
-// Add an event listener for the delete button
-$('.delete-trade-button').click(function () {
-    const tradeId = $(this).data('trade-id');
-    const rowNumber = $(this).data('row-number');
-
-    // Call deleteTrade and pass a callback function to reload the page
-    deleteTrade(tradeId, rowNumber, function () {
-        // Reload the page
-        window.location.reload();
-    });
-});
-
-
-function handleDeleteResponse(data, tradeId, rowNumber) {
-    const rowId = `tradeRow${tradeId}`;
-
-    // Handle the response from the server
-    if (data.success) {
-        // If the deletion was successful, remove the row from the UI
-        const row = $(`#${rowId}`);
-        if (row.length) {
-            row.remove();
+        // Check your condition here and set the save type accordingly
+        if (createTradeFormActive) {
+            $('#saveType').val('regular');
+            // Clear the form fields for regular edit
+            $('#id_symbol').val('');
+            $('#id_date').val('');
+            $('#id_status').val('');
+            $('#id_long_short').val('');
+            $('#id_position').val('');
+            $('#id_margin').val('');
+            $('#id_leverage').val('');
+            $('#id_open_price').val('');
+            $('#id_current_price').val('');
+            $('#id_return_pnl').val('');
+        } else {
+            $('#saveType').val('overwrite');
         }
 
-        // Update row numbers and IDs in the UI after deletion
-        updateRowNumbersAndIds();
+        // Log the value of saveType
+        console.log('Save Type:', $('#saveType').val());
 
-        // Add a message or log to indicate success
-        console.log(`Trade successfully deleted: Trade ID - ${tradeId}, Row Number - ${rowNumber}`);
-    } else {
-        // Handle errors or provide feedback to the user
-        console.error('Deletion failed:', data.error);
+    });
+
+
+    // Function to handle the deletion of a trade
+    function deleteTrade(tradeId, rowNumber, callback) {
+        // Get the CSRF token from the page
+        const csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+        // Using $.ajax to send a DELETE request to the server
+        $.ajax({
+            url: `/delete-trade/${tradeId}/`,
+            type: 'DELETE',
+            contentType: 'application/json',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            xhrFields: {
+                withCredentials: true, // Include credentials (e.g., cookies) in the request
+            },
+            success: function (data) {
+                handleDeleteResponse(data, tradeId, rowNumber);
+                if (callback) {
+                    // Call the callback function if provided
+                    callback();
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            },
+        });
     }
-}
+
+    // Add an event listener for the delete button
+    $('.delete-trade-button').click(function () {
+        const tradeId = $(this).data('trade-id');
+        const rowNumber = $(this).data('row-number');
+
+        // Call deleteTrade and pass a callback function to reload the page
+        deleteTrade(tradeId, rowNumber, function () {
+            // Reload the page
+            window.location.reload();
+        });
+    });
+
+    function handleDeleteResponse(data, tradeId, rowNumber) {
+        const rowId = `tradeRow${tradeId}`;
+
+        // Handle the response from the server
+        if (data.success) {
+            // If the deletion was successful, remove the row from the UI
+            const row = $(`#${rowId}`);
+            if (row.length) {
+                row.remove();
+            }
+
+            // Update row numbers and IDs in the UI after deletion
+            updateRowNumbersAndIds();
+
+            // Add a message or log to indicate success
+            console.log(`Trade successfully deleted: Trade ID - ${tradeId}, Row Number - ${rowNumber}`);
+        } else {
+            // Handle errors or provide feedback to the user
+            console.error('Deletion failed:', data.error);
+        }
+    }
+
+
+});
+
 
 
 function handleSaveResponse(data, tradeId) {
@@ -97,6 +127,7 @@ function handleSaveResponse(data, tradeId) {
     if (data.success) {
         // You may update other UI elements as needed
         console.log('Trade successfully saved:', tradeId);
+        createTradeFormActive = false;
 
         // Update row numbers and IDs in the UI after saving
         updateRowNumbersAndIds();
