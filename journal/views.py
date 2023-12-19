@@ -55,3 +55,26 @@ def trade_list(request):
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 
+@login_required
+def get_trade_details_by_row(request, row_number):
+    try:
+        trade = Trade.objects.get(row_number=row_number, user=request.user)
+        trade_details = {
+            'symbol': str(trade.symbol),
+            'date': str(trade.date),
+            'status': str(trade.status),
+            'long_short': str(trade.long_short),
+            'position': trade.position,
+            'margin': trade.margin,
+            'leverage': trade.leverage,
+            'open_price': trade.open_price,
+            'current_price': trade.current_price,
+            'return_pnl': trade.return_pnl,
+           
+        }
+        
+        return JsonResponse({'success': True, 'trade_details': trade_details})
+    except Trade.DoesNotExist as e:
+        print(f"Error: {e}")
+        return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
+    

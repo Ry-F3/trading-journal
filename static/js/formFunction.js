@@ -5,6 +5,7 @@ $(document).ready(function () {
     const hideCells = $('.hide-cell');
     const createTradeButton = $('#createTradeButton'); // Corrected selector
 
+
     // Add an event listener for the delete button
     $('.delete-trade-button').click(function () {
         const tradeId = $(this).data('trade-id');
@@ -21,7 +22,10 @@ $(document).ready(function () {
         // Hide the "Create Trade" button
         createTradeButton.hide();
     });
+
+
 });
+
 
 // Function to handle the deletion of a trade
 function deleteTrade(tradeId, rowNumber, callback) {
@@ -56,9 +60,9 @@ function deleteTrade(tradeId, rowNumber, callback) {
 $('.delete-trade-button').click(function () {
     const tradeId = $(this).data('trade-id');
     const rowNumber = $(this).data('row-number');
-    
+
     // Call deleteTrade and pass a callback function to reload the page
-    deleteTrade(tradeId, rowNumber, function() {
+    deleteTrade(tradeId, rowNumber, function () {
         // Reload the page
         window.location.reload();
     });
@@ -112,3 +116,5 @@ function updateRowNumbersAndIds() {
         $(this).closest('tr').attr('id', `tradeRow${tradeId}`);
     });
 }
+
+

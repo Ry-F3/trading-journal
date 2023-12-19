@@ -34,6 +34,12 @@
                 <td>${{ trade.current_price }}</td>
                 <td>${{ trade.return_pnl }}</td>
                 <td>
+                    <!-- Edit Trade button -->
+                    <button class="btn btn-secondary btn-sm square-btn bg-black edit-trade-button"
+                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"
+                        ><i class="fas fa-pencil-alt"></i></button>
+                </td>
+                <td>
                     <!-- Delete button -->
                     <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
                         data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
@@ -99,6 +105,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="{% static 'js/calculations.js' %}"></script>
+<script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/formFunction.js' %}"></script>
 
 
