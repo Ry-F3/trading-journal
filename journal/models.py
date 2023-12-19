@@ -25,7 +25,6 @@ class Trade(models.Model):
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
     row_number = models.SlugField(unique=True, editable=False)
 
-
     def save(self, *args, **kwargs):
         if not self.row_number:
             existing_trade_rows = Trade.objects.filter(user=self.user).values_list('row_number', flat=True).order_by('row_number')

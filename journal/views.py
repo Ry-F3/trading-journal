@@ -4,7 +4,7 @@ from .forms import TradeForm
 from django.views import View
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
 
 
@@ -52,6 +52,8 @@ def trade_list(request):
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
+                # Redirect to the same page to avoid reposting on refresh
+                return HttpResponseRedirect(request.path)
                 
             if save_type == 'overwrite':
                 overwrite_id = request.POST.get('current_trade_id', None)
