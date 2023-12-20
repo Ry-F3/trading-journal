@@ -20,7 +20,7 @@ class TradeForm(forms.ModelForm):
         self.fields['leverage'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Leverage'})
         self.fields['open_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Open Price'})
         self.fields['current_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Current Price'})
-        self.fields['return_pnl'].widget = forms.TextInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Return PnL'})
+        self.fields['return_pnl'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Return PnL'})
         
         self.fields['open_price'].widget.attrs['step'] = 'any'  # Allow any step value
         self.fields['open_price'].widget.attrs['min'] = 0  # Set the minimum allowed value if needed

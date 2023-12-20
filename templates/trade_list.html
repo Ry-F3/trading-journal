@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class="p-5 m-3">
-    <table class="table">
+    <table id="tContainer" class="table">
         <tbody>
             <tr>
                 <th>Symbol</th>
@@ -86,8 +86,6 @@
                             <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
                         </td>
 
-
-
                         <!-- Hidden field for save type -->
                         <input type="hidden" name="save_type" id="saveType" value="">
 
@@ -112,12 +110,12 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{% static 'js/global.js' %}"></script>
 <script src="{% static 'js/calculations.js' %}"></script>
 <script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/formFunction.js' %}"></script>
 <script src="{% static 'js/currencySwap.js' %}"></script>
-
-
+<script src="{% static 'js/longShort.js' %}"></script>
 
 
 {% endblock content %}
