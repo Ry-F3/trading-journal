@@ -14,6 +14,7 @@ $(document).ready(function () {
         const rowNumber = $(this).data('row-number');
         deleteTrade(tradeId, rowNumber);
     });
+    
 
     showCreateTradeForm.click(function () {
         createTradeFormActive = !createTradeFormActive; // Toggle the flag

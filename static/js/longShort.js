@@ -1,5 +1,5 @@
-   // Long/Short Dropdown Handling using Event Delegation
-   $(document).on('change', '#id_long_short', function () {
+// Long/Short Dropdown Handling using Event Delegation
+$(document).on('change', '#id_long_short', function () {
     console.log("hello");
     var selectedValue = $(this).val();
     console.log('Dropdown changed. Selected value:', selectedValue);
@@ -11,6 +11,7 @@
         isShortSelected = false;
         console.log('L:', isLongSelected);
         console.log('S:', isShortSelected);
+        longShortHandler();
         // Add additional logic for Long position if needed
     } else if (selectedValue === 'short') {
         console.log('User selected Short position.');
@@ -18,6 +19,11 @@
         isLongSelected = false;
         console.log('L:', isLongSelected);
         console.log('S:', isShortSelected);
+        longShortHandler();
         // Add additional logic for Short position if needed
     }
-});
+
+    console.log('After dropdown change - isLongSelected:', isLongSelected, 'isShortSelected:', isShortSelected);
+
+  
+}); 
