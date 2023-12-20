@@ -32,7 +32,9 @@
                 <td>{{ trade.leverage }}x</td>
                 <td>${{ trade.open_price }}</td>
                 <td>${{ trade.current_price }}</td>
-                <td>${{ trade.return_pnl }}</td>
+                <td class="return-pnl-display">
+                    ${{ trade.return_pnl }}
+                </td>
                 <td>
                     <!-- Edit Trade button -->
                     <button class="btn btn-secondary btn-sm square-btn bg-black edit-trade-button"
@@ -83,8 +85,8 @@
                         <td class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
                         </td>
-                        
-                     
+
+
 
                         <!-- Hidden field for save type -->
                         <input type="hidden" name="save_type" id="saveType" value="">
@@ -113,6 +115,9 @@
 <script src="{% static 'js/calculations.js' %}"></script>
 <script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/formFunction.js' %}"></script>
+<script src="{% static 'js/currencySwap.js' %}"></script>
+
+
 
 
 {% endblock content %}

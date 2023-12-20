@@ -19,13 +19,15 @@ footer {
     width: 100%;
     text-align: center;
     padding: 10px;
-    border-top: 1px solid #ccc; /* Add a border to separate the footer from the content */
+    border-top: 1px solid #ccc;
+    /* Add a border to separate the footer from the content */
 }
 
 .square-btn {
-    width: 30px !important; 
-    height: 30px !important; /* Set the height to be the same as the width for a square button */
-  }
+    width: 30px !important;
+    height: 30px !important;
+    /* Set the height to be the same as the width for a square button */
+}
 
 .hide-cell {
     display: none;
@@ -33,7 +35,7 @@ footer {
 
 .hidden-cell {
     display: table-cell;
-   
+
 }
 
 
@@ -43,7 +45,8 @@ footer {
     left: 0;
     width: 100%;
     text-align: center;
-    padding: 10px; /* adjust as needed */
+    padding: 10px;
+    /* adjust as needed */
 }
 
 

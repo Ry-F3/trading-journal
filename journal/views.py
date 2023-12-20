@@ -41,17 +41,27 @@ def delete_trade(request, trade_id):
 
 @login_required
 def trade_list(request):
+   
+    
     if request.method == 'POST':
         form = TradeForm(request.POST)
         if form.is_valid():
             trade = form.save(commit=False)
             trade.user = request.user  # Set the user to the logged-in user
-            
             save_type = request.POST.get('save_type', 'regular')
+            
+            # for existing_trade in trades:
+            #     if existing_trade.return_pnl < 0:
+            #         # Adjust the return_pnl value to hide the minus sign
+            #         existing_trade.return_pnl = abs(existing_trade.return_pnl)
+            #         existing_trade.save()
+            #         print(f"Adjusted return_pnl for trade {existing_trade.return_pnl}")
+
 
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
+                # existing_trade.save()
                 # Redirect to the same page to avoid reposting on refresh
                 return HttpResponseRedirect(request.path)
                 
@@ -91,6 +101,8 @@ def trade_list(request):
 
     else:
         form = TradeForm()
+        
+    
 
     # Filter trades based on the logged-in user
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
@@ -125,4 +137,3 @@ def get_trade_details(request, row_number, trade_id):
     except Trade.DoesNotExist as e:
         print(f"Error: {e}")
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
-    
