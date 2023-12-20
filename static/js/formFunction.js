@@ -14,18 +14,39 @@ $(document).ready(function () {
         const rowNumber = $(this).data('row-number');
         deleteTrade(tradeId, rowNumber);
     });
-    
+
 
     showCreateTradeForm.click(function () {
         createTradeFormActive = !createTradeFormActive; // Toggle the flag
         console.log(createTradeFormActive);
         createTradeForm.toggleClass('hidden-form');
 
+        // Clear the form fields for regular edit
+        $('#id_symbol').val('');
+        $('#id_date').val('');
+        $('#id_status').val('');
+        $('#id_long_short').val('');
+        $('#id_position').val('');
+        $('#id_margin').val('');
+        $('#id_leverage').val('');
+        $('#id_open_price').val('');
+        $('#id_current_price').val('');
+        $('#id_return_pnl').val('');
+
         // Toggle the visibility of the hide-cell elements
         hideCells.toggleClass('hidden-cell');
 
         // Hide the "Create Trade" button
         createTradeButton.hide();
+
+        // Function to enable input fields
+        function disableFields() {
+            $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
+        }
+
+        console.log('Before enableFields()');
+        disableFields();
+        console.log('After enableFields()');
 
         // Add or remove the 'save-button' class to the td element based on createTradeFormActive
         $('#save').toggleClass('save-button', createTradeFormActive);
@@ -34,17 +55,6 @@ $(document).ready(function () {
         // Check your condition here and set the save type accordingly
         if (createTradeFormActive) {
             $('#saveType').val('regular');
-            // Clear the form fields for regular edit
-            $('#id_symbol').val('');
-            $('#id_date').val('');
-            $('#id_status').val('');
-            $('#id_long_short').val('');
-            $('#id_position').val('');
-            $('#id_margin').val('');
-            $('#id_leverage').val('');
-            $('#id_open_price').val('');
-            $('#id_current_price').val('');
-            $('#id_return_pnl').val('');
         } else {
             $('#saveType').val('overwrite');
         }

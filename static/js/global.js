@@ -2,34 +2,31 @@
 // Global Variables
 var isShortSelected = false;
 var isLongSelected = false;
+var editMode = false; // Set to true or false based on your logic
+var fieldsEnabled = false;
+console.log('edit mode', editMode);
 
 console.log("Initial Global values - isLongSelected:", isLongSelected, "isShortSelected:", isShortSelected);
 
-// Function to check selection and enable/disable fields accordingly
-function checkSelectionAndEnableFields() {
-    if (!isLongSelected && !isShortSelected) {
-        // Both are false, disable fields
-        disableFields();
-    } else {
-        // At least one is true, enable fields
-        enableFields();
-    }
-}
+disableFields();
+
 
 // Function to disable input fields
 function disableFields() {
-    $('#id_leverage, #id_margin, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
+    $('#id_position, #id_leverage, #id_margin, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
 }
 
 // Function to enable input fields
 function enableFields() {
-    $('#id_leverage, #id_margin, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', false);
+    $('#id_position, #id_leverage, #id_margin, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', false);
 }
 
 // Function to clear input values
 function clearInputValues() {
     $('#id_leverage, #id_margin, #id_open_price, #id_current_price, #id_return_pnl').val('');
 }
+
+
 
 // Function to perform calculations
 function performLongCalculations() {
@@ -123,13 +120,18 @@ $(document).ready(function () {
         if (isLongSelected) {
             console.log('Long calculation selected.');
             performLongCalculations();
+            // Call the function to enable or disable fields based on edit mode
         } else if (isShortSelected) {
             console.log('Short calculation selected.');
             performShortCalculations();
+            // Call the function to enable or disable fields based on edit mode
         } else {
             console.log('No calculation type selected.');
+            // Call the function to enable or disable fields based on edit mode
         }
     });
+
+    
 });
 
 function longShortHandler() {
@@ -160,3 +162,19 @@ function longShortHandler() {
         performShortCalculations(); // Call the common calculation logic
     }
 }
+
+// Function to check selection and enable/disable fields accordingly
+function checkSelectionAndEnableFields() {
+    if (isLongSelected && isShortSelected) {
+        // Both are false, disable fields
+        enableFields();
+        
+    } else if (!isLongSelected && !isShortSelected) {
+        disableFields();
+    } else {
+        enableFields();
+    }
+
+
+}
+

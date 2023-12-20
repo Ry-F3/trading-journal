@@ -15,13 +15,13 @@ $(document).ready(function () {
             const tradeId = $(this).data('trade-id');
             const rowNumber = $(this).data('row-number');
             console.log(`Edit Trade clicked for row ${rowNumber}`);
+
             editTrade(tradeId, rowNumber);
         } catch (error) {
             console.error('Error in edit-trade-button click event:', error);
         }
-
-
     });
+
 
     // Code for handling "Save Trade" button click
     $(document).on('click', '#save-button', function () {
@@ -63,7 +63,7 @@ $(document).ready(function () {
                         $('#save').toggleClass('save-edit-button', editMode);
                         $('#save').removeClass('save-button', editMode);
 
-                        if (editMode = true) {
+                        if (editMode) {
                             $('#saveType').val('overwrite');
                         } else {
                             $('#saveType').val('regular');
@@ -114,6 +114,27 @@ $(document).ready(function () {
                 $('#id_current_price').val(tradeDetails.current_price);
                 $('#id_return_pnl').val(tradeDetails.return_pnl);
 
+                // Update global variables based on the value of long_short
+                if (tradeDetails.long_short === 'long') {
+                    isShortSelected = false;
+                    isLongSelected = true;
+                    console.log("data passed long");
+                } else if (tradeDetails.long_short === 'short') {
+                    isShortSelected = true;
+                    isLongSelected = false;
+                    console.log("data passed short");
+                }
+
+
+                // Function to enable input fields
+                function enableFields() {
+                    $('#id_symbol, #id_date, #id_status, #id_long_short, #id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', false);
+                }
+
+                console.log('Before enableFields()');
+                enableFields();
+                console.log('After enableFields()');
+
 
                 // Remove hide-cell class from td elements in the form
                 hideCells.removeClass('hide-cell');
@@ -137,6 +158,8 @@ $(document).ready(function () {
             console.error('Edited row not found in the DOM:', `tradeRow${rowNumber}`);
         }
     }
+
+
 
     // Function to add or update a hidden input field
     function addOrUpdateHiddenInput(id, name, value) {
