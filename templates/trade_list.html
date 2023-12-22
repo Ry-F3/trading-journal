@@ -2,12 +2,20 @@
 {% load i18n %}
 {% load static %}
 {% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
-
 {% block content %}
-
-<div class="p-5 m-3">
+<div class="container p-2 m-3">
+    <div class="d-flex">
+        <div class="card ms-auto">
+            <div class="card-body">
+                <h5 class="card-title">Card 1</h5>
+                <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-5 pt-0 m-3 mb-5 scrollbar-container">
     <table id="tContainer" class="table">
-        <tbody>
+        <thead>
             <tr>
                 <th>Symbol</th>
                 <th>Date</th>
@@ -20,34 +28,34 @@
                 <th>Closed</th>
                 <th>Return PnL</th>
             </tr>
+        </thead>
         <tbody>
             {%for trade in trades%}
-            <tr id="tradeRow{{ trade.row_number }}" data-trade-id="{{ trade.id }}">
-                <td>{{ trade.symbol }}</td>
-                <td>{{ trade.date }}</td>
-                <td>{{ trade.status }}</td>
-                <td>{{ trade.long_short }}</td>
-                <td>{{ trade.position }}%</td>
-                <td>${{ trade.margin }}</td>
-                <td>{{ trade.leverage }}x</td>
-                <td>${{ trade.open_price }}</td>
-                <td>${{ trade.current_price }}</td>
-                <td class="return-pnl-display">
-                    ${{ trade.return_pnl }}
-                </td>
-                <td>
-                    <!-- Edit Trade button -->
-                    <button class="btn btn-sm square-btn bg-black edit-trade-button"
-                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i id="pencil"
-                            class="fas fa-pencil-al pencil_color"></i></button>
-                </td>
-                <td>
-                    <!-- Delete button -->
-                    <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
-                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
-                </td>
-            </tr>
-
+                <tr id="tradeRow{{ trade.row_number }}" data-trade-id="{{ trade.id }}">
+                    <td>{{ trade.symbol }}</td>
+                    <td>{{ trade.date }}</td>
+                    <td>{{ trade.status }}</td>
+                    <td>{{ trade.long_short }}</td>
+                    <td>{{ trade.position }}%</td>
+                    <td>${{ trade.margin }}</td>
+                    <td>{{ trade.leverage }}x</td>
+                    <td>${{ trade.open_price }}</td>
+                    <td>${{ trade.current_price }}</td>
+                    <td class="return-pnl-display">
+                        ${{ trade.return_pnl }}
+                    </td>
+                    <td>
+                        <!-- Edit Trade button -->
+                        <button class="btn btn-sm square-btn bg-black edit-trade-button"
+                            data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i id="pencil"
+                                class="fas fa-pencil-alt pencil_color"></i></button>
+                    </td>
+                    <td>
+                        <!-- Delete button -->
+                        <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
+                            data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
+                    </td>
+                </tr>
             {% endfor %}
             <!-- Create Trade button -->
             <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
@@ -98,15 +106,17 @@
             </div>
         </tbody>
     </table>
-
 </div>
 
+
+
+<!-- 
 <div class="p-5 m-3">
     <h1>Trades</h1>
     {% for trade in trades %}
     <p>Trade ID: {{ trade.id }} Row Number: {{ trade.row_number }}</p>
     {% endfor %}
-</div>
+</div> -->
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

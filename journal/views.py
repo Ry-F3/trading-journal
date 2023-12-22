@@ -19,6 +19,8 @@ class HomeView(View):
             # If the user is not authenticated, redirect to the login page
             return redirect('account/login')
 
+def test_view(request):
+    return render(request, 'test.html')
 
 @login_required
 @permission_required('your_app.delete_trade', raise_exception=True)
