@@ -90,26 +90,36 @@ def trade_list(request):
         else:
             
 
-            return redirect('trade_list')
+            return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 
     else:
         form = TradeForm()
         
+    
+
     # Filter trades based on the logged-in user
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
     
-        # Pagination
+      # Pagination
     paginator = Paginator(trades, 5)  # Show 5 trades per page
     page = request.GET.get('page')
 
+    # Determine the last page dynamically
+    last_page = paginator.num_pages
+
     try:
+        # If page is not an integer, deliver last page.
         trades = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        trades = paginator.page(1)
+        trades = paginator.page(last_page)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        trades = paginator.page(paginator.num_pages)
+        trades = paginator.page(last_page)
+
+    # If no specific page parameter is provided, redirect to the last page
+    if not page:
+        return render(request, 'trade_list.html', {'trades': trades, 'form': form})
+   
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 

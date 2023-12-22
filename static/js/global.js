@@ -4,6 +4,7 @@ var isShortSelected = false;
 var isLongSelected = false;
 var editMode = false; // Set to true or false based on your logic
 var fieldsEnabled = false;
+var createTradeFormActive = false;
 console.log('edit mode', editMode);
 
 

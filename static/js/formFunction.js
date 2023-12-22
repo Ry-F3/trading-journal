@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 
     let createTradeFormActive = false; // Flag to track if the createTrade form is active
-    console.log(createTradeFormActive);
+    console.log('form inactive', createTradeFormActive);
 
     // Add an event listener for the delete button
     $('.delete-trade-button').click(function () {
@@ -20,62 +20,104 @@ $(document).ready(function () {
 
 
     showCreateTradeForm.click(function () {
-        createTradeFormActive = !createTradeFormActive; // Toggle the flag
-        console.log(createTradeFormActive);
-        createTradeForm.toggleClass('hidden-form');
+        const buttonText = $(this).text();
+        console.log('Current state of createTradeForm:', createTradeForm);
 
-        console.log('scroll:', container);
-
-        // Scroll to the bottom of the container
-        container.scrollTop(container[0].scrollHeight);
-
-        // Additional log to check if the code reaches this point
-        console.log('Scrolled to the bottom');
-
-        // Clear the form fields for regular edit
-        $('#id_symbol').val('');
-        $('#id_date').val('');
-        $('#id_status').val('');
-        $('#id_long_short').val('');
-        $('#id_position').val('');
-        $('#id_margin').val('');
-        $('#id_leverage').val('');
-        $('#id_open_price').val('');
-        $('#id_current_price').val('');
-        $('#id_return_pnl').val('');
-
-        // Toggle the visibility of the hide-cell elements
-        hideCells.toggleClass('hidden-cell');
-
-        // Hide the "Create Trade" button
-        createTradeButton.hide();
-
-
-        // Function to enable input fields
-        function disableFields() {
-            $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
+        if (buttonText === 'Create Trade') {
+            createTradeForm.css('display', 'block');
+            console.log('Current state of createTradeForm:', createTradeForm.css('display'));
+            // Code for handling "Create Trade" button click
+            createTradeFormActive = true;
+            handleFormVisibility();
+        } else if (buttonText === 'Cancel Trade') {
+            createTradeForm.css('display', 'none');
+            console.log('Current state of createTradeForm:', createTradeForm.css('display', 'none'));
+            // Code for handling "Cancel Trade" button click
+            console.log('editMode:', editMode);
+            createTradeFormActive = false;
+            handleFormVisibility();
         }
+    });
 
-        console.log('Before enableFields()');
-        disableFields();
-        console.log('After enableFields()');
+    // Function to handle form visibility and behavior
+    function handleFormVisibility() {
+        console.log('inside function', createTradeFormActive);
+        const wasFormActive = createTradeFormActive;
+        console.log('edit in function', editMode);
 
-        // Add or remove the 'save-button' class to the td element based on createTradeFormActive
-        $('#save').toggleClass('save-button', createTradeFormActive);
-        $('#save').removeClass('save-edit-button', createTradeFormActive);
-
-        // Check your condition here and set the save type accordingly
         if (createTradeFormActive) {
-            $('#saveType').val('regular');
+            // Code for when the form is active
+            console.log('Form is now active');
+            container.scrollTop(container[0].scrollHeight);
+
+            // Additional logic specific to form activation
+            // ...
+            // Clear the form fields for regular edit
+            $('#id_symbol').val('');
+            $('#id_date').val('');
+            $('#id_status').val('');
+            $('#id_long_short').val('');
+            $('#id_position').val('');
+            $('#id_margin').val('');
+            $('#id_leverage').val('');
+            $('#id_open_price').val('');
+            $('#id_current_price').val('');
+            $('#id_return_pnl').val('');
+
+            // // Toggle the visibility of the hide-cell elements
+            console.log('Before Toggle: Hide Cells Visibility 0:', hideCells.hasClass('hidden-cell'));
+            hideCells.toggleClass('hidden-cell', createTradeFormActive);
+            console.log('After Toggle: Hide Cells Visibility 0:', hideCells.hasClass('hidden-cell'));
+
+            // Function to enable input fields
+            function disableFields() {
+                $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
+            }
+
+            console.log('Before enableFields()');
+            disableFields();
+            console.log('After enableFields()');
+
+            // Check your condition here and set the save type accordingly
+            if (createTradeFormActive) {
+                $('#saveType').val('regular');
+
+            } else {
+                $('#saveType').val('overwrite');
+            }
+
 
         } else {
-            $('#saveType').val('overwrite');
+            // Code for when the form is inactive
+            console.log('Form is now inactive');
+            container.scrollTop(0);
+
+
+            // Clear the form fields
+            $('#id_symbol, #id_date, #id_status, #id_long_short, #id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').val('');
+
+            // Toggle the visibility of the hide-cell elements
+            console.log('Before Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
+            hideCells.toggleClass('hidden-cell', createTradeFormActive);
+            console.log('After Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
+
         }
+
+        // Toggle the "save-button" class based on form activity
+        $('#save').toggleClass('save-button', createTradeFormActive);
+        $('#save').toggleClass('save-edit-button', !createTradeFormActive);
+
+        // Set the save type based on form activity
+        $('#saveType').val(createTradeFormActive ? 'regular' : 'overwrite');
 
         // Log the value of saveType
         console.log('Save Type:', $('#saveType').val());
 
-    });
+
+        // Revert the button text based on form activity
+        showCreateTradeForm.text(createTradeFormActive ? 'Cancel Trade' : 'Create Trade');
+    }
+
 
 
     // Function to handle the deletion of a trade

@@ -8,6 +8,15 @@
         color: #6c757d;
     }
 
+    .hide-cell {
+    display: none;
+}
+
+.hidden-cell {
+    display: table-cell;
+
+}
+
     /* Apply styles to the scrollbar container */
     .scrollbar-container {
         max-height: 360px;
@@ -121,34 +130,34 @@
                 <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
                     {% csrf_token %}
                     <tr>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.symbol }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.date }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.status }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.long_short }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.position }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.margin }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.leverage }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.open_price }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.current_price }}</div>
                         </td>
-                        <td class="hide-cell">
+                        <td id="class-cells" class="hide-cell">
                             <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
                         </td>
 
@@ -167,8 +176,8 @@
 </div>
 
 
-
 <!-- 
+
 <div class="p-5 m-3">
     <h1>Trades</h1>
     {% for trade in trades %}
@@ -180,8 +189,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="{% static 'js/global.js' %}"></script>
 <script src="{% static 'js/longShort.js' %}"></script>
-<script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/formFunction.js' %}"></script>
+<script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/currencySwap.js' %}"></script>
 
 

@@ -16,7 +16,6 @@ $(document).ready(function () {
             const tradeId = $(this).data('trade-id');
             const rowNumber = $(this).data('row-number');
             console.log(`Edit Trade clicked for row ${rowNumber}`);
-
             editTrade(tradeId, rowNumber);
         } catch (error) {
             console.error('Error in edit-trade-button click event:', error);
@@ -63,6 +62,7 @@ $(document).ready(function () {
                         // Add or update hidden input fields for current_trade_id and current_row_number
                         addOrUpdateHiddenInput('currentTradeId', 'current_trade_id', currentTradeId);
                         addOrUpdateHiddenInput('currentRowNumber', 'current_row_number', currentRowNumber);
+                        $('#showCreateTradeForm').text('Create Trade');
 
                         $('#save').toggleClass('save-edit-button', editMode);
                         $('#save').removeClass('save-button', editMode);
@@ -140,11 +140,11 @@ $(document).ready(function () {
                 console.log('After enableFields()');
 
 
-                // Remove hide-cell class from td elements in the form
-                hideCells.removeClass('hide-cell');
+                // Toggle the 'hide-cell' class on td elements in the form
+                hideCells.toggleClass('hidden-cell', true);
 
-                // Display the form for editing
-                createTradeForm.removeClass('hidden-form');
+                // Toggle the 'hidden-form' class on the createTradeForm
+                createTradeForm.toggleClass('hidden-form', true);
 
                 console.log('Form:', createTradeForm);
 
@@ -187,7 +187,7 @@ $(document).ready(function () {
         // Set the edited trade data in the form fields
         $('#id_symbol').val(editedTradeData.symbol);
         $('#id_date').val(editedTradeData.date);
-        $('#sid_tatus').val(editedTradeData.status);
+        $('#id_tatus').val(editedTradeData.status);
         $('#id_long_short').val(editedTradeData.long_short);
         $('#id_position').val(editedTradeData.position);
         $('#id_margin').val(editedTradeData.margin);
