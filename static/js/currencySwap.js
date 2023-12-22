@@ -1,3 +1,5 @@
+
+console.log("are you there");
 document.addEventListener('DOMContentLoaded', function () {
     // Get all elements with the class return-pnl-display
     var elements = document.querySelectorAll('.return-pnl-display');

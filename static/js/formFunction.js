@@ -1,9 +1,12 @@
+console.log()
 $(document).ready(function () {
     // jQuery code
     const createTradeForm = $('#createTradeForm');
     const showCreateTradeForm = $('#showCreateTradeForm');
     const hideCells = $('.hide-cell');
     const createTradeButton = $('#createTradeButton');
+    const container = $('.scrollbar-container');
+
 
     let createTradeFormActive = false; // Flag to track if the createTrade form is active
     console.log(createTradeFormActive);
@@ -20,6 +23,14 @@ $(document).ready(function () {
         createTradeFormActive = !createTradeFormActive; // Toggle the flag
         console.log(createTradeFormActive);
         createTradeForm.toggleClass('hidden-form');
+
+        console.log('scroll:', container);
+
+        // Scroll to the bottom of the container
+        container.scrollTop(container[0].scrollHeight);
+
+        // Additional log to check if the code reaches this point
+        console.log('Scrolled to the bottom');
 
         // Clear the form fields for regular edit
         $('#id_symbol').val('');
@@ -39,6 +50,7 @@ $(document).ready(function () {
         // Hide the "Create Trade" button
         createTradeButton.hide();
 
+
         // Function to enable input fields
         function disableFields() {
             $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
@@ -55,6 +67,7 @@ $(document).ready(function () {
         // Check your condition here and set the save type accordingly
         if (createTradeFormActive) {
             $('#saveType').val('regular');
+
         } else {
             $('#saveType').val('overwrite');
         }

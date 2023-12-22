@@ -5,6 +5,7 @@ from django.views import View
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -19,8 +20,6 @@ class HomeView(View):
             # If the user is not authenticated, redirect to the login page
             return redirect('account/login')
 
-def test_view(request):
-    return render(request, 'test.html')
 
 @login_required
 @permission_required('your_app.delete_trade', raise_exception=True)
@@ -52,14 +51,6 @@ def trade_list(request):
             trade.user = request.user  # Set the user to the logged-in user
             save_type = request.POST.get('save_type', 'regular')
             
-            # for existing_trade in trades:
-            #     if existing_trade.return_pnl < 0:
-            #         # Adjust the return_pnl value to hide the minus sign
-            #         existing_trade.return_pnl = abs(existing_trade.return_pnl)
-            #         existing_trade.save()
-            #         print(f"Adjusted return_pnl for trade {existing_trade.return_pnl}")
-
-
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
@@ -104,10 +95,21 @@ def trade_list(request):
     else:
         form = TradeForm()
         
-    
-
     # Filter trades based on the logged-in user
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
+    
+        # Pagination
+    paginator = Paginator(trades, 5)  # Show 5 trades per page
+    page = request.GET.get('page')
+
+    try:
+        trades = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        trades = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        trades = paginator.page(paginator.num_pages)
 
     return render(request, 'trade_list.html', {'trades': trades, 'form': form})
 

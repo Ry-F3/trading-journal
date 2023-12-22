@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    console.log('Script loaded');
+    console.log('Script now loaded');
 
     const createTradeForm = $('#createTradeForm');
     const hideCells = $('.hide-cell');  // Select hide-cell elements
     let editMode = false;  // Flag to track if the user is in edit mode
     let currentRowNumber;  // Variable to store the current row number in edit mode
     let currentTradeId;
+    const container = $('.scrollbar-container');
     console.log(editMode);
 
     // Code for handling "Edit Trade" button click
@@ -20,6 +21,9 @@ $(document).ready(function () {
         } catch (error) {
             console.error('Error in edit-trade-button click event:', error);
         }
+
+        // Scroll to the bottom of the container
+        container.scrollTop(container[0].scrollHeight);
     });
 
 

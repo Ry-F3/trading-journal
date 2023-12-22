@@ -13,7 +13,7 @@ body {
 }
 
 /* Footer styling */
-.footer {
+footer {
     background-color: #fff;
     position: fixed;
     bottom: 0;
@@ -31,7 +31,7 @@ body {
 }
 
 .pencil_color {
-    color: #bfff00;
+    color: #6c757d;
 }
 
 .hide-cell {

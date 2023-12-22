@@ -6,6 +6,7 @@ var editMode = false; // Set to true or false based on your logic
 var fieldsEnabled = false;
 console.log('edit mode', editMode);
 
+
 console.log("Initial Global values - isLongSelected:", isLongSelected, "isShortSelected:", isShortSelected);
 
 disableFields();
