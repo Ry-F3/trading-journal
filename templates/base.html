@@ -12,17 +12,24 @@
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <title>PnL - Profit and Loss</title>
+    <title>Trading Tribe</title>
 
 </head>
+
+<style>
+    .small-image {
+      width: 60px; /* Set your desired width */
+      height: auto; /* Maintain aspect ratio */
+    }
+  </style>
 
 <body class="d-flex flex-column main-bg">
 
     <!-- Navigation -->
 
-    <nav class="navbar navbar-expand-lg navbar-light m-3">
+    <nav class="navbar navbar-expand-lg navbar-light m-2">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}"><span class="brand">PnL</span></a>
+            <a class="navbar-brand" href="{% url 'home' %}"><span class="brand"><img class="small-image" src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703277463/logo_bl8q15.png" alt=""></span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -77,7 +84,8 @@
     </main>
     <!-- Footer -->
     <footer class="bg-white">
-        <p class="m-0 text-center text-charcoal text-muted">Made for your financial well-being</p>
+        <p class="m-0 text-center text-charcoal text-muted">
+            "Trade Together, Thrive Together - Join the Tribe!"</p>
         <p class="m-0 text-center">Follow us: <i class="fab fa-facebook-square ms-3"></i>
             <i class="fab fa-twitter-square ms-3"></i>
             <i class="fab fa-instagram-square ms-3"></i>
