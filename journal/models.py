@@ -23,11 +23,11 @@ class Trade(models.Model):
     open_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
-    row_number = models.IntegerField(unique=True, editable=False)
+    row_number = models.IntegerField(editable=False)
 
     def save(self, *args, **kwargs):
         if not self.row_number:
-            # Calculate row_number based on existing rows on the current page
+            # Calculate row_number based on existing rows for the specific user
             existing_trade_rows = Trade.objects.filter(user=self.user).values_list('row_number', flat=True).order_by('row_number')
             existing_trade_rows = [int(row_number) for row_number in existing_trade_rows]
 
@@ -39,7 +39,16 @@ class Trade(models.Model):
                 self.row_number = 1
 
         super().save(*args, **kwargs)
-        print(f"Saved Trade with row_number: {self.row_number}")
+        print(f"Saved Trade with row_number: {self.row_number}, User ID: {self.user.id}")
+        
+        # Print the user ID and the list of rows for the user
+        all_users = User.objects.all()
+        for user in all_users:
+            user_rows = Trade.objects.filter(user=user).values_list('row_number', flat=True).order_by('row_number')
+            user_rows = [int(row_number) for row_number in user_rows]
+
+            print(f"User ID: {user.id}, User Rows: {user_rows}")
+
 
 
 
