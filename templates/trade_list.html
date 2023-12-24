@@ -9,13 +9,13 @@
     }
 
     .hide-cell {
-    display: none;
-}
+        display: none;
+    }
 
-.hidden-cell {
-    display: table-cell;
+    .hidden-cell {
+        display: table-cell;
 
-}
+    }
 
     /* Apply styles to the scrollbar container */
     .scrollbar-container {
@@ -104,7 +104,7 @@
             {% endfor %}
             <div class="d-flex align-items-center">
                 <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
-            
+
                 <!-- Pagination Links -->
                 <div class="pagination">
                     <span class="step-links p-3 pb-4 m-2">
@@ -112,11 +112,11 @@
                         <a href="?page=1">&laquo; first</a>
                         <a href="?page={{ trades.previous_page_number }}">previous</a>
                         {% endif %}
-            
+
                         <span class="current small text-muted">
                             Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
                         </span>
-            
+
                         {% if trades.has_next %}
                         <a href="?page={{ trades.next_page_number }}">next</a>
                         <a href="?page={{ trades.paginator.num_pages }}">last &raquo;</a>
@@ -124,8 +124,8 @@
                     </span>
                 </div>
             </div>
-         
-            
+
+
             <div id="createTradeForm" class="hidden-form">
                 <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
                     {% csrf_token %}
@@ -176,14 +176,14 @@
 </div>
 
 
-<!-- 
+
 
 <div class="p-5 m-3">
     <h1>Trades</h1>
     {% for trade in trades %}
     <p>Trade ID: {{ trade.id }} Row Number: {{ trade.row_number }}</p>
     {% endfor %}
-</div> -->
+</div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -192,7 +192,5 @@
 <script src="{% static 'js/formFunction.js' %}"></script>
 <script src="{% static 'js/editButton.js' %}"></script>
 <script src="{% static 'js/currencySwap.js' %}"></script>
-
-
 
 {% endblock content %}

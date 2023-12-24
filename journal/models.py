@@ -23,10 +23,11 @@ class Trade(models.Model):
     open_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
-    row_number = models.SlugField(unique=True, editable=False)
+    row_number = models.IntegerField(unique=True, editable=False)
 
     def save(self, *args, **kwargs):
         if not self.row_number:
+            # Calculate row_number based on existing rows on the current page
             existing_trade_rows = Trade.objects.filter(user=self.user).values_list('row_number', flat=True).order_by('row_number')
             existing_trade_rows = [int(row_number) for row_number in existing_trade_rows]
 
@@ -39,6 +40,7 @@ class Trade(models.Model):
 
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}")
+
 
 
     def save_overwrite(self, overwrite_id, overwrite_row, edited_trade_data=None):

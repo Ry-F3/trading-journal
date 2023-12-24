@@ -18,6 +18,17 @@ $(document).ready(function () {
         deleteTrade(tradeId, rowNumber);
     });
 
+    
+    // Add an event listener for pagination links
+    $('.pagination a').on('click', function (e) {
+        console.log('Pagination link clicked.');
+        // Call the function to update row numbers and IDs
+        updateRowNumbersAndIds();
+
+        console.log('Content updated.');
+
+    });
+
 
     showCreateTradeForm.click(function () {
         const buttonText = $(this).text();

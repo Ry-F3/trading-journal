@@ -2,10 +2,15 @@ from django.contrib import admin
 from .models import Trade
 
 class TradeAdmin(admin.ModelAdmin):
-    list_display = ('symbol', 'date', 'status', 'long_short', 'position', 'margin', 'leverage', 'open_price', 'current_price', 'return_pnl', 'display_user')
+    list_display = ('row_number', 'symbol', 'date', 'status', 'long_short', 'position', 'margin', 'leverage', 'open_price', 'current_price', 'return_pnl', 'display_user')
     list_filter = ('status', 'long_short')
     search_fields = ('symbol', 'position')
-    
+
+    def row_number(self, obj):
+        # Display the row number in the list
+        return obj.pk
+    row_number.short_description = 'Row'
+
     def display_user(self, obj):
         return obj.user.username  # Replace 'username' with the actual attribute of the User model you want to display
     display_user.short_description = 'User'
