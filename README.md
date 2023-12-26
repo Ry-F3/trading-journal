@@ -137,16 +137,29 @@ In essence, while trading styles and preferences may vary, the commitment to pro
 
 <br>
 
-How does user data get stored?:
+## **ElephantSQL for Database Hosting:**
+
+Trade Tribe uses ElephantSQL as the database hosting provider. ElephantSQL is a Database as a Service (DBaaS) platform that specializes in providing managed PostgreSQL databases in the cloud. PostgreSQL is a powerful, open-source relational database management system (RDBMS) known for its extensibility and support for advanced data types.
+
+**Key Points:**
+
+* Managed PostgreSQL Database: ElephantSQL takes care of managing the PostgreSQL database, handling tasks such as backups, updates, and scaling. This allows Trade Tribe developers to focus on building and improving the application rather than managing database infrastructure.
+
+* Cloud-Based Service: ElephantSQL operates in the cloud, providing a scalable and reliable environment for hosting databases. This ensures that Trade Tribe's database can grow with the increasing number of users and data.
+
+* Ease of Use: ElephantSQL offers a user-friendly interface for managing PostgreSQL databases. It simplifies database administration tasks, making it accessible for developers of varying skill levels.
+
+* Security: ElephantSQL implements security measures to protect databases, including encryption for data in transit and at rest. This is crucial for ensuring the confidentiality and integrity of user data in Trade Tribe.
+
+* Integration with Django: ElephantSQL seamlessly integrates with Django, the web framework used for developing Trade Tribe. Django's ORM (Object-Relational Mapping) simplifies the interaction with the database, allowing developers to work with database entities using Python code.
+
+**User Stored Data:**
 * User-Centric Rows: The system employs a dynamic row system, where each user maintains their unique set of rows. For example:
 * User ID = A has rows [1, 2, 3, 4, 5]
 * User ID = B has rows [1, 2, 3, 4]
 * User ID = C has rows [1, 2, 3, 4, 5]
 
 This dynamic row structure ensures a personalised and organized record-keeping system for each user, facilitating easy management and retrieval of trade information, without database conflictions.
-
-
-
 
 ## **Wireframes**
 
