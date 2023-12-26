@@ -88,7 +88,7 @@ In essence, while trading styles and preferences may vary, the commitment to pro
 | View All Trades:                       | Admin should have access to a comprehensive list of all trades logged on the platform. The list should display details such as user, trade ID, symbol, date, status, long/short, position, margin, leverage, open price, current price, and return/PnL.                                                                     |
 | Filter Trades:                        | Admin should be able to filter trades based on specific criteria, including user, date, symbol, and long/short. The filtered results should provide a focused view for efficient analysis and management of trades.                                                                                                          |
 | Search for Trades:                    | Admin should be able to search for specific trades using keywords such as trading symbols or position sizes. The search functionality should deliver quick and accurate results, enhancing the speed of locating and managing trades.                                                                                         |
-| Associate Trades with Users:          | Each trade should be associated with the correct user. - Admin should have a system to verify and ensure accurate user-specific trade records.                                                                                                               |
+| Associate Trades with Users:          | Each trade should be associated with the correct user. Admin should have a system to verify and ensure accurate user-specific trade records.                                                                                                               |
 | Edit and Delete Trades:               | Admin should have the ability to edit and delete trades when necessary. The platform should facilitate easy corrections to ensure data accuracy.                                                                                                               |
 | Manage User Permissions:              | Admin should be able to manage user permissions related to trades. This includes controlling which users can view, edit, or delete specific trades. The permission management system should be robust and user-friendly.                                              |
 
@@ -186,7 +186,54 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 
 ## **Features**
 
-### **Navbar** 
+### **Trading Journal**
+
+jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
+
+**Key points on why jQuery best served the task at hand:**
+
+* **DOM Manipulation:**
+    * jQuery simplifies DOM manipulation, making it easier to select, traverse, and manipulate HTML elements. This is particularly useful when dynamically updating the UI in response to user actions or server responses.
+* **Event Handling:**
+    * jQuery provides a concise and cross-browser-compatible way to handle events. This is crucial for capturing user interactions like button clicks, input changes, and other events that trigger actions in the application.
+* **AJAX Communication:**
+    * jQuery simplifies AJAX requests, making it easier to communicate with the server asynchronously. In this code, AJAX is used to perform actions like deleting trades, fetching trade details, and saving trades without requiring a full page reload.
+* **Form Handling:**
+    * jQuery facilitates form handling, especially in conjunction with AJAX. It helps in managing form visibility, handling form submissions, and dynamically updating form elements based on user input.
+* **Real-time Calculations:**
+    * The code involves real-time calculations based on user input. jQuery, combined with event listeners, allows for efficient handling of user input changes and triggers the recalculation of trade values without the need for a page refresh.
+* **Cross-browser Compatibility:**
+    * jQuery abstracts away many of the cross-browser compatibility issues, ensuring that the code behaves consistently across different web browsers.
+* **Code Readability and Conciseness:**
+    * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
+* **Asynchronous User Experience:**
+    * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
+
+
+#### **Initalisation and Event Listeners**
+
+<code> 
+$(document).ready(function () {
+    // jQuery code
+    // ... (Initialisation of variables and event listeners)
+});
+
+</code>
+
+* The code inside the $(document).ready() function ensures that the script runs after the HTML document is fully loaded.
+
+
+#### **Trade Deletetion**
+
+<code> 
+// Add an event listener for the delete button
+$('.delete-trade-button').click(function () {
+    // ... (Function to delete a trade using AJAX)
+});
+
+</code>
+
+* This code sets up an event listener for the click on a button with the class delete-trade-button. When clicked, it triggers a function to delete a trade using AJAX.
 
 ### **Future Enhancements:**
 
