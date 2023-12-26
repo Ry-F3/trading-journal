@@ -79,10 +79,47 @@ By offering categorization and filtering tools, Trade Tribe ensures that traders
 
 In essence, while trading styles and preferences may vary, the commitment to professional and meticulous record-keeping is the common thread that binds traders together within the Trade Tribe community.
 
-
-
-
 ## **User Stories**
+
+### **Admin User Stories**
+
+| **User Story**                         | **Acceptance Criteria**                                                                                                                                                                                                                                                                                                            |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| View All Trades:                       | - Admin should have access to a comprehensive list of all trades logged on the platform. - The list should display details such as user, trade ID, symbol, date, status, long/short, position, margin, leverage, open price, current price, and return/PnL.                                                                     |
+| Filter Trades:                        | - Admin should be able to filter trades based on specific criteria, including user, date, symbol, and long/short. - The filtered results should provide a focused view for efficient analysis and management of trades.                                                                                                          |
+| Search for Trades:                    | - Admin should be able to search for specific trades using keywords such as trading symbols or position sizes. - The search functionality should deliver quick and accurate results, enhancing the speed of locating and managing trades.                                                                                         |
+| Associate Trades with Users:          | - Each trade should be associated with the correct user. - Admin should have a system to verify and ensure accurate user-specific trade records.                                                                                                               |
+| Edit and Delete Trades:               | - Admin should have the ability to edit and delete trades when necessary. - The platform should facilitate easy corrections to ensure data accuracy.                                                                                                               |
+| Manage User Permissions:              | - Admin should be able to manage user permissions related to trades. - This includes controlling which users can view, edit, or delete specific trades. - The permission management system should be robust and user-friendly.                                              |
+
+
+### **Unregistered User Stories**
+
+| **User Story**               | **Acceptance Criteria**                                                                                                                                                                                         |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Sign Up for a New Account:   | - As an unregistered user, I want the ability to sign up for a new account on the Trade Tribe platform. - The sign-up process should include fields for username, email, and password. - Upon successful sign-up, the user should receive a confirmation message.                   |
+| Explore Platform Features:   | - After signing up, the unregistered user should have the ability to explore the platform features without logging in. - This includes viewing informational pages, learning about the app's functionalities, and understanding the benefits of creating a trading journal. |
+| Access Demo Trades:           | - Unregistered users should have access to a demo or sample trades section to understand how the trading journal works. - This allows users to explore the platform's capabilities before committing to creating a full account.                                                   |
+| Learn About Community:        | - Provide information to unregistered users about the community aspect of Trade Tribe. - Showcase the benefits of joining the community, such as sharing trading experiences, gaining insights, and connecting with other traders.                               |
+| Clear Call-to-Action:         | - Display a clear call-to-action for unregistered users to encourage them to sign up for an account. - The call-to-action should highlight the value proposition of creating a trading journal and participating in the Trade Tribe community.                             |
+
+
+### **Registered User Stories**
+
+| User Story                                                     | Description                                                                                                      |
+|-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| I want to be able to have my personal account                  | As a member of the Trade Tribe community, I want to create and manage my personal account, including profile customization, profile picture upload, and the ability to set privacy preferences. This ensures a personalised and secure experience on the platform. |
+| I want to be able to log my trades                              | As a trader within the Trade Tribe app, I aim to log comprehensive details of each trade, including the trading symbol, date, position size, margin, leverage, open and current prices, return/loss, and additional notes to provide context for each trade. This detailed logging helps me analyse and learn from each trading decision. |
+| I want to be able to filter my trades by various criteria       | As a Trade Tribe user, I should have the flexibility to filter my trades based on diverse criteria such as day, month, year, trading symbol, profit, loss, open trades, closed trades, and specific trading strategies. This enables me to conduct in-depth analysis and review my trading history based on specific parameters.|
+| I want to be able to see my PnL                                | As a dedicated trader on Trade Tribe, I desire a visually intuitive display of my Profit and Loss (PnL) across all trades. The PnL summary should include performance metrics, visual charts, and the ability to track PnL over different time frames. This feature assists me in evaluating my overall trading performance and making informed decisions.|
+| I want to be able to share my trade with the community           | Being a part of the Trade Tribe community, I aspire to share my trading experiences with fellow traders. The platform should facilitate easy sharing of trade details, including trade snapshots, charts, and insights. Additionally, the sharing feature should allow me to engage in discussions, seek advice, and provide valuable input to the community.      |
+| I want to receive feedback on my trades                         | As a trader on Trade Tribe, I value constructive feedback from the community. I want the ability to receive comments, likes, and discussions on my shared trades. This interactive feedback loop enhances the learning experience and encourages collaboration within the community. |
+| I want to track my trading performance over time               | To monitor my progress and growth as a trader, I need the ability to track and visualise my trading performance over different time periods. This includes performance analytics, historical data charts, and a performance summary dashboard to help me identify strengths and areas for improvement. |
+| I want to set trading goals and receive notifications          | As a motivated trader, I want to set specific trading goals, such as weekly profit targets or risk limits. The app should allow me to input these goals and send notifications or reminders to help me stay focused and disciplined in achieving my objectives. |
+| I want to discover new trading strategies from the community   | To expand my trading knowledge, I wish to explore and learn from the experiences of other traders. The platform should feature a discovery section where traders can share unique strategies, insights, and educational content. This encourages continuous learning and the exploration of diverse trading approaches. |
+| I want to connect with traders who share similar interests     | Trade Tribe should offer a social feature that enables me to connect with traders who share similar trading styles, interests, or goals. This social networking aspect fosters a sense of community, allowing me to build connections, share experiences, and collaborate with like-minded traders. |
+| I want to be able to export my trades to a PDF                   | As a Trade Tribe user, I want the ability to export my trade data to a PDF format. This feature enables me to create a portable and shareable document containing my trade details, facilitating easy record-keeping and analysis outside of the platform. |
+
 
 ## **Models**
 
