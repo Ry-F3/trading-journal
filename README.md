@@ -163,6 +163,23 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 
 ## **Wireframes**
 
+![sign-in](/readme/wireframes/wireframe-sign-in.png)
+
+<br>
+
+![sign-home](/readme/wireframes/wireframe-home.png)
+
+<br>
+
+![sign-trades](/readme/wireframes/wireframe-trades.png)
+
+<br>
+
+![sign-contact](/readme/wireframes/wireframe-contact.png)
+
+<br>
+
+![sign-blog](/readme/wireframes/wireframe-blog.png)
 
 ## **Layout**
 
