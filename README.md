@@ -16,13 +16,17 @@
 
 ## **Models**
 
-### **${PnL}** - Trading Journal
+### Trade database model
 
-| Symbol | Date       | Status | Long/Short | Position | Margin | Leverage | Open Price | Closing Price | Return PnL |
-|--------|------------|--------|---------------|----------|--------|----------|------------|---------------|------------|
-| AAPL   | 2023-01-01 | Open   | Long          | Buy      | 1000   | 2x       | $150       | $160          | $100       |
-| GOOGL  | 2023-01-02 | Closed | Short         | Sell     | 2000   | 1.5x     | $200       | $180          | -$300      |
-| MSFT   | 2023-01-03 | Open   | Long          | Buy      | 1500   | 2.5x     | $120       | $130          | $75        |
+| Symbol | Date       | Status | L/S  | Risk | Margin | Leverage | Open Price | Closed Price | Return PnL |
+|--------|------------|--------|------|------|--------|----------|------------|--------------|------------|
+| AAPL   | 2023-01-01 | Open   | Long | 2%  | 1000   | 2x       | $150       | $160         | $100       |
+| GOOGL  | 2023-01-02 | Closed | Short| 4% | 2000   | 1.5x     | $200       | $180         | -$300      |
+| MSFT   | 2023-01-03 | Open   | Long | 2.5%  | 1500   | 2.5x     | $120       | $130         | $75        |
+
+<br>
+
+![Trade database model](/readme/images/trade-database-model.png)
 
 
 
