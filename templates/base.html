@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html class="h-100">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -61,7 +61,7 @@
                         <ul class="navbar-nav">
                             {% if user.is_authenticated %}
                             <li class="nav-item active">
-                                <a class="nav-link" href="{% url 'trade_list' %}">Home</a>
+                                <a class="nav-link active" href="{% url 'trade_list' %}">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">About</a>
@@ -86,7 +86,9 @@
                         </ul>
                     </div>
                     <div>
-                        <spanc><p class="text-muted text-center">| Join the Tribe</p></span>
+                        <spanc>
+                            <!-- <p class="text-muted text-center">| Join the Tribe</p> -->
+                            </span>
                     </div>
                 </div>
             </div>
@@ -121,7 +123,10 @@
                                     <div>
                                         <a href="">Account</a>
                                         <a href="">Help</a>
-                                        <a href="{% url 'account_logout' %}"">Logout</a>
+                                        <a href="{% url 'account_logout' %}" id="signOutLink">Logout</a>
+                                    </div>
+                                    <div class="mt-2">
+
                                     </div>
                                     {% endif %}
                                 </div>
@@ -132,66 +137,68 @@
                     </div>
 
                     <div class="col-md-9 mt-2 p-3">
-                        <div>
-                            <div class="row">
-                                <!-- Page Heading -->
-                                <div class="d-sm-flex align-items-center justify-content-between mt-1 mb-3 p-4">
-                                    <h1 class="h4 m-2 --gray-dark text-muted">Dashboard</h1>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+                        <div class="row">
+                            <!-- Page Heading -->
+                            <div class="d-sm-flex align-items-center justify-content-between mt-1 mb-3 p-4">
+                                <h1 class="h4 m-2 --gray-dark text-muted">Dashboard</h1>
+                                <a href="{% url 'generate_report' %}?format=pdf" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                        class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Box 1 -->
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <div id="boxOne" class="card border-left-success shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            {% block portfolio_balance_content %}
+                                            <!-- Content for the second card goes here -->
+                                            {% endblock portfolio_balance_content %}
+                                            <div class="col-auto">
+                                                <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <!-- Portfolio Balance -->
-                                <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-success shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                {% block portfolio_balance_content %}
-                                                <!-- Content for the second card goes here -->
-                                                {% endblock portfolio_balance_content %}
-                                                <div class="col-auto">
-                                                    <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                                </div>
+
+                            <!-- box 2 -->
+                            <div class="col-xl-4 col-md-6 mb-4" id="boxTwo">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            {% block pnl_content %}
+                                            <!-- Content for the second card goes here -->
+                                            {% endblock pnl_content %}
+
+                                            <div class="col-auto">
+                                                <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- PnL -->
-                                <div class="col-xl-4 col-md-6 mb-4">
-                                    <div class="card border-left-info shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                {% block pnl_content %}
-                                                <!-- Content for the second card goes here -->
-                                                {% endblock pnl_content %}
-                                                <div class="col-auto">
-                                                    <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Box Three -->
+                            <div class="col-xl-4 col-md-6 mb-4 h-50">
+                                <div id="boxThree" class="card border-left-warning shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
 
-                                <!-- Filter Card -->
-                                <div class="col-xl-4 col-md-6 mb-4 h-50">
-                                    <div class="card border-left-warning shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
+                                            <div class="mt-2">
+                                                <div class="card">
+                                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                        data-toggle="collapse" data-target="#sidebarCollapse">
+                                                        <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                                        <span class="toggle-icon">&#x25BC;</span>
+                                                    </div>
+                                                    <div class="card-body custom-left-column collapse show h-50"
+                                                        id="sidebarCollapse">
+                                                        <div class="sidebar">
+                                                            {% block content %}
+                                                            {% endblock content %}
 
-                                                <div class="mt-2">
-                                                    <div class="card">
-                                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                                            data-toggle="collapse" data-target="#sidebarCollapse">
-                                                            <h6 class="m-0 font-weight-bold text-primary"></h6>
-                                                            <span class="toggle-icon">&#x25BC;</span>
-                                                        </div>
-                                                        <div class="card-body custom-left-column collapse show h-50"
-                                                            id="sidebarCollapse">
-                                                            <div class="sidebar">
-
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -200,25 +207,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <!-- Trade Table-->
-                                <div class="col-xl-12 col-lg-7">
-                                    <div class="card shadow mb-3">
-                                        <!-- Card Header - Dropdown -->
+                        </div>
+                        <div class="row">
+                            <!-- Rectangle Box-->
+                            <div class="col-xl-12 col-lg-7">
+                                <div id="rectangleOne" class="card shadow mb-3">
+                                    <!-- Card Header - Dropdown -->
 
-                                        <!-- Card Body -->
-                                        <div class="card-body">
-                                            {% block content %}
-                                            <!-- Content appears here -->
-                                            {% endblock content %}
-                                        </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <a class="nav-link" href="{% url 'trade_list' %}"><i
+                                                class="fas fa-redo"></i></a>
+                                        {% block trade_content %}
+                                        <!-- Content appears here -->
+                                        {% endblock trade_content %}
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
+
                     </div>
+
                     <!--  Column right -->
                     <div class="col-md-1 mt-2 p-3">
                         <div class="card">
@@ -237,11 +246,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
         <!-- End of Main Content -->
 
         <!-- Footer -->
@@ -252,26 +256,13 @@
                 </div>
             </div>
         </footer>
-        <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
 
     <!-- Bootstrap core JavaScript-->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Toggle sidebar visibility on smaller screens
-        $('.sidebar-toggler').click(function () {
-            $('.sidebar').toggle();
-        });
-    </script>
-
 </body>
 
 </html>

@@ -4,21 +4,44 @@ from .forms import TradeForm
 from django.views import View
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
+from django.contrib.auth.views import LogoutView
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from reportlab.lib.pagesizes import letter
+from datetime import date 
+from reportlab.pdfgen import canvas
+from io import StringIO,  BytesIO
+import csv
 
+@login_required
+def get_trade_list(user, request):
+    trades = Trade.objects.filter(user=user).order_by('row_number')
+    paginator = Paginator(trades, 4)
+    page = 1  # Default to the first page if not specified
+    try:
+        page = int(request.GET.get('page', 1))
+        trades = paginator.page(page)
+    except (PageNotAnInteger, EmptyPage):
+        trades = paginator.page(1)  # Display the first page if page is out of range
+    return trades, paginator.num_pages, page
 
 
 class HomeView(View):
-    template_name = 'base.html'
+    template_name = 'trade_list.html'
 
     def get(self, request):
         if request.user.is_authenticated:
-            # If the user is already authenticated, redirect to the home page
-            return render(request, self.template_name)
+            trades, last_page, current_page = get_trade_list(request.user, request)
+            form = TradeForm()
+            context = {'trades': trades, 'form': form, 'last_page': last_page, 'current_page': current_page}
+            return render(request, self.template_name, context)
         else:
-            # If the user is not authenticated, redirect to the login page
             return redirect('account/login')
+
+    def post(self, request):
+        # Handle POST request if needed
+        return HttpResponse("POST request")
+
 
 
 @login_required
@@ -150,3 +173,67 @@ def get_trade_details(request, row_number, trade_id):
     except Trade.DoesNotExist as e:
         print(f"Error: {e}")
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
+ 
+@login_required   
+def generate_pdf_report(user, trades):
+    # Create a PDF with trade data
+    pdf_buffer = BytesIO()
+    p = canvas.Canvas(pdf_buffer, pagesize=letter)
+    
+    # Title and date
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(50, 770, f'Trade Report ')  # Adjusted x-coordinate
+    p.setFont("Helvetica", 10)
+    today = date.today().strftime("%Y-%m-%d")
+    p.drawString(50, 750, f"Date: {today}")  # Adjusted x-coordinate
+    # User information (adjusted x and y coordinates)
+    p.setFont("Helvetica", 10)
+    p.drawString(50, 730, f"Username: {user.username}")
+
+    # Content
+    p.setFont("Helvetica", 7)
+    y_position = 720
+    for trade in trades:
+        y_position -= 15
+        x_position = 50  # Adjusted x-coordinate
+        trade_info = f"ID: {trade.id}, Symbol: {trade.symbol}, Date: {trade.date}, Status: {trade.status}, " \
+                     f"Long/Short: {trade.long_short}, Margin: {trade.margin}, " \
+                     f"Leverage: {trade.leverage}, Open Price: {trade.open_price}, " \
+                     f"Current Price: {trade.current_price}, Return PNL: {trade.return_pnl}"
+        p.drawString(x_position, y_position, trade_info)
+
+    p.showPage()
+    p.save()
+
+    pdf_buffer.seek(0)
+    pdf_data = pdf_buffer.getvalue()
+    pdf_buffer.close()
+
+    return pdf_data
+
+@login_required
+def generate_report(request): # Can be used for other file types if needed in the future e.g csv
+    if request.user.is_authenticated:
+        user = request.user
+        trades = Trade.objects.filter(user=user).order_by('row_number')
+
+        # Choose either CSV or PDF
+        report_format = request.GET.get('format', 'csv')
+
+        if report_format == 'csv':
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="trade_report.csv"'
+            csv_data = generate_csv_report(trades)
+            response.write(csv_data)
+            return response
+        elif report_format == 'pdf':
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="trade_report.pdf"'
+            pdf_data = generate_pdf_report(user, trades)
+            response.write(pdf_data)
+            return response
+        else:
+            # Handle unsupported format
+            return HttpResponse("Unsupported format")
+    else:
+        return redirect('account/login')
