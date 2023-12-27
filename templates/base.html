@@ -134,15 +134,75 @@
 
                             </div>
                         </div>
-                    </div>
+                        <div class="mt-3">
+                            <div class="card">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                    data-toggle="collapse" data-target="#sidebarCollapse">
+                                    <h6 class="m-0 font-weight-bold text-primary">Filter</h6>
 
-                    <div class="col-md-9 mt-2 p-3">
+                                    <span class="toggle-icon">&#x25BC;</span>
+                                </div>
+                                <div class="card-body custom-left-column collapse show h-50"
+                                    id="sidebarCollapse">
+                                    <div class="sidebar">
+                                        <form>
+                                            <label>
+                                                <input type="checkbox" name="symbol" value="open">
+                                                <i class="fas fa-check"></i> Open
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="symbol" value="closed">
+                                                <i class="fas fa-times"></i> Closed
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="symbol" value="profit">
+                                                <i class="fas fa-chart-line"></i> Profit
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="symbol" value="loss">
+                                                <i class="fas fa-chart-line"></i> Loss
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="time" value="day">
+                                                <i class="fas fa-sun"></i> Day
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="time" value="week">
+                                                <i class="fas fa-calendar-week"></i> Week
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="time" value="month">
+                                                <i class="fas fa-calendar"></i> Month
+                                            </label>
+
+                                            <label>
+                                                <input type="checkbox" name="time" value="year">
+                                                <i class="fas fa-calendar-alt"></i> Year
+                                            </label>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-md-10 mt-2 p-3">
 
                         <div class="row">
                             <!-- Page Heading -->
-                            <div class="d-sm-flex align-items-center justify-content-between mt-1 mb-3 p-4">
+                            <div class="d-sm-flex align-items-center justify-content-between mb-3 p-3">
                                 <h1 class="h4 m-2 --gray-dark text-muted">Dashboard</h1>
-                                <a href="{% url 'generate_report' %}?format=pdf" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                <a href="{% url 'generate_report' %}?format=pdf"
+                                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                         class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                             </div>
                         </div>
@@ -186,23 +246,7 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
 
-                                            <div class="mt-2">
-                                                <div class="card">
-                                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                                        data-toggle="collapse" data-target="#sidebarCollapse">
-                                                        <h6 class="m-0 font-weight-bold text-primary"></h6>
-                                                        <span class="toggle-icon">&#x25BC;</span>
-                                                    </div>
-                                                    <div class="card-body custom-left-column collapse show h-50"
-                                                        id="sidebarCollapse">
-                                                        <div class="sidebar">
-                                                            {% block content %}
-                                                            {% endblock content %}
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +273,7 @@
                     </div>
 
                     <!--  Column right -->
-                    <div class="col-md-1 mt-2 p-3">
+                    <!-- <div class="col-md-1 mt-2 p-3">
                         <div class="card">
                             <div class="card">
                                 <div
@@ -242,7 +286,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
