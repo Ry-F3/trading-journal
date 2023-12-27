@@ -2,7 +2,24 @@
 {% load i18n %}
 {% load static %}
 {% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
+{% block portfolio_balance_content %}
+<div class="ms-auto">
+    <div class="card-body">
+        <h5 class="card-title">Portfolio Balance</h5>
+        <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
+    </div>
+</div>
+{% endblock portfolio_balance_content %}
+{% block pnl_content %}
+<div class="ms-auto">
+    <div class="card-body">
+        <h5 class="card-title">PnL</h5>
+        <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
+    </div>
+</div>
+{% endblock pnl_content %}
 {% block content %}
+
 <style>
     .pencil_color {
         color: #6c757d;
@@ -47,143 +64,136 @@
     }
 </style>
 
-<div class="container p-2 m-3 mt-2 mb-2">
-    <div class="d-flex">
-        <div class="card ms-auto">
-            <div class="card-body">
-                <h5 class="card-title">Balance</h5>
-                <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
-            </div>
-        </div>
+<div class="p-3 m-2 scrollbar-container card-body">
+    <div class="table-responsive">
+        <table id="tContainer" class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>L / S</th>
+                    <th>Risk</th>
+                    <th>Margin</th>
+                    <th>Leverage</th>
+                    <th>Open</th>
+                    <th>Closed</th>
+                    <th>PnL</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {%for trade in trades%}
+                <tr id="tradeRow{{ trade.row_number }}" data-trade-id="{{ trade.id }}">
+                    <td>{{ trade.symbol }}</td>
+                    <td>{{ trade.date }}</td>
+                    <td>{{ trade.status }}</td>
+                    <td>{{ trade.long_short }}</td>
+                    <td>{{ trade.position }}%</td>
+                    <td>${{ trade.margin }}</td>
+                    <td>{{ trade.leverage }}x</td>
+                    <td>${{ trade.open_price }}</td>
+                    <td>${{ trade.current_price }}</td>
+                    <td class="return-pnl-display">
+                        ${{ trade.return_pnl }}
+                    </td>
+                    <td>
+                        <!-- Edit Trade button -->
+                        <button class="btn btn-sm square-btn bg-black edit-trade-button"
+                            data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i id="pencil"
+                                class="fas fa-pencil-alt pencil_color"></i></button>
+                    </td>
+                    <td>
+                        <!-- Delete button -->
+                        <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
+                            data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <div class="d-flex align-items-center">
+                    <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
+
+                    <!-- Pagination Links -->
+                    <div class="pagination">
+                        <span class="step-links p-3 pb-4 m-2">
+                            {% if trades.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ trades.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current small text-muted">
+                                Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
+                            </span>
+
+                            {% if trades.has_next %}
+                            <a href="?page={{ trades.next_page_number }}">next</a>
+                            <a href="?page={{ trades.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div id="createTradeForm" class="hidden-form">
+                    <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
+                        {% csrf_token %}
+                        <tr>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.symbol }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.date }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.status }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.long_short }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.position }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.margin }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.leverage }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.open_price }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.current_price }}</div>
+                            </td>
+                            <td id="class-cells" class="hide-cell">
+                                <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
+                            </td>
+
+                            <!-- Hidden field for save type -->
+                            <input type="hidden" name="save_type" id="saveType" value="">
+
+                            <!-- Save button -->
+                            <td class="hide-cell" colspan="2">
+                                <button id="save" type="submit" class="btn btn-success save-button">Save</button>
+                            </td>
+                        </tr>
+                    </form>
+                </div>
+            </tbody>
+        </table>
     </div>
 </div>
-<div class="p-5 pt-0 m-3 mb-5 scrollbar-container">
-    <table id="tContainer" class="table">
-        <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>L / S</th>
-                <th>Risk</th>
-                <th>Margin</th>
-                <th>Leverage</th>
-                <th>Open</th>
-                <th>Closed</th>
-                <th>Return PnL</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {%for trade in trades%}
-            <tr id="tradeRow{{ trade.row_number }}" data-trade-id="{{ trade.id }}">
-                <td>{{ trade.symbol }}</td>
-                <td>{{ trade.date }}</td>
-                <td>{{ trade.status }}</td>
-                <td>{{ trade.long_short }}</td>
-                <td>{{ trade.position }}%</td>
-                <td>${{ trade.margin }}</td>
-                <td>{{ trade.leverage }}x</td>
-                <td>${{ trade.open_price }}</td>
-                <td>${{ trade.current_price }}</td>
-                <td class="return-pnl-display">
-                    ${{ trade.return_pnl }}
-                </td>
-                <td>
-                    <!-- Edit Trade button -->
-                    <button class="btn btn-sm square-btn bg-black edit-trade-button"
-                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i id="pencil"
-                            class="fas fa-pencil-alt pencil_color"></i></button>
-                </td>
-                <td>
-                    <!-- Delete button -->
-                    <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
-                        data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
-                </td>
-            </tr>
-            {% endfor %}
-            <div class="d-flex align-items-center">
-                <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
-
-                <!-- Pagination Links -->
-                <div class="pagination">
-                    <span class="step-links p-3 pb-4 m-2">
-                        {% if trades.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ trades.previous_page_number }}">previous</a>
-                        {% endif %}
-
-                        <span class="current small text-muted">
-                            Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
-                        </span>
-
-                        {% if trades.has_next %}
-                        <a href="?page={{ trades.next_page_number }}">next</a>
-                        <a href="?page={{ trades.paginator.num_pages }}">last &raquo;</a>
-                        {% endif %}
-                    </span>
-                </div>
-            </div>
-
-
-            <div id="createTradeForm" class="hidden-form">
-                <form method="post" action="{% url 'trade_list_post' %}" id="createTradeForm">
-                    {% csrf_token %}
-                    <tr>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.symbol }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.date }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.status }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.long_short }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.position }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.margin }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.leverage }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.open_price }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.current_price }}</div>
-                        </td>
-                        <td id="class-cells" class="hide-cell">
-                            <div class="mb-2 mt-1">{{ form.return_pnl }}</div>
-                        </td>
-
-                        <!-- Hidden field for save type -->
-                        <input type="hidden" name="save_type" id="saveType" value="">
-
-                        <!-- Save button -->
-                        <td class="hide-cell" colspan="2">
-                            <button id="save" type="submit" class="btn btn-success save-button">Save</button>
-                        </td>
-                    </tr>
-                </form>
-            </div>
-        </tbody>
-    </table>
-</div>
 
 
 
 
-<div class="p-5 m-3">
+
+<!-- <div class="p-5 m-3">
     <h1>Trades</h1>
     {% for trade in trades %}
     <p>Trade ID: {{ trade.id }} Row Number: {{ trade.row_number }}</p>
     {% endfor %}
-</div>
+</div> -->
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

@@ -43,7 +43,6 @@ def delete_trade(request, trade_id):
 @login_required
 def trade_list(request):
    
-    
     if request.method == 'POST':
         form = TradeForm(request.POST)
         if form.is_valid():
@@ -101,7 +100,7 @@ def trade_list(request):
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
     
       # Pagination
-    paginator = Paginator(trades, 5)  # Show 5 trades per page
+    paginator = Paginator(trades, 4)  # Show 5 trades per page
     page = request.GET.get('page')
 
     # Determine the last page dynamically
