@@ -1,9 +1,8 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html>
 
 <head>
+    <title>TraderTribe</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="" id="csrf-token">
@@ -13,300 +12,367 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <title>TraderTribe</title>
-
-    <style>
-        /* Custom styles for the left column */
-        .custom-left-column {
-            height: 50px;
-            /* Set the height to 80% of the viewport height */
-            overflow-y: auto;
-            /* Add vertical scroll if content exceeds the height */
-            max-width: 125px;
-        }
-
-        .toggle-icon {
-            font-size: 1.5rem;
-            /* Adjust the font size as needed */
-            cursor: pointer;
-        }
-
-        .collapsed .custom-left-column {
-            display: none;
-            /* Hide the left column when collapsed */
-        }
-
-        .collapsed .toggle-icon {
-            transform: rotate(-180deg);
-        }
-    </style>
-
 </head>
+<style>
+    /* Custom styles for the left column */
+    .custom-left-column {
+        height: 50px;
+        /* Set the height to 80% of the viewport height */
+        overflow-y: auto;
+        /* Add vertical scroll if content exceeds the height */
+        max-width: 125px;
+    }
+
+    .toggle-icon {
+        font-size: 1.5rem;
+        /* Adjust the font size as needed */
+        cursor: pointer;
+    }
+
+    .collapsed .custom-left-column {
+        display: none;
+        /* Hide the left column when collapsed */
+    }
+
+    .collapsed .toggle-icon {
+        transform: rotate(-180deg);
+    }
+
+    .divider {
+        border: none;
+        height: 2px;
+        background-color: #333;
+        /* Darker color for the divider line */
+    }
+
+    .nav-item.active a {
+        border-bottom: 3px solid #333;
+        /* Thicker line at the bottom when active */
+        text-decoration: underline;
+        /* Underline when active */
+    }
+
+    .nav-item a:hover {
+        text-decoration: underline;
+        /* Underline on hover */
+    }
+
+    .padding-right {
+        padding-right: 4rem !important;
+        padding-left: 1rem !important;
+    }
+
+    .padding-left {
+        padding-left: 1rem !important; 
+    }
+</style>
+
+
 
 <body id="page-top">
-
-
-    <!-- Page Wrapper -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
-            <div class="row w-100">
-                <div class="col-md-6 mt-1 mx-3">
-                    <a class="navbar-brand" href="#">Trader Tribe</a>
-                </div>
-                <div class="col-md-5 d-flex justify-content-end">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            {% if user.is_authenticated %}
-                            <li class="nav-item active">
-                                <a class="nav-link active" href="{% url 'trade_list' %}">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Services</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Contact</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                            </li>
-                            {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                            </li>
-                            {% endif %}
-                        </ul>
+            <a class="navbar-brand padding-left" href="{% url 'trade_list' %}"><img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703778758/logo-text_ps1lmf.png" style="width: 80px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item padding-left">
+                        <a class="nav-link {% if request.path == '/trade_list/' %}active{% endif %}"
+                            href="{% url 'trade_list' %}">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-home fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">Home</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item padding-left">
+                        <a class="nav-link" href="#">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-info-circle fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">About</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item padding-left">
+                        <a class="nav-link" href="#">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-blog fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">Blog</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="padding-right padding-left nav-link" href="#">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-envelope fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">Contact</span>
+                            </div>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-user-plus fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">Register</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-sign-in-alt fa-lg"></i>
+                                <span class="d-block text-muted small" style="line-height: 1.2">Login</span>
+                            </div>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if user.is_authenticated %}
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#signOutModal">
+                    <div class="d-flex flex-column align-items-center">
+                        <i class="fas text-primary fa-sign-out-alt fa-lg"></i>
+                        <span class="d-block text-muted small" style="line-height: 1.2">Sign Out</span>
                     </div>
-                    <div>
-                        <spanc>
-                            <!-- <p class="text-muted text-center">| Join the Tribe</p> -->
-                            </span>
-                    </div>
-                </div>
+                </button>
+                {% endif %}
             </div>
         </div>
     </nav>
+
+    <div class="row mt-2">
+        {% block content %}
+        {% endblock content %}
+    </div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Begin Page Content -->
-        <div>
-
-            <div class="container-fluid">
-                <div class="row">
-                    <!--  Account Info -->
-                    <div class="col-md-2 mt-2 p-3">
+        {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <!--  Account Info Side Bar -->
+                <div class="col-md-2 mt-2 p-3">
+                    <div class="card">
                         <div class="card">
-                            <div class="card">
-                                <div
-                                    class="card-header py-3 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center"
-                                        style="height: 5vw; width: 5vw;">
-                                        <!-- This div will be a circular element with an adaptive size -->
-                                        <!-- <p class="text-white">Circle</p> -->
-                                    </div>
-                                    <div class="mt-3">
-                                        <h6 class="font-weight-bold text-primary">John Doe</h6>
-                                    </div>
+                            <div style="background-color: #6c757d;"  class="card-header py-3 d-flex flex-column align-items-center justify-content-center">
+                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="height: 5vw; width: 5vw; overflow: hidden;">
+                                    <!-- This div will be a circular element with an adaptive size -->
+                                    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703277463/icon_vkauvf.png"
+                                        style="width: 100%; height: 100%; object-fit: cover;" alt="">
                                 </div>
-                                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                    {% if user.is_authenticated %}
-                                    <div>
-                                        <a href="">Account</a>
-                                        <a href="">Help</a>
-                                        <a href="{% url 'account_logout' %}" id="signOutLink">Logout</a>
-                                    </div>
-                                    <div class="mt-2">
-
-                                    </div>
-                                    {% endif %}
+                                <div class="mt-3">
+                                    <h6 class="font-weight-bold text-white">{{ user_name }}</h6>
                                 </div>
-
-
+                            </div>
+                            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                                <a href="">Account</a>
+                                <a href="">Help</a>
+                                <button type="button" class="outline-0 border-0 mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#signOutModal">
+                                    Sign Out
+                                </button>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <div class="card">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                    data-toggle="collapse" data-target="#sidebarCollapse">
-                                    <h6 class="m-0 font-weight-bold text-primary">Filter</h6>
-
-                                    <span class="toggle-icon">&#x25BC;</span>
-                                </div>
-                                <div class="card-body custom-left-column collapse show h-50"
-                                    id="sidebarCollapse">
-                                    <div class="sidebar">
-                                        <form>
-                                            <label>
-                                                <input type="checkbox" name="symbol" value="open">
-                                                <i class="fas fa-check"></i> Open
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="symbol" value="closed">
-                                                <i class="fas fa-times"></i> Closed
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="symbol" value="profit">
-                                                <i class="fas fa-chart-line"></i> Profit
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="symbol" value="loss">
-                                                <i class="fas fa-chart-line"></i> Loss
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="time" value="day">
-                                                <i class="fas fa-sun"></i> Day
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="time" value="week">
-                                                <i class="fas fa-calendar-week"></i> Week
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="time" value="month">
-                                                <i class="fas fa-calendar"></i> Month
-                                            </label>
-
-                                            <label>
-                                                <input type="checkbox" name="time" value="year">
-                                                <i class="fas fa-calendar-alt"></i> Year
-                                            </label>
-                                        </form>
+                    </div>
 
 
-                                    </div>
+                    <div class="mt-3">
+                        <div class="card">
+                            <div style="background-color: #6c757d;" class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
+                                <h6 class="m-0 font-weight-bold text-white">Filter</h6>
+                                <span class="toggle-icon">&#x25BC;</span>
+                            </div>
+                            <div class="card-body custom-left-column collapse show h-50" id="sidebarCollapse">
+                                <div class="sidebar">
+                                    <form>
+                                        <label>
+                                            <input type="checkbox" name="symbol" value="open">
+                                            <i class="fas fa-check"></i> Open
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="symbol" value="closed">
+                                            <i class="fas fa-times"></i> Closed
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="symbol" value="profit">
+                                            <i class="fas fa-chart-line"></i> Profit
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="symbol" value="loss">
+                                            <i class="fas fa-chart-line"></i> Loss
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="time" value="day">
+                                            <i class="fas fa-sun"></i> Day
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="time" value="week">
+                                            <i class="fas fa-calendar-week"></i> Week
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="time" value="month">
+                                            <i class="fas fa-calendar"></i> Month
+                                        </label>
+
+                                        <label>
+                                            <input type="checkbox" name="time" value="year">
+                                            <i class="fas fa-calendar-alt"></i> Year
+                                        </label>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+                </div>
+                {% endif %}
 
-                    <div class="col-md-10 mt-2 p-3">
+                <!-- End Side Bar -->
 
-                        <div class="row">
-                            <!-- Page Heading -->
-                            <div class="d-sm-flex align-items-center justify-content-between mb-3 p-3">
-                                <h1 class="h4 m-2 --gray-dark text-muted">Dashboard</h1>
-                                <a href="{% url 'generate_report' %}?format=pdf"
-                                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                        class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                            </div>
+                {% if user.is_authenticated %}
+                <div class="col-md-10 mt-2 p-3">
+
+                    <div class="row">
+                        <!-- Page Heading -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-3 p-3">
+                            <h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
+                            <a href="{% url 'generate_report' %}?format=pdf"
+                                class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                         </div>
-                        <div class="row">
-                            <!-- Box 1 -->
-                            <div class="col-xl-4 col-md-6 mb-4">
-                                <div id="boxOne" class="card border-left-success shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            {% block portfolio_balance_content %}
-                                            <!-- Content for the second card goes here -->
-                                            {% endblock portfolio_balance_content %}
-                                            <div class="col-auto">
-                                                <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- box 2 -->
-                            <div class="col-xl-4 col-md-6 mb-4" id="boxTwo">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            {% block pnl_content %}
-                                            <!-- Content for the second card goes here -->
-                                            {% endblock pnl_content %}
-
-                                            <div class="col-auto">
-                                                <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Box Three -->
-                            <div class="col-xl-4 col-md-6 mb-4 h-50">
-                                <div id="boxThree" class="card border-left-warning shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-
-                                
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <!-- Rectangle Box-->
-                            <div class="col-xl-12 col-lg-7">
-                                <div id="rectangleOne" class="card shadow mb-3">
-                                    <!-- Card Header - Dropdown -->
-
-                                    <!-- Card Body -->
-                                    <div class="card-body">
-                                        <a class="nav-link" href="{% url 'trade_list' %}"><i
-                                                class="fas fa-redo"></i></a>
-                                        {% block trade_content %}
-                                        <!-- Content appears here -->
-                                        {% endblock trade_content %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-
-                    <!--  Column right -->
-                    <!-- <div class="col-md-1 mt-2 p-3">
-                        <div class="card">
-                            <div class="card">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-
-
-                                </div>
+                    <div class="row">
+                        <!-- Box 1 -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div id="boxOne" class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
-                                    <h6 class="mt-3 font-weight-bold text-primary">Advert</h6>
+                                    <div class="row no-gutters align-items-center">
+                                        {% block portfolio_balance_content %}
+                                        <!-- Content for the first card goes here -->
+                                        {% endblock portfolio_balance_content %}
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+
+                        <!-- box 2 -->
+                        <div class="col-xl-4 col-md-6 mb-4" id="boxTwo">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        {% block pnl_content %}
+                                        <!-- Content for the second card goes here -->
+                                        {% endblock pnl_content %}
+
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Box Three -->
+                        <div class="col-xl-4 col-md-6 mb-4 h-50">
+                            <div id="boxThree" class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Rectangle Box-->
+                        <div class="col-xl-12 col-lg-7">
+                            <div id="rectangleOne" class="card shadow mb-3">
+                                <!-- Card Header - Dropdown -->
+
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo"></i></a>
+                                    {% block trade_content %}
+                                    <!-- Content appears here -->
+                                    {% endblock trade_content %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- End of Main Content -->
+    </div>
+    {% endif %}
+    <!-- End of Main Content -->
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>@ Rhys Few</span>
+
+    <!-- Footer -->
+    <footer class="footer py-3 bg--grey mt-auto">
+        <div class="container">
+            <span class="text-muted text-center">footer content</span>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="signOutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signOutModalLabel">Sign Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to sign out?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="signOutForm" method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="confirmSignOutBtn">Sign Out</button>
+                    </form>
                 </div>
             </div>
-        </footer>
-
+        </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById('confirmSignOutBtn').addEventListener('click', function () {
+                // Submit the form when the "Sign Out" button is clicked
+                document.getElementById('signOutForm').submit();
+            });
+        });
+
+    </script>
+
+
 </body>
 
 </html>

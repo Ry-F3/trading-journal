@@ -1,12 +1,23 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% load i18n %}
 
 {% block head_title %}{% trans "Signup" %}{% endblock head_title %}
 
 {% block content %}
+<style>
+    #passwordHelp {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    }
+
+    #passwordHelp.show {
+        max-height: 200px;  /* Adjust the maximum height as needed */
+    }
+</style>
 <div class="container d-flex align-items-center justify-content-center">
-    <div class="card" style="max-width: 400px;">
+    <div class="card mb-5" style="max-width: 400px;">
         <div class="card-body p-4">
             <h3 class="card-title text-center mb-3">{% trans "Sign Up" %}</h3>
 
@@ -41,10 +52,11 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <!-- Toggle Button to Show/Hide Password Help -->
-                    <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#passwordHelp" aria-expanded="false" aria-controls="passwordHelp">
+                    
+                    <button class="btn btn-link btn-sm" id="togglePasswordHelpBtn" type="button">
                         Toggle Password Help
                     </button>
+
                 </div>
 
                 <!-- Sign Up Button -->
@@ -54,8 +66,8 @@
             <br>
 
             <!-- Collapsible Password Help Section -->
-            <div class="collapse" id="passwordHelp">
-                <div class="card card-body">
+            <div class="mb-5" id="passwordHelp">
+                <div class="card-body mb-3 small">
                     <p>Your password can’t be too similar to your other personal information.</p>
                     <p>Your password must contain at least 8 characters.</p>
                     <p>Your password can’t be a commonly used password.</p>
@@ -65,4 +77,16 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    // Add event listener to the toggle button using jQuery
+    $(document).ready(function () {
+        $('#togglePasswordHelpBtn').click(function () {
+            // Toggle the 'show' class on the password help section
+            $('#passwordHelp').toggleClass('show');
+        });
+    });
+</script>
+
+
 {% endblock content %}

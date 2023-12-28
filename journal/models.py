@@ -73,7 +73,11 @@ class Trade(models.Model):
 
 
 
-    def delete(self, *args, **kwargs):
+    def delete(self, user, *args, **kwargs):
+        # Ensure that the user deleting the trade is the owner of the trade
+        if self.user != user:
+            raise PermissionDenied("You do not have permission to delete this trade.")
+
         # Get the row_number of the trade being deleted
         deleted_row_number = self.row_number
 
@@ -81,7 +85,7 @@ class Trade(models.Model):
         print(f"Deleted Trade with row_number: {deleted_row_number}")
 
         # After deletion, re-order the remaining rows
-        remaining_trades = Trade.objects.all().order_by('row_number')
+        remaining_trades = Trade.objects.filter(user=self.user).order_by('row_number')
 
         for index, trade in enumerate(remaining_trades, start=1):
             trade.row_number = index
@@ -90,3 +94,8 @@ class Trade(models.Model):
             
     def __str__(self):
         return f"{self.symbol} - {self.row_number}"
+    
+class Meta:
+    permissions = [
+        ("delete_trade", "Can delete trades"),
+    ]
