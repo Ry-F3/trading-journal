@@ -46,4 +46,20 @@ class TradeForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Add additional cleaning logic if needed
         return cleaned_data
-
+    
+class PortfolioBalanceForm(forms.Form):
+    portfolio_balance = forms.DecimalField(
+        label='Update Balance:',
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control form-control-sm',
+                'placeholder': 'Update Balance',
+                'step': 'any',  # Allow any step value
+                'min': 0,       # Set the minimum allowed value
+                'max': 1000000000000,  # Set the maximum allowed value if needed
+            }
+        ),
+        min_value=0,  # Set the minimum allowed value
+        max_value=1000000000000,  # Set the maximum allowed value if needed
+        required=True
+    )

@@ -6,7 +6,38 @@
 <div class="ms-auto">
     <div class="card-body">
         <h5 class="card-title">Portfolio Balance</h5>
-        <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
+        <div class="mt-2">
+            <!-- Display the updated portfolio balance -->
+            <span>
+                <p class="card-text col-auto"><i class="fas fa-dollar-sign fa-2x --gray-dark p-1 mb-3 mt-2"></i>{{request.user.userprofile.portfolio_balance }}</p>
+            </span>
+        </div>
+
+        <!-- Button to trigger the form modal -->
+        <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">
+            <i class="fas fa-exchange-alt"></i>  Update Balance
+        </button>
+
+        <!-- Modal for updating portfolio balance -->
+        <div class="modal fade" id="updateBalanceModal" tabindex="-1" aria-labelledby="updateBalanceModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateBalanceModalLabel">Add or Subtract Money</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Portfolio Balance Update Form -->
+                        <form method="post" action="{% url 'trade_list' %}">
+                            {% csrf_token %}
+                            {{ portfolio_balance_form.as_p }}
+                            <button type="submit" name="action" value="add" class="btn btn-primary">Add Money</button>
+                            <button type="submit" name="action" value="subtract" class="btn btn-danger">Subtract Money</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock portfolio_balance_content %}
@@ -14,7 +45,8 @@
 <div class="ms-auto">
     <div class="card-body">
         <h5 class="card-title">PnL</h5>
-        <p class="card-text">This is a simple rectangular box using Bootstrap card.</p>
+        <p class="card-text">Realized PnL: <i class="fas fa-dollar-sign fa-1x --gray-dark p-1 mb-1 mt-4"></i> {{ pnl_data.total_realized_pnl }}</p>
+        <p class="card-text">Unrealized PnL: <i class="fas fa-dollar-sign fa-1x --gray-dark p-1 mb-1 mt-1"></i> {{ pnl_data.total_unrealized_pnl }}</p>
     </div>
 </div>
 {% endblock pnl_content %}

@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    portfolio_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    total_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    total_unrealized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    last_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    
 class Trade(models.Model):
     STATUS_CHOICES = [
         ('open', 'Open'),
@@ -25,6 +33,7 @@ class Trade(models.Model):
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
     row_number = models.IntegerField(editable=False)
 
+
     def save(self, *args, **kwargs):
         if not self.row_number:
             # Calculate row_number based on existing rows for the specific user
@@ -40,6 +49,8 @@ class Trade(models.Model):
 
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}, User ID: {self.user.id}")
+        print(f"Trade Details: Symbol: {self.symbol}, Status: {self.status}, Position: {self.position}, etc.")
+
         
         # Print the user ID and the list of rows for the user
         all_users = User.objects.all()
@@ -70,6 +81,8 @@ class Trade(models.Model):
 
         existing_trade.save()
         print(f"Trade overwritten successfully.")
+        print(f"Trade Details: Symbol: {self.symbol}, Status: {self.status}, Position: {self.position}, etc.")
+
 
 
 

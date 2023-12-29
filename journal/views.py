@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import F
-from .models import Trade
-from .forms import TradeForm
+from .models import Trade, UserProfile
+from .forms import TradeForm, PortfolioBalanceForm
 from django.views import View
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
@@ -12,8 +12,8 @@ from reportlab.lib.pagesizes import letter
 from datetime import date 
 from reportlab.pdfgen import canvas
 from io import StringIO,  BytesIO
+from decimal import Decimal
 import csv
-
 
 def get_trade_list(user, request):
     trades = Trade.objects.filter(user=user).order_by('row_number')
@@ -67,6 +67,38 @@ def delete_trade(request, trade_id):
 @login_required
 def trade_list(request):
     user_name = request.user.username
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    portfolio_balance = user_profile.portfolio_balance  # Initialize with the current portfolio balance
+    
+    # Handle Portfolio Balance Form Submission
+    if request.method == 'POST':
+        portfolio_balance_form = PortfolioBalanceForm(request.POST)
+        if portfolio_balance_form.is_valid():
+            # Process the portfolio balance form data and update the model instance
+            update_amount = portfolio_balance_form.cleaned_data['portfolio_balance']
+            action = request.POST.get('action')
+
+            # Determine whether to add or subtract based on the button clicked
+            if action == 'add':
+                user_profile.portfolio_balance += update_amount
+            elif action == 'subtract':
+                user_profile.portfolio_balance -= update_amount
+
+            # Save the updated portfolio balance
+            user_profile.save()
+
+            # Calculate PnL only if the form is valid
+            pnl_data = calculate_pnl(request.user)
+
+            print('PnL Calculation Result:', pnl_data)  # Add this line for debugging purposes
+            print('Portfolio Balance after PnL Calculation:', user_profile.portfolio_balance)  # Add this line for debugging purposes
+
+            # Redirect to the same page to avoid reposting on refresh
+            return HttpResponseRedirect(request.path)
+    else:
+        portfolio_balance_form = PortfolioBalanceForm()
+        print('Not a POST request. Portfolio Balance Form:', portfolio_balance_form)  # Add this line for debugging purposes
+        
     if request.method == 'POST':
         form = TradeForm(request.POST)
         if form.is_valid():
@@ -77,7 +109,15 @@ def trade_list(request):
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
-                # existing_trade.save()
+                
+                 # Retrieve or create the UserProfile associated with the logged-in user
+                user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+                user_profile.portfolio_balance = portfolio_balance
+                user_profile.save()
+
+                # Calculate PnL only if the form is valid
+                pnl_data = calculate_pnl(request.user)
+                print('pnl:', pnl_data)
                 # Redirect to the same page to avoid reposting on refresh
                 return HttpResponseRedirect(request.path)
                 
@@ -113,17 +153,23 @@ def trade_list(request):
         else:
             
 
-            return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'user_name': user_name})
+            return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
 
     else:
         form = TradeForm()
         
     
-
+    # Calculate PnL
+    pnl_data = calculate_pnl(request.user)
+    print('PnL Calculation Result:', pnl_data)  # Add this line for debugging purposes
+    print('Portfolio Balance after PnL Calculation:', pnl_data.get('portfolio_balance'))  # Add this line for debugging purposes
+    
+    # return HttpResponse("POST request")
+    
     # Filter trades based on the logged-in user
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
     
-      # Pagination
+    # Pagination
     paginator = Paginator(trades, 4)  # Show 5 trades per page
     page = request.GET.get('page')
 
@@ -141,12 +187,76 @@ def trade_list(request):
 
     # If no specific page parameter is provided, redirect to the last page
     if not page:
-        return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'user_name': user_name})
+        return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
    
 
-    return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'user_name': user_name})
+    return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
 
+def calculate_pnl(user):
+    # Fetch closed trades, open trades, and calculate PnL
+    closed_trades = Trade.objects.filter(user=user, status='closed')
+    open_trades = Trade.objects.filter(user=user, status='open')
 
+    # Convert return_pnl values to Decimal
+    closed_returns = [Decimal(trade.return_pnl) for trade in closed_trades]
+    open_returns = [Decimal(trade.return_pnl) for trade in open_trades]
+
+    # Calculate total realized PnL
+    total_realized_pnl = sum(closed_returns)
+
+    # Calculate total unrealized PnL
+    total_unrealized_pnl = calculate_unrealized_pnl(open_returns)
+
+    # Update UserProfile with total_realized_pnl
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
+
+    # Print debugging information
+    print('Before Update - Portfolio Balance:', user_profile.portfolio_balance)
+    print('Before Update - Total Realized PnL:', user_profile.total_realized_pnl)
+    print('Before Update - Last Realized PnL:', user_profile.last_realized_pnl)
+
+    # Calculate the change in realized profit since the last update
+    realized_pnl_change = total_realized_pnl - user_profile.last_realized_pnl
+
+    # Update total_realized_pnl only if there is a positive change
+    if realized_pnl_change > 0:
+        user_profile.total_realized_pnl = total_realized_pnl
+
+    # Update portfolio_balance only if there is a positive change
+    if realized_pnl_change > 0:
+        user_profile.portfolio_balance += realized_pnl_change
+        print('Total Realized PnL Change:', realized_pnl_change)
+        print('After Update - Portfolio Balance:', user_profile.portfolio_balance)
+
+    # Update last_realized_pnl with the current total_realized_pnl
+    user_profile.last_realized_pnl = total_realized_pnl
+    user_profile.save()
+
+    return {
+        'total_realized_pnl': total_realized_pnl,
+        'total_unrealized_pnl': total_unrealized_pnl,
+    }
+
+def calculate_unrealized_pnl(open_returns):
+    # Logic for calculating unrealized PnL from open trades
+    # Separate positive and negative returns
+    positive_returns = [return_pnl for return_pnl in open_returns if return_pnl > 0]
+    negative_returns = [return_pnl for return_pnl in open_returns if return_pnl < 0]
+
+    # Debug prints
+    print("Calculate Unrealized PnL - Debug Prints:")
+    print("Positive Returns:", positive_returns)
+    print("Negative Returns:", negative_returns)
+
+    # Calculate total unrealized PnL
+    total_positive_pnl = sum(positive_returns)
+    total_negative_pnl = sum(negative_returns)
+    total_unrealized_pnl = total_positive_pnl + total_negative_pnl
+
+    # Debug prints
+    print("Total Unrealized PnL:", total_unrealized_pnl)
+
+    return total_unrealized_pnl
 
 
 @login_required

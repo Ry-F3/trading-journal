@@ -65,6 +65,8 @@
     .padding-left {
         padding-left: 1rem !important; 
     }
+
+    
 </style>
 
 
@@ -188,7 +190,7 @@
                         <div class="card">
                             <div style="background-color: #6c757d;" class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                                 data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
-                                <h6 class="m-0 font-weight-bold text-white">Filter</h6>
+                                <h6 class="m-0 font-weight-bold text-white">Filters</h6>
                                 <span class="toggle-icon">&#x25BC;</span>
                             </div>
                             <div class="card-body custom-left-column collapse show h-50" id="sidebarCollapse">
@@ -264,9 +266,6 @@
                                         {% block portfolio_balance_content %}
                                         <!-- Content for the first card goes here -->
                                         {% endblock portfolio_balance_content %}
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -280,10 +279,6 @@
                                         {% block pnl_content %}
                                         <!-- Content for the second card goes here -->
                                         {% endblock pnl_content %}
-
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

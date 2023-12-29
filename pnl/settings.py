@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'  # Use the name of the URL pattern you want to redirect to
+LOGIN_REDIRECT_URL = 'trade_list' # Use the name of the URL pattern you want to redirect to
 LOGOUT_REDIRECT_URL = '/'  # Use the name of the URL pattern you want to redirect to
 
 
