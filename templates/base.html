@@ -75,17 +75,19 @@
                     </li>
                     {% endif %}
                 </ul>
+                {% if user.is_authenticated %}
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
+                {% endif %}
             </div>
         </div>
     </nav>
 
     <div class="row mt-2">
         {% block content %}
-
+        <!-- Login/Register -->
         {% endblock content %}
     </div>
 

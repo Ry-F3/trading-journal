@@ -1,14 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+# User Model
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     portfolio_balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     total_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     total_unrealized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     last_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    
+
+
+# Porfolio Tracker Model    
+class PortfolioHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    total_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.timestamp}"
+
+# Trade Journalling Model    
 class Trade(models.Model):
     STATUS_CHOICES = [
         ('open', 'Open'),

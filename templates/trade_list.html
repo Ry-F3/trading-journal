@@ -122,6 +122,52 @@ data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
 {% block chart_content %}
 <!-- Box 3 -->
 
+<img src="data:image/png;base64,{{ image_base64 }}" alt="Realized Profit Chart">
+
+<!-- Left arrow button -->
+<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent" style="width: 15px; margin: auto auto;">&lt;</button>
+
+<!-- Right arrow button -->
+<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent" style="width: 15px; margin: auto auto;">&gt;</button>
+
+<!-- Interval options -->
+<form method="get" action="" id="timeIntervalForm" style="display: none;">
+    <label for="time_interval"></label>
+    <div class="d-flex align-items-center">
+        <select name="time_interval" id="time_interval" onchange="submitForm()" class="form-control">
+            <option value="hourly" {% if time_interval == 'hourly' %}selected{% endif %}>Hourly</option>
+            <option value="daily" {% if time_interval == 'daily' %}selected{% endif %}>Daily</option>
+            <option value="monthly" {% if time_interval == 'monthly' %}selected{% endif %}>Monthly</option>
+            <option value="yearly" {% if time_interval == 'yearly' %}selected{% endif %}>Yearly</option>
+        </select>
+    </div>
+</form>
+
+<script>
+    // Define chart options
+    const chartOptions = ['hourly', 'daily', 'monthly', 'yearly'];
+
+    // Get chart select element
+    const chartSelect = document.getElementById('time_interval');
+
+    // Function to cycle through charts
+    function cycleChart(direction) {
+        const currentIndex = chartOptions.indexOf(chartSelect.value);
+        let newIndex = (currentIndex + direction + chartOptions.length) % chartOptions.length;
+        chartSelect.value = chartOptions[newIndex];
+        submitForm(); 
+    }
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    function submitForm() {
+        document.getElementById("timeIntervalForm").submit();
+    }
+</script>
 {% endblock chart_content %}
 
 {% block trade_content %}
@@ -143,7 +189,7 @@ data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
 </style>
 
 <div class="p-3 m-2 scrollbar-container card-body">
-    <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted"></i></a>
+    <!-- <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted"></i></a> -->
     <div class="table-responsive">
         <table id="tContainer" class="table table-sm">
             <thead>

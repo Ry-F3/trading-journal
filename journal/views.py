@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import F
-from .models import Trade, UserProfile
+from .models import Trade, UserProfile, PortfolioHistory
 from .forms import TradeForm, PortfolioBalanceForm
 from django.views import View
 from django.contrib.auth.decorators import permission_required
@@ -9,11 +9,15 @@ from django.contrib.auth.views import LogoutView
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from reportlab.lib.pagesizes import letter
-from datetime import date 
+from datetime import date, timedelta 
 from reportlab.pdfgen import canvas
 from io import StringIO,  BytesIO
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter, HourLocator
+import matplotlib.dates as mdates
+import base64
 from decimal import Decimal
-import csv
+
 
 def get_trade_list(user, request):
     trades = Trade.objects.filter(user=user).order_by('row_number')
@@ -32,10 +36,11 @@ class HomeView(View):
 
     def get(self, request):
         if request.user.is_authenticated:
+            time_interval = request.GET.get('time_interval', 'hourly')
             user_name = request.user.username 
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
-            context = {'trades': trades, 'form': form, 'last_page': last_page, 'current_page': current_page, 'user_name': user_name}
+            context = {'trades': trades, 'form': form, 'last_page': last_page, 'current_page': current_page, 'user_name': user_name, 'time_interval': time_interval,   'image_base64': image_base64,}
             return render(request, self.home, context)
         else:
             return redirect('account/login')
@@ -69,6 +74,7 @@ class ContactView(View):
 def delete_trade(request, trade_id):
     try:
         trade = Trade.objects.get(id=trade_id, user=request.user)
+        time_interval = request.GET.get('time_interval', 'hourly')
         deleted_row_number = trade.row_number  # Store the row number before deletion
         trade.delete(request.user)  # Pass the user to the delete method
 
@@ -87,6 +93,7 @@ def delete_trade(request, trade_id):
 def trade_list(request):
     user_name = request.user.username
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    image_base64 = plot_realized_profits_chart(request)  # Initialize the chart
     portfolio_balance = user_profile.portfolio_balance  # Initialize with the current portfolio balance
     
     # Handle Portfolio Balance Form Submission
@@ -171,22 +178,27 @@ def trade_list(request):
 
         else:
             
-
-            return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
+            return render(request, 'trade_list.html', {
+                'trades': trades,
+                'form': form,
+                'portfolio_balance_form': portfolio_balance_form,
+                'pnl_data': pnl_data,
+                'user_name': user_name,
+                'image_base64': image_base64,
+                'time_interval': time_interval
+            })
 
     else:
         form = TradeForm()
         
+    # Filter trades based on the logged-in user
+    trades = Trade.objects.filter(user=request.user).order_by('row_number')
     
     # Calculate PnL
     pnl_data = calculate_pnl(request.user)
-    print('PnL Calculation Result:', pnl_data)  # Add this line for debugging purposes
-    print('Portfolio Balance after PnL Calculation:', pnl_data.get('portfolio_balance'))  # Add this line for debugging purposes
+    total_realized_pnl = pnl_data['total_realized_pnl']  # Capture the value
     
-    # return HttpResponse("POST request")
-    
-    # Filter trades based on the logged-in user
-    trades = Trade.objects.filter(user=request.user).order_by('row_number')
+  
     
     # Pagination
     paginator = Paginator(trades, 4)  # Show 5 trades per page
@@ -206,10 +218,95 @@ def trade_list(request):
 
     # If no specific page parameter is provided, redirect to the last page
     if not page:
-        return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
+        time_interval = request.GET.get('time_interval', 'hourly')
+        return render(request, 'trade_list.html', {
+            'trades': trades,
+            'form': form,
+            'portfolio_balance_form': portfolio_balance_form,
+            'pnl_data': pnl_data,
+            'user_name': user_name,
+            'image_base64': image_base64,
+            'time_interval': time_interval
+        })
    
 
-    return render(request, 'trade_list.html', {'trades': trades, 'form': form, 'portfolio_balance_form': portfolio_balance_form, 'pnl_data': pnl_data, 'user_name': user_name})
+    return render(request, 'trade_list.html', {
+        'trades': trades,
+        'form': form,
+        'portfolio_balance_form': portfolio_balance_form,
+        'pnl_data': pnl_data,
+        'user_name': user_name,
+        'image_base64': image_base64,
+        'time_interval': time_interval
+    })
+    
+def plot_realized_profits_chart(request):
+    # Extract timestamps and realized profits
+    timestamps = []
+    realized_profits = []
+
+    # Retrieve historical data
+    history_data = PortfolioHistory.objects.filter(user=request.user).order_by('timestamp')
+
+    # Populate timestamps and realized_profits
+    for entry in history_data:
+        timestamps.append(entry.timestamp)
+        realized_profits.append(float(entry.total_realized_pnl))
+
+    # Get the time interval from the URL parameter (default to 'hourly')
+    time_interval = request.GET.get('time_interval', 'hourly')
+
+    # Calculate time intervals based on user choice
+    if time_interval == 'hourly':
+        x_values = timestamps
+        x_label = 'Time'
+        x_format = '%H:%M:%S'
+        interval_delta = timedelta(hours=1)
+        # Set the locator and formatter for hourly ticks
+        locator = HourLocator(interval=4)  # Adjust interval to display fewer hourly ticks
+        formatter = DateFormatter(x_format)
+    elif time_interval == 'daily':
+        x_values = [timestamp.strftime('%Y-%m-%d') for timestamp in timestamps]
+        x_label = 'Date'
+        x_format = '%Y-%m-%d'
+        interval_delta = timedelta(days=1)
+    elif time_interval == 'monthly':
+        x_values = [timestamp.strftime('%Y-%m') for timestamp in timestamps]
+        x_label = 'Month'
+        x_format = '%Y-%m'
+        interval_delta = timedelta(days=30)
+    elif time_interval == 'yearly':
+        x_values = [timestamp.strftime('%Y') for timestamp in timestamps]
+        x_label = 'Year'
+        x_format = '%Y'
+        interval_delta = timedelta(days=365)
+    else:
+        x_values = [timestamp.strftime('%H:%M:%S') for timestamp in timestamps]  # Default to hourly
+        x_label = 'Time'
+        x_format = '%H:%M:%S'
+        interval_delta = timedelta(hours=1)
+
+    # Plot the chart with a line connecting data points
+    plt.plot(x_values, realized_profits, linestyle='-', color='#0d6efd')
+
+    # Customize chart appearance
+    plt.gcf().set_size_inches(10, 6)  # Set the size of the figure
+    plt.xlabel(x_label, fontsize=22)  # Set X-axis label and font size
+    plt.ylabel('Realized Profit', fontsize=22)  # Set Y-axis label and font size
+    plt.title(f'Realized Profit Over {x_label}', fontsize=22)  # Set chart title and font size
+    plt.grid(True)  # Add grid lines
+    plt.legend(['Realized Profits'], loc='upper left')  # Add legend
+
+    # Save the plot to a BytesIO object
+    image_stream = BytesIO()
+    plt.savefig(image_stream, format='png')
+    plt.close()
+
+    # Encode the image to base64 for HTML embedding
+    image_base64 = base64.b64encode(image_stream.getvalue()).decode('utf-8')
+
+    return image_base64
+
 
 def calculate_pnl(user):
     # Fetch closed trades, open trades, and calculate PnL
@@ -240,6 +337,10 @@ def calculate_pnl(user):
     # Update total_realized_pnl only if there is a positive change
     if realized_pnl_change > 0:
         user_profile.total_realized_pnl = total_realized_pnl
+        
+    # Update portfolio_balance with the negative value if there are losses
+    if realized_pnl_change < 0:
+        user_profile.portfolio_balance -= abs(realized_pnl_change)
 
     # Update portfolio_balance only if there is a positive change
     if realized_pnl_change > 0:
@@ -250,6 +351,13 @@ def calculate_pnl(user):
     # Update last_realized_pnl with the current total_realized_pnl
     user_profile.last_realized_pnl = total_realized_pnl
     user_profile.save()
+    
+     # Create a new PortfolioHistory entry
+    portfolio_history_entry = PortfolioHistory.objects.create(
+        user=user,
+        total_realized_pnl=total_realized_pnl
+    )
+
 
     return {
         'total_realized_pnl': total_realized_pnl,
