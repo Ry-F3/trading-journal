@@ -2,7 +2,73 @@
 {% load i18n %}
 {% load static %}
 {% block head_title %}{% trans "Trade List" %}{% endblock head_title %}
+
+<!-- Heading -->
+{% block heading_home %}
+<h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
+<a href="{% url 'generate_report' %}?format=pdf"
+class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+{% endblock heading_home %}
+
+<!-- Sidebar Header -->
+{% block sidebar_header_home %}
+<div style="background-color: #6c757d;"
+class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
+    <h6 class="m-0 font-weight-bold text-white">Filters</h6>
+    <span class="toggle-icon pointer">&#x25BC;</span>
+</div>
+
+{% endblock sidebar_header_home %}
+
+<!-- Sidebar Filters -->
+{% block sidebar_home %}
+<form>
+    <label>
+        <input type="checkbox" name="symbol" value="open" class="pointer">
+        <i class="fas fa-check"></i> Open
+    </label>
+
+    <label>
+        <input type="checkbox" name="symbol" value="closed" class="pointer">
+        <i class="fas fa-times"></i> Closed
+    </label>
+
+    <label>
+        <input type="checkbox" name="symbol" value="profit" class="pointer">
+        <i class="fas fa-chart-line"></i> Profit
+    </label>
+
+    <label>
+        <input type="checkbox" name="symbol" value="loss" class="pointer">
+        <i class="fas fa-chart-line"></i> Loss
+    </label>
+
+    <label>
+        <input type="checkbox" name="time" value="day" class="pointer">
+        <i class="fas fa-sun"></i> Day
+    </label>
+
+    <label>
+        <input type="checkbox" name="time" value="week" class="pointer">
+        <i class="fas fa-calendar-week"></i> Week
+    </label>
+
+    <label>
+        <input type="checkbox" name="time" value="month" class="pointer">
+        <i class="fas fa-calendar"></i> Month
+    </label>
+
+    <label>
+        <input type="checkbox" name="time" value="year" class="pointer">
+        <i class="fas fa-calendar-alt"></i> Year
+    </label>
+</form>
+{% endblock sidebar_home %}
+
 {% block portfolio_balance_content %}
+<!-- Box 1 -->
 <div class="ms-auto">
     <div class="card-body">
         <h5 class="card-title">Portfolio Balance</h5>
@@ -41,7 +107,9 @@
     </div>
 </div>
 {% endblock portfolio_balance_content %}
+
 {% block pnl_content %}
+<!-- Box 2 -->
 <div class="ms-auto">
     <div class="card-body">
         <h5 class="card-title">PnL</h5>
@@ -50,7 +118,14 @@
     </div>
 </div>
 {% endblock pnl_content %}
+
+{% block chart_content %}
+<!-- Box 3 -->
+
+{% endblock chart_content %}
+
 {% block trade_content %}
+<!-- Box 4 -->
 
 <style>
     .pencil_color {
@@ -65,38 +140,10 @@
         display: table-cell;
 
     }
-
-    /* Apply styles to the scrollbar container */
-    .scrollbar-container {
-        max-height: 360px;
-        /* Set a maximum height for the container */
-        overflow-y: auto;
-        scrollbar-width: thin;
-        /* For Firefox */
-        scrollbar-color: #ccc #f0f0f0;
-        /* For Firefox */
-
-        /* For Webkit browsers (Chrome, Safari) */
-        &::-webkit-scrollbar {
-            width: 6px;
-            /* Set the width of the scrollbar */
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background-color: #ccc;
-            /* Color of the scrollbar thumb */
-            border-radius: 3px;
-            /* Curved border radius */
-        }
-
-        &::-webkit-scrollbar-track {
-            background-color: #f0f0f0;
-            /* Color of the scrollbar track */
-        }
-    }
 </style>
 
 <div class="p-3 m-2 scrollbar-container card-body">
+    <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted"></i></a>
     <div class="table-responsive">
         <table id="tContainer" class="table table-sm">
             <thead>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <title>TraderTribe</title>
 </head>
+
 <style>
     /* Custom styles for the left column */
     .custom-left-column {
@@ -23,132 +24,68 @@
         max-width: 125px;
     }
 
-    .toggle-icon {
-        font-size: 1.5rem;
-        /* Adjust the font size as needed */
-        cursor: pointer;
-    }
-
-    .collapsed .custom-left-column {
-        display: none;
-        /* Hide the left column when collapsed */
-    }
-
-    .collapsed .toggle-icon {
-        transform: rotate(-180deg);
-    }
-
-    .divider {
-        border: none;
+    hr {
         height: 2px;
-        background-color: #333;
-        /* Darker color for the divider line */
+        background-color: #5a5c69;
+        border: none;
+        margin: 20px 0;
+        /* Adjust margin as needed */
     }
 
-    .nav-item.active a {
-        border-bottom: 3px solid #333;
-        /* Thicker line at the bottom when active */
-        text-decoration: underline;
-        /* Underline when active */
+    /* Style the container to add gaps on both sides */
+    .container {
+        max-width: 90%;
+        /* Set a maximum width to control the length of the line */
+        margin: 0 auto;
+        /* Center the container horizontally */
     }
-
-    .nav-item a:hover {
-        text-decoration: underline;
-        /* Underline on hover */
-    }
-
-    .padding-right {
-        padding-right: 4rem !important;
-        padding-left: 1rem !important;
-    }
-
-    .padding-left {
-        padding-left: 1rem !important; 
-    }
-
-    
 </style>
-
-
 
 <body id="page-top">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand padding-left" href="{% url 'trade_list' %}"><img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703778758/logo-text_ps1lmf.png" style="width: 80px;"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand padding-left" href="{% url 'trade_list' %}">
+                <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703778758/logo-text_ps1lmf.png"
+                    style="width: 80px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-4">
                     {% if user.is_authenticated %}
-                    <li class="nav-item padding-left">
-                        <a class="nav-link {% if request.path == '/trade_list/' %}active{% endif %}"
-                            href="{% url 'trade_list' %}">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-home fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">Home</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item padding-left">
-                        <a class="nav-link" href="#">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-info-circle fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">About</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item padding-left">
-                        <a class="nav-link" href="#">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-blog fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">Blog</span>
-                            </div>
-                        </a>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="Home" href="{% url 'trade_list' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="padding-right padding-left nav-link" href="#">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-envelope fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">Contact</span>
-                            </div>
-                        </a>
+                        <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_signup' %}">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-user-plus fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">Register</span>
-                            </div>
-                        </a>
+                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">
-                            <div class="d-flex flex-column align-items-center">
-                                <i class="fas fa-sign-in-alt fa-lg"></i>
-                                <span class="d-block text-muted small" style="line-height: 1.2">Login</span>
-                            </div>
-                        </a>
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>
-                {% if user.is_authenticated %}
-                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#signOutModal">
-                    <div class="d-flex flex-column align-items-center">
-                        <i class="fas text-primary fa-sign-out-alt fa-lg"></i>
-                        <span class="d-block text-muted small" style="line-height: 1.2">Sign Out</span>
-                    </div>
-                </button>
-                {% endif %}
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </nav>
 
     <div class="row mt-2">
         {% block content %}
+
         {% endblock content %}
     </div>
 
@@ -163,7 +100,8 @@
                 <div class="col-md-2 mt-2 p-3">
                     <div class="card">
                         <div class="card">
-                            <div style="background-color: #6c757d;"  class="card-header py-3 d-flex flex-column align-items-center justify-content-center">
+                            <div style="background-color: #6c757d;"
+                                class="card-header py-3 d-flex flex-column align-items-center justify-content-center">
                                 <div class="bg-white rounded-circle d-flex align-items-center justify-content-center"
                                     style="height: 5vw; width: 5vw; overflow: hidden;">
                                     <!-- This div will be a circular element with an adaptive size -->
@@ -185,76 +123,58 @@
                         </div>
                     </div>
 
-
                     <div class="mt-3">
                         <div class="card">
-                            <div style="background-color: #6c757d;" class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                                data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
-                                <h6 class="m-0 font-weight-bold text-white">Filters</h6>
-                                <span class="toggle-icon">&#x25BC;</span>
-                            </div>
+
+                            {% block sidebar_header_home %}
+                            <!-- Content from trade_list.html goes here -->
+                            {% endblock sidebar_header_home %}
+                            {% block sidebar_header_blog %}
+                            <!-- Content from blog.html goes here -->
+                            {% endblock sidebar_header_blog %}
+                            {% block sidebar_header_contact %}
+                            <!-- Content from contact.html goes here -->
+                            {% endblock sidebar_header_contact %}
+
                             <div class="card-body custom-left-column collapse show h-50" id="sidebarCollapse">
                                 <div class="sidebar">
-                                    <form>
-                                        <label>
-                                            <input type="checkbox" name="symbol" value="open">
-                                            <i class="fas fa-check"></i> Open
-                                        </label>
 
-                                        <label>
-                                            <input type="checkbox" name="symbol" value="closed">
-                                            <i class="fas fa-times"></i> Closed
-                                        </label>
+                                    {% block sidebar_home %}
+                                    <!-- Content from trade_list.html goes here -->
+                                    {% endblock sidebar_home %}
+                                    {% block sidebar_blog %}
+                                    <!-- Content from blog.html goes here -->
+                                    {% endblock sidebar_blog %}
+                                    {% block sidebar_contact %}
+                                    <!-- Content from contact.html goes here -->
+                                    {% endblock sidebar_contact %}
 
-                                        <label>
-                                            <input type="checkbox" name="symbol" value="profit">
-                                            <i class="fas fa-chart-line"></i> Profit
-                                        </label>
-
-                                        <label>
-                                            <input type="checkbox" name="symbol" value="loss">
-                                            <i class="fas fa-chart-line"></i> Loss
-                                        </label>
-
-                                        <label>
-                                            <input type="checkbox" name="time" value="day">
-                                            <i class="fas fa-sun"></i> Day
-                                        </label>
-
-                                        <label>
-                                            <input type="checkbox" name="time" value="week">
-                                            <i class="fas fa-calendar-week"></i> Week
-                                        </label>
-
-                                        <label>
-                                            <input type="checkbox" name="time" value="month">
-                                            <i class="fas fa-calendar"></i> Month
-                                        </label>
-
-                                        <label>
-                                            <input type="checkbox" name="time" value="year">
-                                            <i class="fas fa-calendar-alt"></i> Year
-                                        </label>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
-
                 <!-- End Side Bar -->
 
+                <!-- Main Content -->
                 {% if user.is_authenticated %}
                 <div class="col-md-10 mt-2 p-3">
 
                     <div class="row">
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-3 p-3">
-                            <h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
-                            <a href="{% url 'generate_report' %}?format=pdf"
-                                class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+                            {% block heading_home %}
+                            <!-- Content from trade_list.html goes here -->
+                            {% endblock heading_home %}
+                            {% block heading_blog %}
+                            <!-- Content from blog.html goes here -->
+                            {% endblock heading_blog %}
+                            {% block heading_contact %}
+                            <!-- Content from contact.html goes here -->
+                            {% endblock heading_contact %}
+
                         </div>
                     </div>
                     <div class="row">
@@ -264,8 +184,14 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         {% block portfolio_balance_content %}
-                                        <!-- Content for the first card goes here -->
+                                        <!-- Content from trade_list.html goes here -->
                                         {% endblock portfolio_balance_content %}
+                                        {% block blog_content %}
+                                        <!-- Content from blog.html goes here -->
+                                        {% endblock blog_content %}
+                                        {% block contact_content %}
+                                        <!-- Content from contact.html goes here -->
+                                        {% endblock contact_content %}
                                     </div>
                                 </div>
                             </div>
@@ -277,8 +203,14 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         {% block pnl_content %}
-                                        <!-- Content for the second card goes here -->
+                                        <!-- Content from trade_list.html goes here -->
                                         {% endblock pnl_content %}
+                                        {% block blog_content_two %}
+                                        <!-- Content from blog.html goes here -->
+                                        {% endblock blog_content_two %}
+                                        {% block contact_content_two %}
+                                        <!-- Content from contact.html goes here -->
+                                        {% endblock contact_content_two %}
                                     </div>
                                 </div>
                             </div>
@@ -289,27 +221,35 @@
                             <div id="boxThree" class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
-
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x --gray-dark"></i>
-                                        </div>
+                                        {% block chart_content %}
+                                        <!-- Content from trade_list.html goes here -->
+                                        {% endblock chart_content %}
+                                        {% block blog_content_three %}
+                                        <!-- Content from blog.html goes here -->
+                                        {% endblock blog_content_three %}
+                                        {% block contact_content_three %}
+                                        <!-- Content from contact.html goes here -->
+                                        {% endblock contact_content_three %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <!-- Rectangle Box-->
+                        <!-- Box-Four-->
                         <div class="col-xl-12 col-lg-7">
                             <div id="rectangleOne" class="card shadow mb-3">
-                                <!-- Card Header - Dropdown -->
-
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo"></i></a>
                                     {% block trade_content %}
-                                    <!-- Content appears here -->
+                                    <!-- Content from trade_list.html goes here -->
                                     {% endblock trade_content %}
+                                    {% block blog_content_four %}
+                                    <!-- Content from blog.html goes here -->
+                                    {% endblock blog_content_four %}
+                                    {% block contact_content_four %}
+                                    <!-- Content from contact.html goes here -->
+                                    {% endblock contact_content_four %}
                                 </div>
                             </div>
                         </div>
@@ -321,11 +261,33 @@
     {% endif %}
     <!-- End of Main Content -->
 
-
+    <div class="container">
+        <hr>
+    </div>
     <!-- Footer -->
-    <footer class="footer py-3 bg--grey mt-auto">
-        <div class="container">
-            <span class="text-muted text-center">footer content</span>
+    <footer class="footer py-4 bg-transparent mt-auto">
+        <div class="container text-center">
+            <!-- Social Media Icons -->
+            <div class="mb-4">
+                <span class="text-muted mb-3 d-block">Connect with us:</span>
+                <div>
+                    <a href="#" class="mx-2 social-link"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="mx-2 social-link"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="mx-2 social-link"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="mx-2 social-link"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <span class="text-muted mb-3 d-block">Quick Links:</span>
+                <div>
+                    <a href="#" class="footer-link">Home</a>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
         </div>
     </footer>
 

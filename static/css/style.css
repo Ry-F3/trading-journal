@@ -20,7 +20,7 @@
     --danger: #e74a3b;
     --light: #f8f9fc;
     --dark: #5a5c69;
-    --gray:  #f5f5f5;
+    --gray: #f5f5f5;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -105,32 +105,6 @@ p {
 
 }
 
-/* Apply styles to the scrollbar container */
-.scrollbar-container {
-    max-height: 325px;
-    /* Set a maximum height for the container */
-    overflow-y: auto;
-    scrollbar-width: thin;
-    /* For Firefox */
-    scrollbar-color: #ccc #f0f0f0;
-    /* For Firefox */
-
-    /* For Webkit browsers (Chrome, Safari) */
-    &::-webkit-scrollbar {
-        width: 6px;
-        /* Set the width of the scrollbar */
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        /* Color of the scrollbar thumb */
-        border-radius: 3px;
-        /* Curved border radius */
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: #f0f0f0;
-        /* Color of the scrollbar track */
-    }
+.pointer {
+    cursor: pointer;
 }
-

@@ -28,7 +28,7 @@ def get_trade_list(user, request):
 
 
 class HomeView(View):
-    template_name = 'trade_list.html'
+    home = 'trade_list.html'
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -36,15 +36,34 @@ class HomeView(View):
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
             context = {'trades': trades, 'form': form, 'last_page': last_page, 'current_page': current_page, 'user_name': user_name}
-            return render(request, self.template_name, context)
+            return render(request, self.home, context)
         else:
             return redirect('account/login')
 
     def post(self, request):
         # Handle POST request if needed
         return HttpResponse("POST request")
+    
 
+class BlogView(View):
+    blog = 'blog.html' 
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user_name = request.user.username 
+            context = {'user_name': user_name}
+        return render(request, self.blog, context)
+    
+
+class ContactView(View):
+    contact = 'contact.html' 
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            user_name = request.user.username 
+            context = {'user_name': user_name}
+        return render(request, self.contact, context)
+    
 
 @login_required
 def delete_trade(request, trade_id):
@@ -348,3 +367,4 @@ def generate_report(request): # Can be used for other file types if needed in th
             return HttpResponse("Unsupported format")
     else:
         return redirect('account/login')
+    

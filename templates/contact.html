@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block head_title %}{% trans "Contact" %}{% endblock head_title %}
+
+<!-- Heading -->
+{% block heading_contact %}
+<h1 class="h4 m-1 --gray-dark text-muted">Contact Us</h1>
+{% endblock heading_contact %}
+
+<!-- Sidebar Header -->
+{% block sidebar_header_contact %}
+<div style="background-color: #6c757d;"
+class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
+    <h6 class="m-0 font-weight-bold text-white">FAQs</h6>
+    <span class="toggle-icon pointer">&#x25BC;</span>
+</div>
+{% endblock sidebar_header_contact %}
+
+<!-- Sidebar FAQs -->
+{% block sidebar_contact %}
+
+{% endblock sidebar_contact %}
+
+{% block contact_content %}
+<h1>box 1</h1>
+{% endblock contact_content %}
+
+{% block contact_content_two %}
+<!-- Content from contact.html goes here -->
+<h1>box 2</h1>
+{% endblock contact_content_two %}
+
+{% block contact_content_three %}
+<!-- Content from contact.html goes here -->
+<h1>box 3</h1>
+{% endblock contact_content_three %}
+
+{% block contact_content_four %}
+<!-- Content from contact.html goes here -->
+<h1>box 4</h1>
+{% endblock contact_content_four %}
