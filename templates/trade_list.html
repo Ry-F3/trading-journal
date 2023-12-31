@@ -8,7 +8,7 @@
 <h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
 <a href="{% url 'generate_report' %}?format=pdf"
 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    class="fas fa-download fa-sm text-white-50"></i> Generate PDF Report</a>
 {% endblock heading_home %}
 
 <!-- Sidebar Header -->
@@ -64,6 +64,7 @@ data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
         <input type="checkbox" name="time" value="year" class="pointer">
         <i class="fas fa-calendar-alt"></i> Year
     </label>
+    <button type="submit">Apply Filters</button>
 </form>
 {% endblock sidebar_home %}
 
@@ -125,10 +126,10 @@ data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
 <img src="data:image/png;base64,{{ image_base64 }}" alt="Realized Profit Chart">
 
 <!-- Left arrow button -->
-<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent" style="width: 15px; margin: auto auto;">&lt;</button>
+<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent" style="width: 15px; font-weight: bold; margin: auto auto;">&lt;</button>
 
 <!-- Right arrow button -->
-<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent" style="width: 15px; margin: auto auto;">&gt;</button>
+<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent" style="width: 15px; font-weight: bold; margin: auto auto;">&gt;</button>
 
 <!-- Interval options -->
 <form method="get" action="" id="timeIntervalForm" style="display: none;">

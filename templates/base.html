@@ -45,7 +45,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
-            <a class="navbar-brand padding-left" href="{% url 'trade_list' %}">
+            <a class="navbar-brand padding-left" href="{% url 'home' %}">
                 <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1703778758/logo-text_ps1lmf.png"
                     style="width: 80px;">
             </a>
@@ -58,7 +58,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-4">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="Home" href="{% url 'trade_list' %}">Home</a>
+                        <a class="nav-link active" aria-current="Home" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'blog' %}">Blog</a>
@@ -129,7 +129,7 @@
                         <div class="card">
 
                             {% block sidebar_header_home %}
-                            <!-- Content from trade_list.html goes here -->
+                            <!-- Content from home.html goes here -->
                             {% endblock sidebar_header_home %}
                             {% block sidebar_header_blog %}
                             <!-- Content from blog.html goes here -->
@@ -142,7 +142,7 @@
                                 <div class="sidebar">
 
                                     {% block sidebar_home %}
-                                    <!-- Content from trade_list.html goes here -->
+                                    <!-- Content from home.html goes here -->
                                     {% endblock sidebar_home %}
                                     {% block sidebar_blog %}
                                     <!-- Content from blog.html goes here -->
@@ -168,7 +168,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-3 p-3">
 
                             {% block heading_home %}
-                            <!-- Content from trade_list.html goes here -->
+                            <!-- Content from home.html goes here -->
                             {% endblock heading_home %}
                             {% block heading_blog %}
                             <!-- Content from blog.html goes here -->
@@ -186,7 +186,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         {% block portfolio_balance_content %}
-                                        <!-- Content from trade_list.html goes here -->
+                                        <!-- Content from home.html goes here -->
                                         {% endblock portfolio_balance_content %}
                                         {% block blog_content %}
                                         <!-- Content from blog.html goes here -->
@@ -205,7 +205,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         {% block pnl_content %}
-                                        <!-- Content from trade_list.html goes here -->
+                                        <!-- Content from home.html goes here -->
                                         {% endblock pnl_content %}
                                         {% block blog_content_two %}
                                         <!-- Content from blog.html goes here -->
@@ -224,7 +224,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         {% block chart_content %}
-                                        <!-- Content from trade_list.html goes here -->
+                                        <!-- Content from home.html goes here -->
                                         {% endblock chart_content %}
                                         {% block blog_content_three %}
                                         <!-- Content from blog.html goes here -->
@@ -244,7 +244,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     {% block trade_content %}
-                                    <!-- Content from trade_list.html goes here -->
+                                    <!-- Content from home.html goes here -->
                                     {% endblock trade_content %}
                                     {% block blog_content_four %}
                                     <!-- Content from blog.html goes here -->

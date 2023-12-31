@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.db.models import F
+from django.db.models import F, Min
 from .models import Trade, UserProfile, PortfolioHistory
 from .forms import TradeForm, PortfolioBalanceForm
 from django.views import View
@@ -38,9 +38,32 @@ class HomeView(View):
         if request.user.is_authenticated:
             time_interval = request.GET.get('time_interval', 'hourly')
             user_name = request.user.username 
+            user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
-            context = {'trades': trades, 'form': form, 'last_page': last_page, 'current_page': current_page, 'user_name': user_name, 'time_interval': time_interval,   'image_base64': image_base64,}
+            # Generate the base64-encoded image data
+            image_base64 = plot_realized_profits_chart(request)
+            
+            # Calculate PnL data
+            pnl_data = calculate_pnl(request.user)
+            
+            # Get the user's portfolio balance
+            portfolio_balance = user_profile.portfolio_balance
+            
+            # Initialize the Portfolio Balance Form
+            portfolio_balance_form = PortfolioBalanceForm()
+
+            context = {
+                'trades': trades,
+                'form': form,
+                'pnl_data': pnl_data,
+                'last_page': last_page,
+                'current_page': current_page,
+                'portfolio_balance_form': portfolio_balance_form,
+                'user_name': user_name,
+                'time_interval': time_interval,
+                'image_base64': image_base64,
+            }
             return render(request, self.home, context)
         else:
             return redirect('account/login')
@@ -198,7 +221,10 @@ def trade_list(request):
     pnl_data = calculate_pnl(request.user)
     total_realized_pnl = pnl_data['total_realized_pnl']  # Capture the value
     
-  
+    time_interval = request.GET.get('time_interval', 'hourly')
+    
+    # Generate the base64-encoded image data
+    image_base64 = plot_realized_profits_chart(request)
     
     # Pagination
     paginator = Paginator(trades, 4)  # Show 5 trades per page
@@ -246,12 +272,24 @@ def plot_realized_profits_chart(request):
     realized_profits = []
 
     # Retrieve historical data
+    earliest_timestamp_with_trade = PortfolioHistory.objects.filter(user=request.user, trade__isnull=False).aggregate(Min('timestamp'))['timestamp__min']
+
     history_data = PortfolioHistory.objects.filter(user=request.user).order_by('timestamp')
 
     # Populate timestamps and realized_profits
+    history_data = PortfolioHistory.objects.filter(user=request.user).order_by('timestamp')
+
     for entry in history_data:
         timestamps.append(entry.timestamp)
         realized_profits.append(float(entry.total_realized_pnl))
+
+    # If there's an earliest timestamp with a trade, and it's later than the first timestamp in the data,
+    # add the first timestamp to the list with a realized profit of 0
+    # Essentially if a trade is deleted it will reflect on the chart
+    if earliest_timestamp_with_trade and timestamps and earliest_timestamp_with_trade > timestamps[0]:
+        timestamps.insert(0, timestamps[0])
+        realized_profits.insert(0, 0)
+
 
     # Get the time interval from the URL parameter (default to 'hourly')
     time_interval = request.GET.get('time_interval', 'hourly')
@@ -287,15 +325,30 @@ def plot_realized_profits_chart(request):
         interval_delta = timedelta(hours=1)
 
     # Plot the chart with a line connecting data points
-    plt.plot(x_values, realized_profits, linestyle='-', color='#0d6efd')
+    plt.plot(x_values, realized_profits, linestyle='-', color='#0d6efd', linewidth=2)
 
     # Customize chart appearance
-    plt.gcf().set_size_inches(10, 6)  # Set the size of the figure
+    plt.gcf().set_size_inches(12, 6)  # Set the size of the figure (adjust width as needed)
     plt.xlabel(x_label, fontsize=22)  # Set X-axis label and font size
     plt.ylabel('Realized Profit', fontsize=22)  # Set Y-axis label and font size
     plt.title(f'Realized Profit Over {x_label}', fontsize=22)  # Set chart title and font size
-    plt.grid(True)  # Add grid lines
+
+    # Disable the right and top spines
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
+
+    # Customize tick parameters and rotation
+    plt.tick_params(axis='both', which='both', direction='out', length=6, width=2, labelsize=16)
+    plt.xticks(rotation=45)  # Adjust rotation angle as needed
+
+    # Remove grid lines
+    plt.grid(False)
+
+    # Add legend
     plt.legend(['Realized Profits'], loc='upper left')  # Add legend
+
+    # Show the plot
+    plt.show()
 
     # Save the plot to a BytesIO object
     image_stream = BytesIO()
