@@ -14,57 +14,35 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 <!-- Sidebar Header -->
 {% block sidebar_header_home %}
 <div style="background-color: #6c757d;"
-class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
+     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+     data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
     <h6 class="m-0 font-weight-bold text-white">Filters</h6>
     <span class="toggle-icon pointer">&#x25BC;</span>
 </div>
-
 {% endblock sidebar_header_home %}
 
 <!-- Sidebar Filters -->
 {% block sidebar_home %}
-<form>
-    <label>
-        <input type="checkbox" name="symbol" value="open" class="pointer">
-        <i class="fas fa-check"></i> Open
-    </label>
-
-    <label>
-        <input type="checkbox" name="symbol" value="closed" class="pointer">
-        <i class="fas fa-times"></i> Closed
-    </label>
-
-    <label>
-        <input type="checkbox" name="symbol" value="profit" class="pointer">
-        <i class="fas fa-chart-line"></i> Profit
-    </label>
-
-    <label>
-        <input type="checkbox" name="symbol" value="loss" class="pointer">
-        <i class="fas fa-chart-line"></i> Loss
-    </label>
-
-    <label>
-        <input type="checkbox" name="time" value="day" class="pointer">
-        <i class="fas fa-sun"></i> Day
-    </label>
-
-    <label>
-        <input type="checkbox" name="time" value="week" class="pointer">
-        <i class="fas fa-calendar-week"></i> Week
-    </label>
-
-    <label>
-        <input type="checkbox" name="time" value="month" class="pointer">
-        <i class="fas fa-calendar"></i> Month
-    </label>
-
-    <label>
-        <input type="checkbox" name="time" value="year" class="pointer">
-        <i class="fas fa-calendar-alt"></i> Year
-    </label>
-    <button type="submit">Apply Filters</button>
+<form method="get" action="{% url 'trade_list' %}">
+    <div class="form-field">
+        <label class="checkbox-label">
+            Date
+            {{ filter_form.date_filter }}
+        </label>
+        <label class="checkbox-label">
+             Symbol
+            {{ filter_form.symbol_filter }}
+        </label>
+        <label class="checkbox-label">
+            PnL
+            {{ filter_form.pnl_filter }}
+        </label>
+        <label class="checkbox-label">
+            Long/Short
+            {{ filter_form.long_short_filter }}
+        </label>
+    </div>
+    <button type="submit btn-btn" class="submit-button mx-2">Apply Filters</button>
 </form>
 {% endblock sidebar_home %}
 

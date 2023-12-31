@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.db.models import F, Min
 from .models import Trade, UserProfile, PortfolioHistory
-from .forms import TradeForm, PortfolioBalanceForm
+from .forms import TradeForm, PortfolioBalanceForm, TradeFilterForm
+from django.views.generic import ListView
 from django.views import View
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import TemplateView
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from reportlab.lib.pagesizes import letter
 from datetime import date, timedelta 
+from django.utils import timezone
 from reportlab.pdfgen import canvas
 from io import StringIO,  BytesIO
 import matplotlib.pyplot as plt
@@ -52,7 +54,10 @@ class HomeView(View):
             
             # Initialize the Portfolio Balance Form
             portfolio_balance_form = PortfolioBalanceForm()
-
+            
+            # Initialize your filter form here
+            filter_form = TradeFilterForm(request.GET)  # Pass request.GET to initialize with query parameters
+            
             context = {
                 'trades': trades,
                 'form': form,
@@ -63,6 +68,7 @@ class HomeView(View):
                 'user_name': user_name,
                 'time_interval': time_interval,
                 'image_base64': image_base64,
+                'filter_form': filter_form, 
             }
             return render(request, self.home, context)
         else:
@@ -71,7 +77,7 @@ class HomeView(View):
     def post(self, request):
         # Handle POST request if needed
         return HttpResponse("POST request")
-    
+        
 
 class BlogView(View):
     blog = 'blog.html' 
@@ -92,6 +98,113 @@ class ContactView(View):
             context = {'user_name': user_name}
         return render(request, self.contact, context)
     
+class TradeFilterView(ListView):
+    model = Trade
+    template_name = 'trade_list.html'
+    context_object_name = 'trades'
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('account/login')
+
+        time_interval = request.GET.get('time_interval', 'hourly')
+        user_name = request.user.username 
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        
+        # Get the user's trades with filtering
+        trades, last_page, current_page = self.get_filtered_trades(request.user, request)
+        
+        form = TradeForm()
+        # Generate the base64-encoded image data
+        image_base64 = plot_realized_profits_chart(request)
+        
+        # Calculate PnL data
+        pnl_data = calculate_pnl(request.user)
+        
+        # Get the user's portfolio balance
+        portfolio_balance = user_profile.portfolio_balance
+        
+        # Initialize the Portfolio Balance Form
+        portfolio_balance_form = PortfolioBalanceForm()
+        
+        # Initialise your filter form here
+        filter_form = TradeFilterForm(request.GET) 
+        
+        context = {
+            'trades': trades,
+            'form': form,
+            'pnl_data': pnl_data,
+            'last_page': last_page,
+            'current_page': current_page,
+            'portfolio_balance_form': portfolio_balance_form,
+            'user_name': user_name,
+            'time_interval': time_interval,
+            'image_base64': image_base64,
+            'filter_form': filter_form, 
+        }
+        
+        return render(request, self.template_name, context)
+
+    def get_filtered_trades(self, user, request):
+        queryset = Trade.objects.filter(user=user).order_by('row_number')
+
+        # Filter trades based on request parameters
+        date_filter = request.GET.get('date_filter')
+        symbol_filter = request.GET.get('symbol_filter')
+        long_short_filter = request.GET.get('long_short_filter')
+        pnl_filter = request.GET.get('pnl_filter')
+
+        # Separate fields for custom date range
+        date_filter_month = self.request.GET.get('date_filter_month')
+        date_filter_day = self.request.GET.get('date_filter_day')
+        date_filter_year = self.request.GET.get('date_filter_year')
+
+        print(f"Date filter: {date_filter_month}/{date_filter_day}/{date_filter_year}")
+        print(f"Symbol filter: {symbol_filter}")
+        print(f"Long/Short filter: {long_short_filter}")
+        print(f"PnL filter: {pnl_filter}")
+
+        if date_filter == 'today':
+            # Filter trades for today
+            today = timezone.now().date()
+            queryset = queryset.filter(date=today)
+
+        elif date_filter == 'past_7_days':
+            # Filter trades for the past 7 days
+            seven_days_ago = timezone.now().date() - timedelta(days=7)
+            queryset = queryset.filter(date__gte=seven_days_ago)
+
+        elif date_filter == 'this_month':
+            # Filter trades for the current month
+            start_of_month = timezone.now().replace(day=1).date()
+            queryset = queryset.filter(date__gte=start_of_month)
+
+        elif date_filter == 'this_year':
+            # Filter trades for the current year
+            start_of_year = timezone.now().replace(month=1, day=1).date()
+            queryset = queryset.filter(date__gte=start_of_year)
+
+        if symbol_filter:
+            queryset = queryset.filter(symbol=symbol_filter)
+
+        if long_short_filter:
+            queryset = queryset.filter(long_short=long_short_filter)
+
+        if pnl_filter == 'profit':
+            queryset = queryset.filter(return_pnl__gt=0)
+        elif pnl_filter == 'loss':
+            queryset = queryset.filter(return_pnl__lt=0)
+            
+        paginator = Paginator(queryset, 4)
+        page = 1  # Default to the first page if not specified
+        try:
+            page = int(request.GET.get('page', 1))
+            trades = paginator.page(page)
+        except (PageNotAnInteger, EmptyPage):
+            trades = paginator.page(1)  # Display the first page if page is out of range
+
+        return trades, paginator.num_pages, page
+
 
 @login_required
 def delete_trade(request, trade_id):
@@ -109,7 +222,6 @@ def delete_trade(request, trade_id):
         return JsonResponse({'success': True, 'deleted_row_number': deleted_row_number})
     except Trade.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
-
 
 
 @login_required

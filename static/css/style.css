@@ -109,3 +109,48 @@ p {
     cursor: pointer;
 }
 
+/* Style for the form container */
+/* .form-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+} */
+
+/* Style for form fields */
+.form-field {
+    margin-bottom: 15px;
+}
+
+/* Style for checkbox label */
+.checkbox-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Style for select dropdown */
+select {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style for submit button */
+.submit-button {
+    background-color: #4e4e4e;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover effect for the submit button */
+.submit-button:hover {
+    background-color: #555555;
+}
+

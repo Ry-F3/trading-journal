@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 from django.contrib.auth.models import User
 
 # User Model
@@ -28,8 +29,8 @@ class Trade(models.Model):
     ]
 
     LONG_SHORT_CHOICES = [
-        ('long', 'Long'),
-        ('short', 'Short'),
+        ('long', 'long'),
+        ('short', 'short'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -58,6 +59,9 @@ class Trade(models.Model):
             else:
                 # If no existing rows, start from 1
                 self.row_number = 1
+                
+            if isinstance(self.date, str):
+                self.date = datetime.strptime(self.date, '%Y-%m-%d').date()
 
         super().save(*args, **kwargs)
         print(f"Saved Trade with row_number: {self.row_number}, User ID: {self.user.id}")

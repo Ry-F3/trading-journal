@@ -63,3 +63,47 @@ class PortfolioBalanceForm(forms.Form):
         max_value=1000000000000,  # Set the maximum allowed value if needed
         required=True
     )
+    
+
+class TradeFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Retrieve distinct symbols from the Trade model
+        symbols = Trade.objects.values_list('symbol', flat=True).distinct()
+
+        # Add a choice for each symbol, and an option for 'All'
+        symbol_choices = [('', 'All')] + [(symbol, symbol) for symbol in symbols]
+        self.fields['symbol_filter'] = forms.ChoiceField(choices=symbol_choices, required=False)
+
+        self.fields['date_filter'] = forms.ChoiceField(choices=[
+            ('', 'Any date'),
+            ('today', 'Today'),
+            ('past_7_days', 'Past 7 days'),
+            ('this_month', 'This month'),
+            ('this_year', 'This year'),
+        ], required=False)
+
+        # Additional fields for custom date range
+        self.fields['custom_date_start_month'] = forms.IntegerField(required=False)
+        self.fields['custom_date_start_day'] = forms.IntegerField(required=False)
+        self.fields['custom_date_start_year'] = forms.IntegerField(required=False)
+
+        long_short_choices = [
+            ('', 'All'),
+            ('long', 'long'),
+            ('short', 'short'),
+        ]
+
+        self.fields['long_short_filter'] = forms.ChoiceField(choices=long_short_choices, required=False)
+
+        pnl_choices = [
+            ('', 'All'),
+            ('profit', 'Profit'),
+            ('loss', 'Loss'),
+        ]
+
+        self.fields['pnl_filter'] = forms.ChoiceField(choices=pnl_choices, required=False)
+
+        
+    

@@ -1,9 +1,10 @@
 from . import views
 from django.urls import path
-from .views import trade_list, delete_trade, get_trade_details, generate_report, ContactView, BlogView
+from .views import trade_list, delete_trade, get_trade_details, generate_report, ContactView, BlogView, TradeFilterView
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
+    path('trade_list/', TradeFilterView.as_view(), name='trade_list'),
     path('contact/', ContactView.as_view(), name='contact'),
     path('blog/', BlogView.as_view(), name='blog'),
     path('trade_list/', trade_list, name='trade_list'),
