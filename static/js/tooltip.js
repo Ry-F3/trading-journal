@@ -3,4 +3,4 @@
     $(".alert").fadeTo(300, 0).slideUp(300, function () {
         $(this).remove();
     });
-}, 2000);
+}, 3500);
