@@ -32,10 +32,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['trading-tribe-7a57be0dbd54.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['trader-tribe-7c9dc3cf075d.herokuapp.com', 'localhost']
 
 # 8000-ryf3-tradingjournal-8t1ho63dpl9.ws-eu107.gitpod.io
-# 'trading-tribe-7a57be0dbd54.herokuapp.com', 'localhost'
+# 'trader-tribe-7c9dc3cf075d.herokuapp.com', 'localhost'
 
 
 # Application definition
