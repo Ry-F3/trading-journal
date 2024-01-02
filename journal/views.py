@@ -320,7 +320,8 @@ def trade_list(request):
                 'pnl_data': pnl_data,
                 'user_name': user_name,
                 'image_base64': image_base64,
-                'time_interval': time_interval
+                'time_interval': time_interval,
+                'filter_form': filter_form,
             })
 
     else:
@@ -334,6 +335,9 @@ def trade_list(request):
     total_realized_pnl = pnl_data['total_realized_pnl']  # Capture the value
     
     time_interval = request.GET.get('time_interval', 'hourly')
+    
+    # Initialise the Trade Filter Form
+    filter_form = TradeFilterForm(request.GET)
     
     # Generate the base64-encoded image data
     image_base64 = plot_realized_profits_chart(request)
@@ -364,7 +368,8 @@ def trade_list(request):
             'pnl_data': pnl_data,
             'user_name': user_name,
             'image_base64': image_base64,
-            'time_interval': time_interval
+            'time_interval': time_interval,
+            'filter_form': filter_form,
         })
    
 
@@ -375,7 +380,8 @@ def trade_list(request):
         'pnl_data': pnl_data,
         'user_name': user_name,
         'image_base64': image_base64,
-        'time_interval': time_interval
+        'time_interval': time_interval,
+        'filter_form': filter_form,
     })
     
 def plot_realized_profits_chart(request):
@@ -585,17 +591,17 @@ def generate_pdf_report(user, trades):
     
     # Title and date
     p.setFont("Helvetica-Bold", 16)
-    p.drawString(50, 770, f'Trade Report ')  # Adjusted x-coordinate
+    p.drawString(50, 740, f'Trade Report ')  # Adjusted x-coordinate
     p.setFont("Helvetica", 10)
     today = date.today().strftime("%Y-%m-%d")
-    p.drawString(50, 750, f"Date: {today}")  # Adjusted x-coordinate
+    p.drawString(50, 710, f"Date: {today}")  # Adjusted x-coordinate
     # User information (adjusted x and y coordinates)
     p.setFont("Helvetica", 10)
-    p.drawString(50, 730, f"Username: {user.username}")
+    p.drawString(50, 690, f"Username: {user.username}")
 
     # Content
     p.setFont("Helvetica", 7)
-    y_position = 720
+    y_position = 680
     for trade in trades:
         y_position -= 15
         x_position = 50  # Adjusted x-coordinate
