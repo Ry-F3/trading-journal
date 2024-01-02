@@ -4,6 +4,7 @@ from .models import Trade, UserProfile, PortfolioHistory
 from .forms import TradeForm, PortfolioBalanceForm, TradeFilterForm
 from django.views.generic import ListView
 from django.views import View
+from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import TemplateView
@@ -32,10 +33,16 @@ def get_trade_list(user, request):
         trades = paginator.page(1)  # Display the first page if page is out of range
     return trades, paginator.num_pages, page
 
+def get_portfolio_balance(request):
+    if request.user.is_authenticated:
+        portfolio_balance = request.user.userprofile.portfolio_balance
+        return JsonResponse({'portfolio_balance': portfolio_balance})
+    else:
+        return JsonResponse({'portfolio_balance': None})
+
 
 class HomeView(View):
     home = 'trade_list.html'
-
     def get(self, request):
         if request.user.is_authenticated:
             time_interval = request.GET.get('time_interval', 'hourly')
@@ -43,19 +50,40 @@ class HomeView(View):
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
+            
+             # Get the user's portfolio balance
+            portfolio_balance = user_profile.portfolio_balance
+            
+            # Initialize the Portfolio Balance Form
+            portfolio_balance_form = PortfolioBalanceForm()
+            
+           # Check if the welcome back message and update portfolio message have already been shown
+            messages_to_display = []
+
+            if created:
+                # If the user account was just created, show a general welcome message
+                messages_to_display.append(('success', 'Welcome to Trader Tribe!. Don\'t forget to update your portfolio balance!'))
+            else:
+                if 'welcome_back_message_shown' not in request.session:
+                    # If not, show the welcome back message and set the flag in the session
+                    messages_to_display.append(('success', 'Welcome back!'))
+                    request.session['welcome_back_message_shown'] = True
+
+                    if 'update_portfolio_message_shown' not in request.session:
+                        # If not, show the update portfolio message and set the flag in the session
+                        if user_profile.portfolio_balance <= 0:
+                            messages_to_display.append(('warning', f'Your portfolio balance is ${portfolio_balance}. Don\'t forget to update it!'))
+                            request.session['update_portfolio_message_shown'] = True
+
+
+                                
             # Generate the base64-encoded image data
             image_base64 = plot_realized_profits_chart(request)
             
             # Calculate PnL data
             pnl_data = calculate_pnl(request.user)
             
-            # Get the user's portfolio balance
-            portfolio_balance = user_profile.portfolio_balance
-            
-            # Initialize the Portfolio Balance Form
-            portfolio_balance_form = PortfolioBalanceForm()
-            
-            # Initialize your filter form here
+            # Initialize filter form here
             filter_form = TradeFilterForm(request.GET)  # Pass request.GET to initialize with query parameters
             
             context = {
@@ -69,6 +97,7 @@ class HomeView(View):
                 'time_interval': time_interval,
                 'image_base64': image_base64,
                 'filter_form': filter_form, 
+                'messages_to_display': messages_to_display,
             }
             return render(request, self.home, context)
         else:
@@ -112,7 +141,7 @@ class TradeFilterView(ListView):
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
         
         # Get the user's trades with filtering
-        trades, last_page, current_page = self.get_filtered_trades(request.user, request)
+        trades, num_pages, current_page = self.get_filtered_trades(request.user, request)
         
         form = TradeForm()
         # Generate the base64-encoded image data
@@ -127,14 +156,25 @@ class TradeFilterView(ListView):
         # Initialize the Portfolio Balance Form
         portfolio_balance_form = PortfolioBalanceForm()
         
-        # Initialise your filter form here
+        # Initialise filter form here
         filter_form = TradeFilterForm(request.GET) 
+        
+        # Check if any filter parameters were applied
+        if request.GET:
+            messages.success(request, 'Filter applied successfully!')
+        
+        # Preserve the filter parameters in pagination links
+        get_params = request.GET.copy()
+        if 'page' in get_params:
+            del get_params['page']
+
         
         context = {
             'trades': trades,
             'form': form,
             'pnl_data': pnl_data,
-            'last_page': last_page,
+            'get_params': get_params,
+            'num_pages': num_pages, 
             'current_page': current_page,
             'portfolio_balance_form': portfolio_balance_form,
             'user_name': user_name,
@@ -223,15 +263,7 @@ def delete_trade(request, trade_id):
     except Trade.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
 
-
-@login_required
-def trade_list(request):
-    user_name = request.user.username
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-    image_base64 = plot_realized_profits_chart(request)  # Initialize the chart
-    portfolio_balance = user_profile.portfolio_balance  # Initialize with the current portfolio balance
-    
-    # Handle Portfolio Balance Form Submission
+def handle_portfolio_balance_form_submission(request, user_profile):
     if request.method == 'POST':
         portfolio_balance_form = PortfolioBalanceForm(request.POST)
         if portfolio_balance_form.is_valid():
@@ -245,6 +277,7 @@ def trade_list(request):
             elif action == 'subtract':
                 user_profile.portfolio_balance -= update_amount
 
+            messages.success(request, 'Balance Updated successfully!')
             # Save the updated portfolio balance
             user_profile.save()
 
@@ -259,22 +292,38 @@ def trade_list(request):
     else:
         portfolio_balance_form = PortfolioBalanceForm()
         print('Not a POST request. Portfolio Balance Form:', portfolio_balance_form)  # Add this line for debugging purposes
-        
+
+def update_portfolio_balance(request):
+    user_profile = request.user.userprofile  # Assuming userprofile is related to the User model
+    handle_portfolio_balance_form_submission(request, user_profile)
+    return redirect('trade_list')  # Redirect back to the trade list after updating the balance
+
+@login_required
+def trade_list(request):
+    user_name = request.user.username
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    image_base64 = plot_realized_profits_chart(request)  # Initialize the chart
+    # Initialize the PortfolioBalanceForm
+    portfolio_balance_form = PortfolioBalanceForm()
+    
     if request.method == 'POST':
         form = TradeForm(request.POST)
         if form.is_valid():
             trade = form.save(commit=False)
             trade.user = request.user  # Set the user to the logged-in user
             save_type = request.POST.get('save_type', 'regular')
-            
+ 
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
                 
+                # Add success message for creating a new trade
+                messages.success(request, 'Trade created successfully!')
+                messages.success(request, 'Balance Updated!')
+                messages.success(request, 'PnL Updated!')
+                
                  # Retrieve or create the UserProfile associated with the logged-in user
                 user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-                user_profile.portfolio_balance = portfolio_balance
-                user_profile.save()
 
                 # Calculate PnL only if the form is valid
                 pnl_data = calculate_pnl(request.user)
@@ -300,15 +349,20 @@ def trade_list(request):
                     'return_pnl': request.POST.get('return_pnl'),
                 }
                 
+                # Add success message for editing a trade
+                messages.success(request, 'Trade edited successfully!')
+                messages.success(request, 'Balance Updated!')
+                messages.success(request, 'PnL Updated!')
+                
                 # Print debugging information
                 print(f"Overwrite ID: {overwrite_id}, Row: {overwrite_row}")
                 print("Edited Trade Data:", edited_trade_data)
 
                 if overwrite_id is not None and overwrite_row is not None:
-                    # Your overwrite logic here
+                    # Overwrite logic here
                     trade.save_overwrite(overwrite_id=overwrite_id, overwrite_row=overwrite_row, edited_trade_data=edited_trade_data)
                 else:
-                    # Your regular save logic here
+                    # Regular save logic here
                     trade.save()
 
         else:

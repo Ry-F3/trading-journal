@@ -109,6 +109,28 @@ p {
     cursor: pointer;
 }
 
+.tooltip-container {
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.tooltip-pointer {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ccc;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 /* Style for the form container */
 /* .form-container {
     margin: 20px;
@@ -154,3 +176,28 @@ select {
     background-color: #555555;
 }
 
+
+/* Custom styles for the left column */
+.custom-left-column {
+    height: 50px;
+    /* Set the height to 80% of the viewport height */
+    overflow-y: auto;
+    /* Add vertical scroll if content exceeds the height */
+    max-width: 125px;
+}
+
+hr {
+    height: 2px;
+    background-color: #5a5c69;
+    border: none;
+    margin: 20px 0;
+    /* Adjust margin as needed */
+}
+
+/* Style the container to add gaps on both sides */
+.container {
+    max-width: 90%;
+    /* Set a maximum width to control the length of the line */
+    margin: 0 auto;
+    /* Center the container horizontally */
+}

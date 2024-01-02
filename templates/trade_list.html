@@ -9,6 +9,7 @@
 <a href="{% url 'generate_report' %}?format=pdf"
 class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
     class="fas fa-download fa-sm text-white-50"></i> Generate PDF Report</a>
+    
 {% endblock heading_home %}
 
 <!-- Sidebar Header -->
@@ -16,7 +17,9 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 <div style="background-color: #6c757d;"
      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
      data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
-    <h6 class="m-0 font-weight-bold text-white">Filters</h6>
+    <h6 class="m-0 font-weight-bold text-white">
+        Filters 
+    </h6>
     <span class="toggle-icon pointer">&#x25BC;</span>
 </div>
 {% endblock sidebar_header_home %}
@@ -73,11 +76,11 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     </div>
                     <div class="modal-body">
                         <!-- Portfolio Balance Update Form -->
-                        <form method="post" action="{% url 'trade_list' %}">
+                        <form method="post" action="{% url 'update_portfolio_balance' %}">
                             {% csrf_token %}
                             {{ portfolio_balance_form.as_p }}
                             <button type="submit" name="action" value="add" class="btn btn-primary">Add Money</button>
-                            <button type="submit" name="action" value="subtract" class="btn btn-danger">Subtract Money</button>
+                            <button type="submit" name="action" value="subtract" class="btn btn-secondary">Withraw Money</button>
                         </form>
                     </div>
                 </div>
@@ -121,32 +124,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         </select>
     </div>
 </form>
-
-<script>
-    // Define chart options
-    const chartOptions = ['hourly', 'daily', 'monthly', 'yearly'];
-
-    // Get chart select element
-    const chartSelect = document.getElementById('time_interval');
-
-    // Function to cycle through charts
-    function cycleChart(direction) {
-        const currentIndex = chartOptions.indexOf(chartSelect.value);
-        let newIndex = (currentIndex + direction + chartOptions.length) % chartOptions.length;
-        chartSelect.value = chartOptions[newIndex];
-        submitForm(); 
-    }
-</script>
-
-
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-    function submitForm() {
-        document.getElementById("timeIntervalForm").submit();
-    }
-</script>
+<script src="{% static 'js/chart.js' %}"></script>
 {% endblock chart_content %}
 
 {% block trade_content %}
@@ -165,10 +143,15 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         display: table-cell;
 
     }
-</style>
 
+    .letter-spacing {
+        letter-spacing: 1px;
+    }
+    
+    
+</style>
+<span><a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted small"></i></a></span>
 <div class="p-3 m-2 scrollbar-container card-body">
-    <!-- <a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted"></i></a> -->
     <div class="table-responsive">
         <table id="tContainer" class="table table-sm">
             <thead>
@@ -176,7 +159,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     <th>Symbol</th>
                     <th>Date</th>
                     <th>Status</th>
-                    <th>L / S</th>
+                    <th class="letter-spacing">L/S</th>
                     <th>Risk</th>
                     <th>Margin</th>
                     <th>Leverage</th>
@@ -209,7 +192,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     </td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-secondary btn-sm square-btn bg-black delete-trade-button"
+                        <button class="btn btn-secondary btn-sm square-btn delete-trade-button"
                             data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
                     </td>
                 </tr>
@@ -221,17 +204,17 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     <div class="pagination">
                         <span class="step-links p-3 pb-4 m-2">
                             {% if trades.has_previous %}
-                            <a href="?page=1">&laquo; first</a>
-                            <a href="?page={{ trades.previous_page_number }}">previous</a>
+                                <a href="?page=1{% if get_params %}&{{ get_params.urlencode }}{% endif %}">&laquo; first</a>
+                                <a href="?page={{ trades.previous_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">previous</a>
                             {% endif %}
-
-                            <span class="current small text-muted">
-                                Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
+                    
+                            <span class="current">
+                                Page {{ current_page }} of {{ num_pages }}.
                             </span>
-
+                    
                             {% if trades.has_next %}
-                            <a href="?page={{ trades.next_page_number }}">next</a>
-                            <a href="?page={{ trades.paginator.num_pages }}">last &raquo;</a>
+                                <a href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
+                                <a href="?page={{ num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
                             {% endif %}
                         </span>
                     </div>
