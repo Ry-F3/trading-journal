@@ -156,6 +156,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         <table id="tContainer" class="table table-sm">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Symbol</th>
                     <th>Date</th>
                     <th>Status</th>
@@ -172,6 +173,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             <tbody>
                 {%for trade in trades%}
                 <tr id="tradeRow{{ trade.row_number }}" data-trade-id="{{ trade.id }}">
+                    <td class="text-muted">{{ trade.id }}</td>
                     <td>{{ trade.symbol }}</td>
                     <td>{{ trade.date }}</td>
                     <td>{{ trade.status }}</td>
@@ -273,8 +275,6 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 
 
 
-
-
 <!-- <div class="p-5 m-3">
     <h1>Trades</h1>
     {% for trade in trades %}
@@ -291,3 +291,10 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 <script src="{% static 'js/currencySwap.js' %}"></script>
 
 {% endblock trade_content %}
+
+{% block help_button %}
+<button type="button" class="outline-0 border-0 btn-primary" data-bs-toggle="modal"
+data-bs-target="#helpModal1">
+<i class="fas fa-question-circle"></i>
+</button>
+{% endblock help_button %}

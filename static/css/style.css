@@ -201,3 +201,27 @@ hr {
     margin: 0 auto;
     /* Center the container horizontally */
 }
+
+#createPostModal .modal-dialog {
+    max-width: 600px;
+}
+
+.modal-body input,
+.modal-body textarea {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Add this style in your HTML or external CSS file */
+.modal-content {
+    min-height: 300px;
+    /* Adjust the value as needed */
+}
+
+/* Add this style in your HTML or external CSS file */
+.modal-content {
+    max-height: 80vh;
+    /* Adjust the value as needed */
+    overflow-y: auto;
+}

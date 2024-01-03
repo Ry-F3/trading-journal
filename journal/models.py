@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+from django.utils import timezone
 
 # User Model
 class UserProfile(models.Model):
@@ -128,3 +130,48 @@ class Meta:
     permissions = [
         ("delete_trade", "Can delete trades"),
     ]
+    
+# Blog Post Model
+class BlogPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, related_name='blog_post_likes', blank=True)
+    shares = models.ManyToManyField(User, related_name='blog_post_shares', blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
+    profit_percentage = models.FloatField(null=True, blank=True)
+    profit_loss = models.FloatField(null=True, blank=True)
+    entry_price = models.FloatField(null=True, blank=True)
+    exit_price = models.FloatField(null=True, blank=True)
+    leverage = models.FloatField(null=True, blank=True)
+    trade_type = models.CharField(max_length=255, null=True, blank=True)
+    trade_image = models.ImageField(upload_to='trade_images/', null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title} - {self.timestamp}"
+
+# Trade Image Model
+class TradeImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='trade_images/')
+    caption = models.TextField(blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='trade_likes', blank=True)
+    shares = models.ManyToManyField(User, related_name='trade_shares', blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.timestamp}"
+
+# User Connection Model
+class UserConnection(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+
+    def __str__(self):
+        return f"{self.follower.username} follows {self.following.username}"

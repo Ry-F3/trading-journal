@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trade
+from .models import Trade, BlogPost  
 
 class TradeForm(forms.ModelForm):
     class Meta:
@@ -104,6 +104,26 @@ class TradeFilterForm(forms.Form):
         ]
 
         self.fields['pnl_filter'] = forms.ChoiceField(choices=pnl_choices, required=False)
+        
+class BlogPostForm(forms.ModelForm):
+    profit_percentage = forms.FloatField(required=False)
+    profit_loss = forms.FloatField(required=False)
+    entry_price = forms.FloatField(required=False)
+    exit_price = forms.FloatField(required=False)
+    leverage = forms.FloatField(required=False)
+    trade_type = forms.CharField(max_length=255, required=False)
+    trade_image = forms.ImageField(required=False)
+    
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'content', 'timestamp', 'likes',  'profit_percentage', 'profit_loss', 'entry_price', 'exit_price', 'leverage', 'trade_type', 'trade_image']
+        widgets = {
+            'timestamp': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['timestamp'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
 
         
     

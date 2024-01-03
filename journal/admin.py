@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Trade
+from .models import Trade, BlogPost
 
 class TradeAdmin(admin.ModelAdmin):
     list_display = ('display_user', 'id', 'symbol', 'date', 'status', 'long_short', 'position', 'margin', 'leverage', 'open_price', 'current_price', 'return_pnl')
@@ -34,4 +34,34 @@ class TradeAdmin(admin.ModelAdmin):
             return False
         return super().has_delete_permission(request, obj)
 
+
 admin.site.register(Trade, TradeAdmin)
+
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'display_user', 'slug', 'timestamp', 'display_blog_post_likes')
+    list_filter = ('user', 'timestamp')
+    search_fields = ('title', 'content')
+
+    def display_user(self, obj):
+        return obj.user.username
+    display_user.short_description = 'Author'
+
+    def display_blog_post_likes(self, obj):
+        return obj.likes.count()
+    display_blog_post_likes.short_description = 'Likes'
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_delete_permission(request, obj)
+
+admin.site.register(BlogPost, BlogPostAdmin)

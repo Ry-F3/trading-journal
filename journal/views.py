@@ -25,12 +25,18 @@ from decimal import Decimal
 def get_trade_list(user, request):
     trades = Trade.objects.filter(user=user).order_by('row_number')
     paginator = Paginator(trades, 4)
-    page = 1  # Default to the first page if not specified
+
+    # Default to the first page if the page parameter is not provided or invalid
     try:
         page = int(request.GET.get('page', 1))
+    except ValueError:
+        page = 1
+
+    try:
         trades = paginator.page(page)
     except (PageNotAnInteger, EmptyPage):
         trades = paginator.page(1)  # Display the first page if page is out of range
+
     return trades, paginator.num_pages, page
 
 def get_portfolio_balance(request):
@@ -107,17 +113,6 @@ class HomeView(View):
         # Handle POST request if needed
         return HttpResponse("POST request")
         
-
-class BlogView(View):
-    blog = 'blog.html' 
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            user_name = request.user.username 
-            context = {'user_name': user_name}
-        return render(request, self.blog, context)
-    
-
 class ContactView(View):
     contact = 'contact.html' 
 
