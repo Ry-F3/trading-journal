@@ -225,3 +225,7 @@ hr {
     /* Adjust the value as needed */
     overflow-y: auto;
 }
+
+.img-size {
+    width: 100%;
+}

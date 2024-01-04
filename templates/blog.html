@@ -31,36 +31,44 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{% url 'blog' %}">
+                <form method="post" action="{% url 'blog' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- Post Title Input -->
                     <div class="mb-2">
-                        <input type="text" class="form-control" name="title" placeholder="Post Title">
+                        <input type="text" class="form-control" name="title" placeholder="Post Title" required>
                     </div>
                     <!-- Content Input with Placeholder -->
                     <div class="mb-3">
-                        <textarea class="form-control" name="content"
-                            placeholder="What do you want to talk about?"></textarea>
+                        <textarea class="form-control" name="content" placeholder="What do you want to talk about?"
+                            required></textarea>
                     </div>
                     <!-- Trade Search Container -->
-                    <div id="trade-container" style="display: flex; align-items: center;">
+                    <div id="trade-container" style="display: none; align-items: center;">
                         <!-- Trade Search Input -->
                         <div class="mb-2" style="flex: 1;">
                             <input type="text" id="trade-search" class="form-control"
                                 placeholder="Search for a trade by ID" style="width: 70%;">
                         </div>
-                        <!-- Display a preview of generated img here -->
+                        <!-- Display a preview of the generated img here -->
                         <img id="trade-image-preview" src="" alt="Trade Image Preview"
                             style="max-width: 30%; height: auto; display: none;">
+                        <input style="width: 100%;" type="hidden" id="trade-image" name="trade_image" value="">
+                        <!-- Checkbox and its label container -->
                     </div>
                     <!-- Display selected trade details here -->
                     <div id="selected-trade-details" class="mb-2 mt-2">
                         <p class="mx-2" id="selected-trade-info"></p>
+                        <a id="download-image-link" href="#" style="display: none;"><i class="fas fa-download"></i>
+                            Download Image</a>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer d-flex justify-content-between">
+                        <div class="mb-2">
+                            <input type="file" name="trade_image">
+                        </div>
                         <!-- Share Trade Button -->
-                        <!-- <button type="button" class="btn btn-secondary" id="share-trade-btn">Share Trade</button> -->
-                        <button type="submit" class="btn btn-primary">Post <i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-secondary" id="share-trade-btn">Share Trade</button>
+                        <button id="post-btn" type="submit" class="btn btn-primary">Post <i
+                                class="fas fa-edit"></i></button>
                     </div>
                 </form>
             </div>
@@ -103,51 +111,93 @@
                         for (var i = 0; i < response.length; i++) {
                             detailsHtml += `${response[i].symbol} on ${response[i].date}<br>`;
                             // detailsHtml += `<strong>Trade Info:</strong> ${response[i].long_short}, Margin: $${response[i].margin}, Leverage: ${response[i].leverage}x, Open Price: $${response[i].open_price}, Current Price: $${response[i].current_price}, Return PnL: $${response[i].return_pnl}<br><br>`;
+                            // Toggle the visibility of the checkbox container
+                            // Set selected trade details
+                            selectedTradeDetails = JSON.stringify(response[i]);
+
+                            toggleAttachTradeContainer(response.length > 0);
                         }
                         $('#selected-trade-info').html(detailsHtml);
+
+                        // Function to toggle the visibility of the checkbox container
+                        function toggleAttachTradeContainer(showContainer) {
+                            if (showContainer) {
+                                // Show the checkbox and its label container
+                                $('#attach-trade-container').css('display', 'flex');
+                            } else {
+                                // Hide the checkbox and its label container
+                                $('#attach-trade-container').css('display', 'none');
+                            }
+                        }
 
                         // Display a preview of generated img here
                         const tradeDetails = response[0]; // Assuming you are using the first result
                         const tradeImageSrc = generateTradeImagePreview(tradeDetails);
                         $('#trade-image-preview').attr('src', tradeImageSrc).show();
+
+                        // Set the base64-encoded image data to the hidden field
+                        $('#trade-image').val(tradeImageSrc);
                     } else {
                         console.log('No trades found.');
                         $('#selected-trade-info').html('No trades found.');
                         // Hide the image preview if no trade is found
                         $('#trade-image-preview').hide();
+                        // // Reset values and hide elements when no trade is found
+                        // if (response.length === 0) {
+                        //     resetTradeForm();
+                        // }
                     }
                 },
                 error: function (error) {
                     console.error('Error during trade search:', error);
                 }
             });
+
         }
 
-        // Function to generate trade image preview
+        // Function to generate trade image preview 
         function generateTradeImagePreview(tradeDetails) {
+            // Show the download link
+            $('#download-image-link').show();
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = 150;
-            canvas.height = 150;
+            canvas.width = 500; 
+            canvas.height = 500; 
             ctx.fillStyle = '#007BFF';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '10px Arial';
-            ctx.fillText(`Trader Tribe`, 10, 25);
-            ctx.font = '14px Arial';
-            ctx.fillText(`${tradeDetails.symbol} | ${tradeDetails.long_short} | ${tradeDetails.leverage}x`, 10, 50);
+            ctx.font = '20px Arial'; 
+            ctx.fillText(`Trader Tribe`, 20, 40); 
+            ctx.font = '28px Arial'; 
+            ctx.fillText(`${tradeDetails.symbol} | ${tradeDetails.long_short} | ${tradeDetails.leverage}x`, 20, 80); 
             // Display return pnl with appropriate formatting
             const returnPnlText = (tradeDetails.return_pnl < 0 ? '-$' : '+$') + Math.abs(tradeDetails.return_pnl);
-            ctx.font = '18px Arial';
-            ctx.fillText(returnPnlText, 10, 80);
-            ctx.font = '8px Arial';
-            ctx.fillText(`Close Price  ${tradeDetails.current_price}`, 10, 100);
-            ctx.fillText(`Avg. Open Price  ${tradeDetails.open_price}`, 10, 115);
-            ctx.font = '8px Arial';
-            ctx.fillText(`${tradeDetails.user_name}`, 10, 130);
-            ctx.fillText(`${tradeDetails.date}`, 10, 140);
+            ctx.font = '36px Arial'; 
+            ctx.fillText(returnPnlText, 20, 140); 
+            ctx.font = '16px Arial'; 
+            ctx.fillText(`Close Price  ${tradeDetails.current_price}`, 20, 200); 
+            ctx.fillText(`Avg. Open Price  ${tradeDetails.open_price}`, 20, 240); 
+            ctx.font = '16px Arial'; 
+            ctx.fillText(`${tradeDetails.user_name}`, 20, 280); 
+            ctx.fillText(`${tradeDetails.date}`, 20, 320); 
             return canvas.toDataURL('image/png');
         }
+
+        // Event listener for "Download Image" link
+        $('#download-image-link').on('click', function (e) {
+            e.preventDefault();
+
+            // Get the data URL of the generated image
+            var tradeImageSrc = $('#trade-image-preview').attr('src');
+
+            // Create a temporary link element
+            var downloadLink = document.createElement('a');
+            downloadLink.href = tradeImageSrc;
+            downloadLink.download = 'trade_image.png';
+
+            // Trigger the click event on the link
+            downloadLink.click();
+        });
 
         // Event listener for trade search input
         $('#trade-search').on('input', function () {
@@ -162,12 +212,135 @@
         $('#share-trade-btn').on('click', function () {
             // Toggle the visibility of the trade container
             $('#trade-container').toggle();
+            $('#download-image-link').hide();
+
+            // Set display: flex when the container is visible
+            if ($('#trade-container').is(':visible')) {
+                $('#trade-container').css('display', 'flex');
+            }
+
+            // Reset the form when the modal is closed
+            if (!$('#trade-container').is(':visible')) {
+                resetTradeForm();
+            }
+        });
+
+        // Function to reset trade-related form elements
+        function resetTradeForm() {
+            // Clear the input value
+            $('#trade-search').val('');
+
+            // Clear the selected trade details
+            $('#selected-trade-info').html('');
+
+            // Hide the image preview
+            $('#trade-image-preview').hide();
+
+            // Reset the base64-encoded image data in the hidden field
+            $('#trade-image').val('');
+
+            // If the checkbox is present, uncheck it and hide additional elements
+            $('#attach-trade-checkbox').prop('checked', false);
+            toggleAttachTradeContainer(false);
+        }
+
+        // Function to toggle the visibility of the checkbox container
+        function toggleAttachTradeContainer(showContainer) {
+            if (showContainer) {
+                $('#attach-trade-container').css('display', 'flex');
+            } else {
+                $('#attach-trade-container').css('display', 'none');
+            }
+        }
+
+        // Function to handle trade details logic
+        function handleTradeDetails() {
+            // If a trade is selected, attach trade details to the post
+            if (selectedTradeDetails) {
+                // Parse selected trade details
+                var tradeDetails = JSON.parse(selectedTradeDetails);
+
+                console.log('Selected Trade Details:', tradeDetails);
+
+                // Update the post content with trade details
+                content += `\n\nTrade Details:\nSymbol: ${tradeDetails.symbol}\nDate: ${tradeDetails.date}\n`;
+
+                // Set corresponding form fields with trade details
+                $('input[name="profit_loss"]').val(tradeDetails.return_pnl);
+                console.log('Profit/Loss:', tradeDetails.return_pnl);
+
+                $('input[name="exit_price"]').val(tradeDetails.current_price);
+                console.log('Exit Price:', tradeDetails.current_price);
+
+                $('input[name="entry_price"]').val(tradeDetails.open_price);
+                console.log('Entry Price:', tradeDetails.open_price);
+
+                $('input[name="leverage"]').val(tradeDetails.leverage);
+                console.log('Leverage:', tradeDetails.leverage);
+
+                $('input[name="trade_type"]').val(tradeDetails.long_short);
+                console.log('Trade Type:', tradeDetails.long_short);
+
+                $('input[name="trade_id"]').val(tradeDetails.id);
+                console.log('Trade ID:', tradeDetails.id);
+
+                // Check if the checkbox is checked
+                if ($('#attach-trade-checkbox').is(':checked')) {
+                    // Set the value of the trade image field
+                    $('input[name="trade_image"]').val(tradeDetails.image); // Replace 'image' with the correct property of tradeDetails
+                    console.log('Trade Image Attached:', $('#attach-trade-checkbox').is(':checked'));
+                } else {
+                    console.log('Trade Image Not Attached. Checkbox is not checked.');
+                }
+
+                console.log('Updated Content with Trade Details:', content);
+            }
+        }
+
+        // Event listener for the checkbox
+        $('#attach-trade-checkbox').on('change', function () {
+
+            console.log("Image attached");
+            handleTradeDetails(); // Call the function when checkbox changes
+        });
+
+        // Event listener for "Share Trade" button
+        $('#share-trade-btn').on('click', function () {
+            // Toggle the visibility of the trade container
+            $('#trade-container').toggle();
+
+            // Reset the form when the modal is closed
+            if (!$('#trade-container').is(':visible')) {
+                resetTradeForm();
+            }
+        });
+
+
+        // Event listener for "Share Trade" button
+        $('#share-trade-btn').on('click', function () {
+            // Toggle the visibility of the trade container
+            $('#trade-container').toggle();
         });
 
         // Event listener for "Post" button
         $('#post-btn').on('click', function () {
-            alert('Posting trade image...');
+            // Validate required fields
+            var title = $('input[name="title"]').val();
+            var content = $('textarea[name="content"]').val();
+            var selectedTradeDetails = $('#selected-trade-details').val();
+
+            if (!title || !content) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Call the function before posting
+            handleTradeDetails();
+
+
+            alert('Posting trade image with attached trade details...');
         });
+
     });
 
 </script>
@@ -202,6 +375,9 @@
     </div>
     <h4>{{ post.title }}</h4>
     <p>{{ post.content }}</p>
+    {% if post.trade_image %}
+    <img src="{{ post.trade_image.url }}" style="width: 100%;" alt="Trade Image">
+    {% endif %}
 </div>
 {% endfor %}
 {% endblock blog_content %}
@@ -219,6 +395,9 @@
     </div>
     <h4>{{ post.title }}</h4>
     <p>{{ post.content }}</p>
+    {% if post.trade_image %}
+    <img src="{{ post.trade_image.url }}" alt="Trade Image">
+    {% endif %}
 </div>
 {% endfor %}
 {% endblock blog_content_two %}
@@ -236,6 +415,12 @@
     </div>
     <h4>{{ post.title }}</h4>
     <p>{{ post.content }}</p>
+    {% if "placeholder" in post.trade_image.url %}
+    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704383285/default_qfo6vf.png" alt="Generated Image">
+    {% else %}
+    <img src="{{ post.trade_image.url }}" alt="Trade Image">
+    {% endif %}
+
 </div>
 {% endfor %}
 {% endblock blog_content_three %}

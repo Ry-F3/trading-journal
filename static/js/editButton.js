@@ -7,7 +7,6 @@ $(document).ready(function () {
     let currentRowNumber;  // Variable to store the current row number in edit mode
     let currentTradeId;
     const container = $('.scrollbar-container');
-    console.log(editMode);
 
     // Code for handling "Edit Trade" button click
     $(document).on('click', '.edit-trade-button', function () {
@@ -15,7 +14,6 @@ $(document).ready(function () {
         try {
             const tradeId = $(this).data('trade-id');
             const rowNumber = $(this).data('row-number');
-            console.log(`Edit Trade clicked for row ${rowNumber}`);
             editTrade(tradeId, rowNumber);
         } catch (error) {
             console.error('Error in edit-trade-button click event:', error);
@@ -39,7 +37,6 @@ $(document).ready(function () {
 
     function editTrade(tradeId, rowNumber) {
         if (rowNumber !== null) {
-            console.log(`Attempting to fetch trade details for row: ${rowNumber}`);
             fetch(`/get_trade_details/${tradeId}/${rowNumber}/`, {
                 method: 'GET',
                 headers: {
@@ -53,10 +50,8 @@ $(document).ready(function () {
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Server response:', data);
                     if (data.success) {
                         editMode = true;
-                        console.log("Edit mode:", editMode);
                         currentTradeId = tradeId;
                         currentRowNumber = rowNumber;
                         console.log('ID:', currentTradeId, "Row:", currentRowNumber);
@@ -85,10 +80,6 @@ $(document).ready(function () {
                             $('#id_return_pnl').val('');
                         }
 
-                        // Log the value of saveType
-                        console.log('Save Type:', $('#saveType').val());
-
-                        console.log('Trade Id:', tradeId, 'Row:', currentRowNumber)
                         // Pass the edited data to the saveEditedTrade function
                         saveEditedTrade(data.trade_details);
                         handleEditResponse(data, rowNumber);
@@ -123,21 +114,29 @@ $(document).ready(function () {
                 if (tradeDetails.long_short === 'long') {
                     isShortSelected = false;
                     isLongSelected = true;
-                    console.log("data passed long");
                 } else if (tradeDetails.long_short === 'short') {
                     isShortSelected = true;
                     isLongSelected = false;
-                    console.log("data passed short");
                 }
 
-                // Toggle the visibility of the ID cell
-                console.log('Before toggle: ID cell visibility', $('.id-cell').css('display'));
-                $('.id-cell').toggle();
-                console.log('After toggle: ID cell visibility', $('.id-cell').css('display'));
-
-                $('.id-cell').css('display', function (i, value) {
-                    return value === 'none' ? 'table-cell' : 'none';
+                // Toggle the visibility of the ID cell based on createTradeFormActive
+                $('.id-cell').each(function () {
+                    if (editMode) {
+                        // If form is active, hide the ID cell
+                        console.log('Form is active. Hiding ID cell.');
+                        $(this).css('display', 'none');
+                    } else {
+                        // If form is inactive, show the ID cell as table-cell
+                        console.log('Form is inactive. Showing ID cell as table-cell.');
+                        $(this).css('display', 'table-cell');
+                    }
                 });
+
+
+
+                // $('.id-cell').css('display', function (i, value) {
+                //     return value === 'none' ? 'table-cell' : 'none';
+                // });
 
 
                 // Function to enable input fields
@@ -145,10 +144,7 @@ $(document).ready(function () {
                     $('#id_symbol, #id_date, #id_status, #id_long_short, #id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', false);
                 }
 
-                console.log('Before enableFields()');
                 enableFields();
-                console.log('After enableFields()');
-
 
                 // Toggle the 'hide-cell' class on td elements in the form
                 hideCells.toggleClass('hidden-cell', true);
@@ -156,14 +152,10 @@ $(document).ready(function () {
                 // Toggle the 'hidden-form' class on the createTradeForm
                 createTradeForm.toggleClass('hidden-form', true);
 
-                console.log('Form:', createTradeForm);
-
                 // Set the values of the hidden fields for overwrite
                 $('#currentTradeId').val(currentTradeId);
                 $('#currentRowNumber').val(currentRowNumber);
 
-                // Log success
-                console.log('Trade details loaded:', data.trade_details);
             } else {
                 // Handle errors or provide feedback to the user
                 console.error('Edit failed:', data.error);

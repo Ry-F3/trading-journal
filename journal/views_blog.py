@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .models import BlogPost, Trade
 from .forms import BlogPostForm
 from PIL import Image, ImageDraw, ImageFont
+import base64
 from django.core.files.base import ContentFile
 from io import BytesIO
 
@@ -27,29 +28,39 @@ class BlogView(View):
         return render(request, self.blog, context)
 
     def post(self, request, *args, **kwargs):
-        # Handle form submission
-        blog_post_form = BlogPostForm(request.POST)
+        blog_post_form = BlogPostForm(request.POST, request.FILES)
+        print('post', request.POST)
+        print('files', request.FILES)
+
+        print("POST request received.")
+        
         if blog_post_form.is_valid():
             new_post = blog_post_form.save(commit=False)
             new_post.user = request.user
+
+            # Validate required fields
+            if not new_post.title or not new_post.content:
+                # Handle form validation errors
+                errors = blog_post_form.errors
+                print(f"Form validation errors: {errors}")
+                return JsonResponse({'error': 'Form validation failed', 'errors': errors})
+
+            # If trade_image is present, process it
+            trade_image = request.FILES.get('trade_image')
+
+            # Save the new post
             new_post.save()
-            return redirect('blog')  # Redirect to the same page after form submission
+            print(f"Post saved successfully: {new_post.title}")
 
-        posts = BlogPost.objects.all()
-        # Split all posts into three sets for three boxes
-        num_boxes = 3
-        posts_sets = [posts[i::num_boxes] for i in range(num_boxes)]
+            return JsonResponse({'success': True, 'message': 'Post and image uploaded successfully'})
 
-        context = {'blog_post_form': blog_post_form, 'posts_sets': posts_sets}
-
-        if request.user.is_authenticated:
-            user_name = request.user.username 
-            context['user_name'] = user_name
-
-        return render(request, self.blog, context)
+        # If form is not valid
+        errors = blog_post_form.errors
+        print(f"Form validation errors: {errors}")
+        return JsonResponse({'error': 'Form validation failed', 'errors': errors})
     
     # Function to generate trade image
-    def generate_trade_image():
+    def generate_trade_image(trade_details):
         # Create a blank image
         image = Image.new("RGB", (400, 200), "white")
         draw = ImageDraw.Draw(image)
@@ -96,14 +107,22 @@ def search_trade(request):
             'symbol': trade.symbol,
             'date': trade.date.strftime('%Y-%m-%d'),  # Format the date
             'long_short': trade.long_short,
-            'margin': float(trade.margin),  
-            'leverage': float(trade.leverage),  
-            'open_price': float(trade.open_price), 
-            'current_price': float(trade.current_price),  
-            'return_pnl': float(trade.return_pnl),  
+            'margin': float(trade.margin),
+            'leverage': float(trade.leverage),
+            'open_price': float(trade.open_price),
+            'current_price': float(trade.current_price),
+            'return_pnl': float(trade.return_pnl),
         })
 
     return JsonResponse(response_data, safe=False)
+
+    # Prepare the results as a list of dictionaries
+    results = [{'id': trade.id, 'symbol': trade.symbol, 'date': trade.date} for trade in trades_results]
+
+    # Return the results as a JSON response
+    print(f"Results: {results}")
+    return JsonResponse(results, safe=False)
+
 
     # Prepare the results as a list of dictionaries
     results = [{'id': trade.id, 'symbol': trade.symbol, 'date': trade.date} for trade in trades_results]

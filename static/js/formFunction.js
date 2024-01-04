@@ -4,12 +4,10 @@ $(document).ready(function () {
     const createTradeForm = $('#createTradeForm');
     const showCreateTradeForm = $('#showCreateTradeForm');
     const hideCells = $('.hide-cell');
-    const createTradeButton = $('#createTradeButton');
     const container = $('.scrollbar-container');
 
 
     let createTradeFormActive = false; // Flag to track if the createTrade form is active
-    console.log('form inactive', createTradeFormActive);
 
     // Add an event listener for the delete button
     $('.delete-trade-button').click(function () {
@@ -25,8 +23,6 @@ $(document).ready(function () {
         // Call the function to update row numbers and IDs
         updateRowNumbersAndIds();
 
-        console.log('Content updated.');
-
     });
 
 
@@ -36,13 +32,11 @@ $(document).ready(function () {
 
         if (buttonText === 'Create Trade') {
             createTradeForm.css('display', 'block');
-            console.log('Current state of createTradeForm:', createTradeForm.css('display'));
             // Code for handling "Create Trade" button click
             createTradeFormActive = true;
             handleFormVisibility();
         } else if (buttonText === 'Cancel Trade') {
             createTradeForm.css('display', 'none');
-            console.log('Current state of createTradeForm:', createTradeForm.css('display', 'none'));
             // Code for handling "Cancel Trade" button click
             console.log('editMode:', editMode);
             createTradeFormActive = false;
@@ -52,9 +46,6 @@ $(document).ready(function () {
 
     // Function to handle form visibility and behavior
     function handleFormVisibility() {
-        console.log('inside function', createTradeFormActive);
-        const wasFormActive = createTradeFormActive;
-        console.log('edit in function', editMode);
 
         if (createTradeFormActive) {
             // Code for when the form is active
@@ -75,30 +66,30 @@ $(document).ready(function () {
             $('#id_current_price').val('');
             $('#id_return_pnl').val('');
 
+            console.log('Script is running 1st.');
+
             // Toggle the visibility of the ID cell based on createTradeFormActive
             $('.id-cell').each(function () {
                 if (createTradeFormActive) {
                     // If form is active, hide the ID cell
+                    console.log('Form is active. Hiding ID cell.');
                     $(this).css('display', 'none');
                 } else {
                     // If form is inactive, show the ID cell as table-cell
+                    console.log('Form is inactive. Showing ID cell as table-cell.');
                     $(this).css('display', 'table-cell');
                 }
             });
 
             // // Toggle the visibility of the hide-cell elements
-            console.log('Before Toggle: Hide Cells Visibility 0:', hideCells.hasClass('hidden-cell'));
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
-            console.log('After Toggle: Hide Cells Visibility 0:', hideCells.hasClass('hidden-cell'));
 
             // Function to enable input fields
             function disableFields() {
                 $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
             }
 
-            console.log('Before enableFields()');
             disableFields();
-            console.log('After enableFields()');
 
             // Check your condition here and set the save type accordingly
             if (createTradeFormActive) {
@@ -111,7 +102,6 @@ $(document).ready(function () {
 
         } else {
             // Code for when the form is inactive
-            console.log('Form is now inactive');
             container.scrollTop(0);
 
 
@@ -119,17 +109,19 @@ $(document).ready(function () {
             $('#id_symbol, #id_date, #id_status, #id_long_short, #id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').val('');
 
             // Toggle the visibility of the hide-cell elements
-            console.log('Before Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
-            console.log('After Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
+
+            console.log('Script is running 2nd.');
 
             // Toggle the visibility of the ID cell based on createTradeFormActive
             $('.id-cell').each(function () {
                 if (createTradeFormActive) {
                     // If form is active, hide the ID cell
+                    console.log('Form is active. Hiding ID cell.');
                     $(this).css('display', 'none');
                 } else {
                     // If form is inactive, show the ID cell as table-cell
+                    console.log('Form is inactive. Showing ID cell as table-cell.');
                     $(this).css('display', 'table-cell');
                 }
             });
@@ -143,14 +135,9 @@ $(document).ready(function () {
         // Set the save type based on form activity
         $('#saveType').val(createTradeFormActive ? 'regular' : 'overwrite');
 
-        // Log the value of saveType
-        console.log('Save Type:', $('#saveType').val());
-
-
         // Revert the button text based on form activity
         showCreateTradeForm.text(createTradeFormActive ? 'Cancel Trade' : 'Create Trade');
     }
-
 
 
     // Function to handle the deletion of a trade

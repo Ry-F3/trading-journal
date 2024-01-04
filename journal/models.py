@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
 
 # User Model
 class UserProfile(models.Model):
@@ -136,7 +137,7 @@ class BlogPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     content = models.TextField()
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField(default=timezone.now, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_post_likes', blank=True)
     shares = models.ManyToManyField(User, related_name='blog_post_shares', blank=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
@@ -146,7 +147,7 @@ class BlogPost(models.Model):
     exit_price = models.FloatField(null=True, blank=True)
     leverage = models.FloatField(null=True, blank=True)
     trade_type = models.CharField(max_length=255, null=True, blank=True)
-    trade_image = models.ImageField(upload_to='trade_images/', null=True, blank=True)
+    trade_image = CloudinaryField('image', default='placeholder', null=True, blank=True)
     
     def save(self, *args, **kwargs):
         if not self.slug:

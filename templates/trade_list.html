@@ -65,25 +65,30 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">
             <i class="fas fa-exchange-alt"></i>  Update Balance
         </button>
+    </div>
+</div>
 
-        <!-- Modal for updating portfolio balance -->
-        <div class="modal fade" id="updateBalanceModal" tabindex="-1" aria-labelledby="updateBalanceModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="updateBalanceModalLabel">Add or Subtract Money</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal for updating portfolio balance -->
+<div class="modal fade" id="updateBalanceModal" tabindex="-1" aria-labelledby="updateBalanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateBalanceModalLabel">Add or Subtract Money</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'update_portfolio_balance' %}">
+                <!-- Portfolio Balance Update Form -->
+                    <div class="mb-3" style="height: 120px;">
+                        {% csrf_token %}
+                        {{ portfolio_balance_form.as_p }}
                     </div>
-                    <div class="modal-body">
-                        <!-- Portfolio Balance Update Form -->
-                        <form method="post" action="{% url 'update_portfolio_balance' %}">
-                            {% csrf_token %}
-                            {{ portfolio_balance_form.as_p }}
-                            <button type="submit" name="action" value="add" class="btn btn-primary">Add Money</button>
-                            <button type="submit" name="action" value="subtract" class="btn btn-secondary">Withraw Money</button>
-                        </form>
+
+                    <div class="modal-footer">
+                        <button type="submit" name="action" value="add" class="btn btn-primary">Add Money</button>
+                        <button type="submit" name="action" value="subtract" class="btn btn-secondary">Withdraw Money</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

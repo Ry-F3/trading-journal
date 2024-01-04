@@ -49,11 +49,11 @@ class TradeForm(forms.ModelForm):
     
 class PortfolioBalanceForm(forms.Form):
     portfolio_balance = forms.DecimalField(
-        label='Update Balance:',
+        label='Enter your desired amount:',
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control form-control-sm',
-                'placeholder': 'Update Balance',
+                'placeholder': 'Update your Balance e.g $,000',
                 'step': 'any',  # Allow any step value
                 'min': 0,       # Set the minimum allowed value
                 'max': 1000000000000,  # Set the maximum allowed value if needed
@@ -116,9 +116,33 @@ class BlogPostForm(forms.ModelForm):
     
     class Meta:
         model = BlogPost
-        fields = ['title', 'content', 'timestamp', 'likes',  'profit_percentage', 'profit_loss', 'entry_price', 'exit_price', 'leverage', 'trade_type', 'trade_image']
+        fields = ['title', 'content', 'timestamp', 'likes', 'profit_loss', 'entry_price', 'exit_price', 'leverage', 'trade_type', 'trade_image']
         widgets = {
-            'timestamp': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+                'timestamp': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'required': False}),
+        }
+        
+        labels = {
+            'title': 'Post Title',
+            'content': 'Content',
+            'timestamp': 'Timestamp',
+            'likes': 'Likes',
+            'profit_loss': 'Profit/Loss',
+            'entry_price': 'Entry Price',
+            'exit_price': 'Exit Price',
+            'leverage': 'Leverage',
+            'trade_type': 'Trade Type',
+            'trade_image': 'Trade Image',
+        }
+        required = {
+            'title': True,
+            'content': True,
+            'likes': False,  
+            'profit_loss': False,  
+            'entry_price': False,  
+            'exit_price': False,  
+            'leverage': False,  
+            'trade_type': False,  
+            'trade_image': True,
         }
         
     def __init__(self, *args, **kwargs):
