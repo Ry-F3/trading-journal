@@ -23,6 +23,7 @@ $(document).ready(function () {
 
         // Scroll to the bottom of the container
         container.scrollTop(container[0].scrollHeight);
+
     });
 
 
@@ -128,6 +129,15 @@ $(document).ready(function () {
                     isLongSelected = false;
                     console.log("data passed short");
                 }
+
+                // Toggle the visibility of the ID cell
+                console.log('Before toggle: ID cell visibility', $('.id-cell').css('display'));
+                $('.id-cell').toggle();
+                console.log('After toggle: ID cell visibility', $('.id-cell').css('display'));
+
+                $('.id-cell').css('display', function (i, value) {
+                    return value === 'none' ? 'table-cell' : 'none';
+                });
 
 
                 // Function to enable input fields

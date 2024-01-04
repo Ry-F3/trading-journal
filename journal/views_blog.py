@@ -92,6 +92,7 @@ def search_trade(request):
     for trade in user_trades:
         response_data.append({
             'id': trade.id,
+            'user_name': trade.user.username,
             'symbol': trade.symbol,
             'date': trade.date.strftime('%Y-%m-%d'),  # Format the date
             'long_short': trade.long_short,

@@ -59,7 +59,7 @@
                     </div>
                     <div class="modal-footer">
                         <!-- Share Trade Button -->
-                        <button type="button" class="btn btn-secondary" id="share-trade-btn">Share Trade</button>
+                        <!-- <button type="button" class="btn btn-secondary" id="share-trade-btn">Share Trade</button> -->
                         <button type="submit" class="btn btn-primary">Post <i class="fas fa-edit"></i></button>
                     </div>
                 </form>
@@ -131,12 +131,21 @@
             canvas.height = 150;
             ctx.fillStyle = '#007BFF';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.font = '10px Arial';
             ctx.fillStyle = 'white';
-            ctx.fillText(`${tradeDetails.date}`, 10, 110);
+            ctx.font = '10px Arial';
+            ctx.fillText(`Trader Tribe`, 10, 25);
             ctx.font = '14px Arial';
-            ctx.fillText("Trader Tribe", 10, 25);
-            ctx.fillText(`${tradeDetails.symbol} ${tradeDetails.long_short} ${tradeDetails.leverage}x`, 10, 40);
+            ctx.fillText(`${tradeDetails.symbol} | ${tradeDetails.long_short} | ${tradeDetails.leverage}x`, 10, 50);
+            // Display return pnl with appropriate formatting
+            const returnPnlText = (tradeDetails.return_pnl < 0 ? '-$' : '+$') + Math.abs(tradeDetails.return_pnl);
+            ctx.font = '18px Arial';
+            ctx.fillText(returnPnlText, 10, 80);
+            ctx.font = '8px Arial';
+            ctx.fillText(`Close Price  ${tradeDetails.current_price}`, 10, 100);
+            ctx.fillText(`Avg. Open Price  ${tradeDetails.open_price}`, 10, 115);
+            ctx.font = '8px Arial';
+            ctx.fillText(`${tradeDetails.user_name}`, 10, 130);
+            ctx.fillText(`${tradeDetails.date}`, 10, 140);
             return canvas.toDataURL('image/png');
         }
 

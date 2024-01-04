@@ -18,7 +18,7 @@ $(document).ready(function () {
         deleteTrade(tradeId, rowNumber);
     });
 
-    
+
     // Add an event listener for pagination links
     $('.pagination a').on('click', function (e) {
         console.log('Pagination link clicked.');
@@ -75,6 +75,17 @@ $(document).ready(function () {
             $('#id_current_price').val('');
             $('#id_return_pnl').val('');
 
+            // Toggle the visibility of the ID cell based on createTradeFormActive
+            $('.id-cell').each(function () {
+                if (createTradeFormActive) {
+                    // If form is active, hide the ID cell
+                    $(this).css('display', 'none');
+                } else {
+                    // If form is inactive, show the ID cell as table-cell
+                    $(this).css('display', 'table-cell');
+                }
+            });
+
             // // Toggle the visibility of the hide-cell elements
             console.log('Before Toggle: Hide Cells Visibility 0:', hideCells.hasClass('hidden-cell'));
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
@@ -111,6 +122,17 @@ $(document).ready(function () {
             console.log('Before Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
             console.log('After Toggle: Hide Cells Visibility 1:', hideCells.hasClass('hidden-cell'));
+
+            // Toggle the visibility of the ID cell based on createTradeFormActive
+            $('.id-cell').each(function () {
+                if (createTradeFormActive) {
+                    // If form is active, hide the ID cell
+                    $(this).css('display', 'none');
+                } else {
+                    // If form is inactive, show the ID cell as table-cell
+                    $(this).css('display', 'table-cell');
+                }
+            });
 
         }
 
