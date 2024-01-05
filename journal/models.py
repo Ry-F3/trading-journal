@@ -157,17 +157,11 @@ class BlogPost(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.title} - {self.timestamp}"
 
-# Trade Image Model
-class TradeImage(models.Model):
+class Comment(models.Model):
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='trade_images/')
-    caption = models.TextField(blank=True)
+    content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='trade_likes', blank=True)
-    shares = models.ManyToManyField(User, related_name='trade_shares', blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.timestamp}"
 
 # User Connection Model
 class UserConnection(models.Model):

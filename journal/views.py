@@ -499,7 +499,7 @@ def plot_realized_profits_chart(request):
         interval_delta = timedelta(hours=1)
 
     # Plot the chart with a line connecting data points
-    plt.plot(x_values, realized_profits, linestyle='-', color='#0d6efd', linewidth=2)
+    plt.plot(x_values, realized_profits, linestyle='-', color='#0231f1', linewidth=2)
 
     # Customize chart appearance
     plt.gcf().set_size_inches(12, 6)  # Set the size of the figure (adjust width as needed)

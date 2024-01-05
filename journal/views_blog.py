@@ -3,17 +3,61 @@ from django.views.decorators.http import require_POST
 from django.views import View
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
-from .models import BlogPost, Trade
-from .forms import BlogPostForm
+from .models import BlogPost, Trade, Comment
+from .forms import BlogPostForm, CommentForm
 from PIL import Image, ImageDraw, ImageFont
 import base64
 from django.core.files.base import ContentFile
 from io import BytesIO
 
 
+def initialise_blog_context(request, posts):
+    posts_per_box = 1
+    posts_sets = []
+
+    start = 0
+    for i in range(3):
+        if start < len(posts):
+            posts_sets.append(posts[start:start + posts_per_box])
+            start += posts_per_box
+        else:
+            posts_sets.append([])
+
+    remaining_posts = posts.exclude(id__in=[post.id for posts_set in posts_sets for post in posts_set])
+
+    like_counts = {}
+    total_like_count = 0
+    for post_set in posts_sets:
+        for post in post_set:
+            like_count = post.likes.filter(id=request.user.id).count()
+            like_counts[post.id] = int(like_count)
+            total_like_count += like_counts[post.id]
+            print(like_counts)
+            print("Total Like Count:", total_like_count)
+
+    return {
+        'posts_sets': posts_sets,
+        'remaining_posts': remaining_posts,
+        'like_counts': like_counts,
+        'total_like_count': total_like_count,
+    }
+
+    
+@login_required
 def view_post(request, post_id):
+    blog_post_form = BlogPostForm()
+    all_posts = BlogPost.objects.order_by('-timestamp')
+
+    context = initialise_blog_context(request, all_posts)
+    context.update({
+        'blog_post_form': blog_post_form,
+        'user_name': request.user.username if request.user.is_authenticated else None,
+    })
+
     post = get_object_or_404(BlogPost, pk=post_id)
-    return render(request, 'blog.html', {'post': post})
+    context['post'] = post
+
+    return render(request, 'blog.html', context)
 
 @login_required
 @require_POST
@@ -34,44 +78,43 @@ def like_toggle(request):
     like_count = blog_post.likes.count()
     return JsonResponse({'like_count': like_count})
 
+@login_required
+def add_comment(request, post_id):
+    post = BlogPost.objects.get(pk=post_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            return redirect('view_post', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'blog.html', {'form': form})
+
 class BlogView(View):
     blog = 'blog.html'
     
     def get(self, request, *args, **kwargs):
+        post_id = kwargs.get('post_id')
         blog_post_form = BlogPostForm()
         all_posts = BlogPost.objects.order_by('-timestamp')
 
-        posts_per_box = 1
-        posts_sets = []
-
-        start = 0
-        for i in range(3):
-            if start < len(all_posts):
-                posts_sets.append(all_posts[start:start+posts_per_box])
-                start += posts_per_box
-            else:
-                posts_sets.append([])
-
-        remaining_posts = all_posts.exclude(id__in=[post.id for posts_set in posts_sets for post in posts_set])
-
-        like_counts = {}
-        total_like_count = 0
-        for post_set in posts_sets:
-                for post in post_set:
-                    like_count = post.likes.filter(id=request.user.id).count()
-                    like_counts[post.id] = int(like_count)
-                    total_like_count += like_counts[post.id]
-        print(like_counts)
-        print("Total Like Count:", total_like_count)
-
-        context = {
+        context = initialise_blog_context(request, all_posts)
+        context.update({
             'blog_post_form': blog_post_form,
-            'posts_sets': posts_sets,
-            'remaining_posts': remaining_posts,
-            'like_counts': like_counts,
-            'total_like_count': total_like_count,
             'user_name': request.user.username if request.user.is_authenticated else None,
-        }
+        })
+
+
+        # Check if post_id is present in the URL
+        if post_id:
+            # If present, retrieve the specific post and add it to the context
+            post = get_object_or_404(BlogPost, pk=post_id)
+            context['post'] = post
 
         return render(request, self.blog, context)
 

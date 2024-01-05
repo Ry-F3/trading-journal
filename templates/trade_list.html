@@ -7,15 +7,15 @@
 {% block heading_home %}
 <h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
 <a href="{% url 'generate_report' %}?format=pdf"
-class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+class="d-none d-sm-inline-block btn btn-sm bg-dk-blue shadow-sm"><i
     class="fas fa-download fa-sm text-white-50"></i> Generate PDF Report</a>
     
 {% endblock heading_home %}
 
 <!-- Sidebar Header -->
 {% block sidebar_header_home %}
-<div style="background-color: #6c757d;"
-     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+<div 
+     class="card-header py-3 d-flex bg-dk-grey flex-row align-items-center justify-content-between"
      data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
     <h6 class="m-0 font-weight-bold text-white">
         Filters 
@@ -62,7 +62,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         </div>
 
         <!-- Button to trigger the form modal -->
-        <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">
+        <button type="button" class="btn bg-dk-blue mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">
             <i class="fas fa-exchange-alt"></i>  Update Balance
         </button>
     </div>
@@ -85,7 +85,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" name="action" value="add" class="btn btn-primary">Add Money</button>
+                        <button type="submit" name="action" value="add" class="btn bg-dk-blue">Add Money</button>
                         <button type="submit" name="action" value="subtract" class="btn btn-secondary">Withdraw Money</button>
                     </div>
                 </form>
@@ -157,7 +157,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
         display: none;
     } */
     
-    
+ 
 </style>
 <span><a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted small"></i></a></span>
 <div class="p-3 m-2 scrollbar-container card-body">
@@ -203,29 +203,29 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     </td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn btn-secondary btn-sm square-btn delete-trade-button"
+                        <button class="btn bg-dk-grey btn-sm square-btn delete-trade-button"
                             data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
                     </td>
                 </tr>
                 {% endfor %}
                 <div class="d-flex align-items-center">
-                    <button id="showCreateTradeForm" class="btn btn-primary mb-3">Create Trade</button>
+                    <button id="showCreateTradeForm" class="btn bg-dk-blue mb-3">Create Trade</button>
 
                     <!-- Pagination Links -->
                     <div class="pagination">
-                        <span class="step-links p-3 pb-4 m-2">
+                        <span class="step-links p-3 pb-4 m-2 txt-dk-blue">
                             {% if trades.has_previous %}
-                                <a href="?page=1{% if get_params %}&{{ get_params.urlencode }}{% endif %}">&laquo; first</a>
-                                <a href="?page={{ trades.previous_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">previous</a>
+                                <a class="txt-dk-blue" href="?page=1{% if get_params %}&{{ get_params.urlencode }}{% endif %}">&laquo; first</a>
+                                <a class="txt-dk-blue" href="?page={{ trades.previous_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">previous</a>
                             {% endif %}
                     
-                            <span class="current">
+                            <span class="current text-muted">
                                 Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
                             </span>
                     
                             {% if trades.has_next %}
-                                <a href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
-                                <a href="?page={{ trades.paginator.num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
+                                <a class="txt-dk-blue" href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
+                                <a class="txt-dk-blue" href="?page={{ trades.paginator.num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
                             {% endif %}
                         </span>
                     </div>
@@ -302,7 +302,7 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 {% endblock trade_content %}
 
 {% block help_button %}
-<button type="button" class="outline-0 border-0 btn-primary" data-bs-toggle="modal"
+<button type="button" class="outline-0 border-0 bg-dk-blue" data-bs-toggle="modal"
 data-bs-target="#helpModal1">
 <i class="fas fa-question-circle"></i>
 </button>

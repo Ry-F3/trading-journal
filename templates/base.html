@@ -51,7 +51,7 @@
                 {% if user.is_authenticated %}
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <button class="btn" type="submit">Search</button>
                 </form>
                 {% endif %}
             </div>
@@ -69,8 +69,7 @@
                 <div class="col-md-2 mt-2 p-3">
                     <div class="card">
                         <div class="card">
-                            <div style="background-color: #6c757d;"
-                                class="card-header py-3 d-flex flex-column align-items-center justify-content-center">
+                            <div class="card-header bg-dk-grey py-3 d-flex flex-column align-items-center justify-content-center">
                                 <div class="bg-white rounded-circle d-flex align-items-center justify-content-center"
                                     style="height: 5vw; width: 5vw; overflow: hidden;">
                                     <!-- This div will be a circular element with an adaptive size -->
@@ -82,8 +81,8 @@
                                 </div>
                             </div>
                             <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                <a href="">Account</a>
-                                <a href="">Help</a>
+                                <a href="" class="txt-dk-blue">Account</a>
+                                <a href="" class="txt-dk-blue">Help</a>
                                 <button type="button" class="outline-0 border-0 mt-2" data-bs-toggle="modal"
                                     data-bs-target="#signOutModal">
                                     Sign Out
@@ -286,7 +285,7 @@
                                                 <!-- Help content goes here -->
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn bg-dk-grey"
                                                     data-bs-dismiss="modal">Close</button>
                                             </div>
                                         </div>
@@ -311,10 +310,10 @@
                 <div class="mb-4">
                     <span class="text-muted mb-3 d-block">Connect with us:</span>
                     <div>
-                        <a href="#" class="mx-2 social-link"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="mx-2 social-link"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="mx-2 social-link"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="mx-2 social-link"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="mx-2 social-link"><i class="fab txt-dk-blue fa-twitter fa-lg"></i></a>
+                        <a href="#" class="mx-2 social-link"><i class="fab txt-dk-blue fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="mx-2 social-link"><i class="fab txt-dk-blue fa-instagram fa-lg"></i></a>
+                        <a href="#" class="mx-2 social-link"><i class="fab txt-dk-blue fa-linkedin-in fa-lg"></i></a>
                     </div>
                 </div>
 
@@ -322,10 +321,10 @@
                 <div>
                     <span class="text-muted mb-3 d-block">Quick Links:</span>
                     <div>
-                        <a href="#" class="footer-link">Home</a>
-                        <a href="#" class="footer-link">About Us</a>
-                        <a href="#" class="footer-link">Blog</a>
-                        <a href="#" class="footer-link">Contact</a>
+                        <a href="#" class="footer-link txt-dk-blue">Home</a>
+                        <a href="#" class="footer-link txt-dk-blue">About Us</a>
+                        <a href="#" class="footer-link txt-dk-blue">Blog</a>
+                        <a href="#" class="footer-link txt-dk-blue">Contact</a>
                     </div>
                 </div>
             </div>
@@ -345,8 +344,8 @@
                     <div class="modal-footer">
                         <form id="signOutForm" method="post" action="{% url 'account_logout' %}">
                             {% csrf_token %}
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="confirmSignOutBtn">Sign Out</button>
+                            <button type="button" class="btn bg-dk-grey" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn bg-dk-blue" id="confirmSignOutBtn">Sign Out</button>
                         </form>
                     </div>
                 </div>

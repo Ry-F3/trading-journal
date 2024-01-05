@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trade, BlogPost  
+from .models import Trade, BlogPost, Comment  
 
 class TradeForm(forms.ModelForm):
     class Meta:
@@ -53,7 +53,7 @@ class PortfolioBalanceForm(forms.Form):
         widget=forms.NumberInput(
             attrs={
                 'class': 'form-control form-control-sm',
-                'placeholder': 'Update your Balance e.g $,000',
+                'placeholder': 'Update your Balance e.g $1,000',
                 'step': 'any',  # Allow any step value
                 'min': 0,       # Set the minimum allowed value
                 'max': 1000000000000,  # Set the maximum allowed value if needed
@@ -154,5 +154,7 @@ class BlogPostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['timestamp'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
 
-        
-    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']        
