@@ -57,6 +57,11 @@ class HomeView(View):
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
             
+                        
+            # Use get_trade_list to get trades, last_page, and current_page
+            trades, last_page, current_page = get_trade_list(request.user, request)
+
+            
              # Get the user's portfolio balance
             portfolio_balance = user_profile.portfolio_balance
             
@@ -96,8 +101,8 @@ class HomeView(View):
                 'trades': trades,
                 'form': form,
                 'pnl_data': pnl_data,
-                'last_page': last_page,
                 'current_page': current_page,
+                'last_page': last_page,
                 'portfolio_balance_form': portfolio_balance_form,
                 'user_name': user_name,
                 'time_interval': time_interval,
@@ -105,6 +110,8 @@ class HomeView(View):
                 'filter_form': filter_form, 
                 'messages_to_display': messages_to_display,
             }
+            # Debugging output
+            print(f"Last Page: {last_page}, Current Page: {current_page}")
             return render(request, self.home, context)
         else:
             return redirect('account/login')
@@ -393,7 +400,7 @@ def trade_list(request):
     
     # Pagination
     paginator = Paginator(trades, 4)  # Show 5 trades per page
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
 
     # Determine the last page dynamically
     last_page = paginator.num_pages
@@ -402,10 +409,10 @@ def trade_list(request):
         # If page is not an integer, deliver last page.
         trades = paginator.page(page)
     except PageNotAnInteger:
-        trades = paginator.page(last_page)
+        trades = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        trades = paginator.page(last_page)
+        trades = paginator.page(paginator.num_pages)
 
     # If no specific page parameter is provided, redirect to the last page
     if not page:

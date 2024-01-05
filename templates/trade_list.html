@@ -220,12 +220,12 @@ class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                             {% endif %}
                     
                             <span class="current">
-                                Page {{ current_page }} of {{ num_pages }}.
+                                Page {{ trades.number }} of {{ trades.paginator.num_pages }}.
                             </span>
                     
                             {% if trades.has_next %}
                                 <a href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
-                                <a href="?page={{ num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
+                                <a href="?page={{ trades.paginator.num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
                             {% endif %}
                         </span>
                     </div>

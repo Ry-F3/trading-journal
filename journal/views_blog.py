@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
 from .models import BlogPost, Trade
 from .forms import BlogPostForm
 from PIL import Image, ImageDraw, ImageFont
@@ -8,29 +10,74 @@ import base64
 from django.core.files.base import ContentFile
 from io import BytesIO
 
+
+def view_post(request, post_id):
+    post = get_object_or_404(BlogPost, pk=post_id)
+    return render(request, 'blog.html', {'post': post})
+
+@login_required
+@require_POST
+def like_toggle(request):
+    object_id = request.POST.get('object_id')
+    blog_post = get_object_or_404(BlogPost, id=object_id)
+
+    # Check if the user has already liked the object
+    user_has_liked = blog_post.likes.filter(id=request.user.id).exists()
+
+    # Toggle like status
+    if user_has_liked:
+        blog_post.likes.remove(request.user)
+    else:
+        blog_post.likes.add(request.user)
+
+    # Return the updated like count
+    like_count = blog_post.likes.count()
+    return JsonResponse({'like_count': like_count})
+
 class BlogView(View):
     blog = 'blog.html'
-
+    
     def get(self, request, *args, **kwargs):
         blog_post_form = BlogPostForm()
-        posts = BlogPost.objects.all()
+        all_posts = BlogPost.objects.order_by('-timestamp')
 
-        # Split all posts into three sets for three boxes
-        num_boxes = 3
-        posts_sets = [posts[i::num_boxes] for i in range(num_boxes)]
+        posts_per_box = 1
+        posts_sets = []
 
-        context = {'blog_post_form': blog_post_form, 'posts_sets': posts_sets}
+        start = 0
+        for i in range(3):
+            if start < len(all_posts):
+                posts_sets.append(all_posts[start:start+posts_per_box])
+                start += posts_per_box
+            else:
+                posts_sets.append([])
 
-        if request.user.is_authenticated:
-            user_name = request.user.username 
-            context['user_name'] = user_name
+        remaining_posts = all_posts.exclude(id__in=[post.id for posts_set in posts_sets for post in posts_set])
+
+        like_counts = {}
+        total_like_count = 0
+        for post_set in posts_sets:
+                for post in post_set:
+                    like_count = post.likes.filter(id=request.user.id).count()
+                    like_counts[post.id] = int(like_count)
+                    total_like_count += like_counts[post.id]
+        print(like_counts)
+        print("Total Like Count:", total_like_count)
+
+        context = {
+            'blog_post_form': blog_post_form,
+            'posts_sets': posts_sets,
+            'remaining_posts': remaining_posts,
+            'like_counts': like_counts,
+            'total_like_count': total_like_count,
+            'user_name': request.user.username if request.user.is_authenticated else None,
+        }
 
         return render(request, self.blog, context)
 
+
     def post(self, request, *args, **kwargs):
         blog_post_form = BlogPostForm(request.POST, request.FILES)
-        print('post', request.POST)
-        print('files', request.FILES)
 
         print("POST request received.")
         
@@ -43,7 +90,7 @@ class BlogView(View):
                 # Handle form validation errors
                 errors = blog_post_form.errors
                 print(f"Form validation errors: {errors}")
-                return JsonResponse({'error': 'Form validation failed', 'errors': errors})
+                return render(request, self.blog, {'error': 'Form validation failed', 'errors': errors})
 
             # If trade_image is present, process it
             trade_image = request.FILES.get('trade_image')
@@ -52,12 +99,13 @@ class BlogView(View):
             new_post.save()
             print(f"Post saved successfully: {new_post.title}")
 
-            return JsonResponse({'success': True, 'message': 'Post and image uploaded successfully'})
+            return redirect('blog')  # Redirect to the blog page after successful post
 
-        # If form is not valid
-        errors = blog_post_form.errors
-        print(f"Form validation errors: {errors}")
-        return JsonResponse({'error': 'Form validation failed', 'errors': errors})
+        # If form is not valid, render the page with errors
+        return render(request, self.blog, {'error': 'Invalid form submission'})
+    
+    def get_like_count(self, post):
+        return Like.objects.filter(liked=self).count()
     
     # Function to generate trade image
     def generate_trade_image(trade_details):
@@ -145,4 +193,3 @@ def get_trade_details(request):
     except Trade.DoesNotExist:
         print("Trade not found.")
         return JsonResponse({'error': 'Trade not found'}, status=404)
-

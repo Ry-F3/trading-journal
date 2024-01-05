@@ -119,6 +119,11 @@ class BlogPostForm(forms.ModelForm):
         fields = ['title', 'content', 'timestamp', 'likes', 'profit_loss', 'entry_price', 'exit_price', 'leverage', 'trade_type', 'trade_image']
         widgets = {
                 'timestamp': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'required': False}),
+                'profit_loss': forms.HiddenInput(),
+                'entry_price': forms.HiddenInput(),
+                'exit_price': forms.HiddenInput(),
+                'leverage': forms.HiddenInput(),
+                'trade_type': forms.HiddenInput(),
         }
         
         labels = {
