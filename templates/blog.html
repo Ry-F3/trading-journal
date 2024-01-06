@@ -279,13 +279,14 @@
     });
 
 </script>
-
 {% endblock heading_blog %}
+
+
 
 <!-- Sidebar Header -->
 {% block sidebar_header_blog %}
-<div class="card-header py-3 d-flex flex-row align-items-center bg-dk-grey justify-content-between" data-bs-toggle="collapse"
-    data-bs-target="#sidebarCollapse">
+<div class="card-header py-3 d-flex flex-row align-items-center light-blue justify-content-between"
+    data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
     <h6 class="m-0 font-weight-bold text-white">
         Recent Posts
     </h6>
@@ -313,7 +314,7 @@
 </style>
 
 <!-- Display a separate box for viewing all posts as a list -->
-<div class="all-posts-box p-3 rounded text-center" style="max-height: 300px; overflow-y: auto; width: 120%;">
+<div class="all-posts-box p-3 rounded text-center" style="max-height: 300px; overflow-y: auto; width: 100%;">
     <ul class="list-group">
         {% for post in remaining_posts %}
         <li class="list-group-item small mb-1 bg-light">
@@ -330,6 +331,31 @@
 {% block blog_content %}
 {% for post in posts_sets.0 %}
 <div class="box-1">
+    <!-- Like Buttons Container -->
+    <div class="position-absolute top-0 end-0 mt-2 mr-2 p-4">
+        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
+            {% csrf_token %}
+            <input type="hidden" name="object_id" value="{{ post.id }}">
+            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+                {% if user_name and post.id in individual_like_counts %}
+                <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% else %}
+                <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% endif %}
+            </button>
+            {% for post_id, like_count in individual_like_counts.items %}
+            {% if post.id == post_id %}
+            <p class="like-count ml-2 mt-1" data-object-id="{{ post.id }}">
+                {% if like_count > 0 %}
+                {{ like_count }}
+                {% else %}
+                0
+                {% endif %}
+            </p>
+            {% endif %}
+            {% endfor %}
+        </form>
+    </div>
     <div class="d-flex align-items-center justify-content-start mt-2">
         <div class="rounded-circle bg-dk-blue overflow-hidden mx-1" style="width: 35px; height: 35px;"></div>
         <div class="ml-2">
@@ -342,7 +368,46 @@
     <div class="container">
         <hr>
     </div>
-    <div class="d-flex justify-content-between align-items-end">
+    <div class="d-flex align-items-center mt-2">
+        <!-- Display existing comments if any -->
+        <div class="existing-comments mt-3 mr-2">
+            <h3 class="mb-2 small">
+                Comments:
+            </h3>
+            <ul class="list-unstyled">
+                {% if post.comment_set.all %}
+                {% for comment in post.comment_set.all|slice:":2" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">{{ comment.user.username }}:</strong>
+                        </div>
+                        {{ comment.content }}
+                    </div>
+                </li>
+                {% endfor %}
+                {% else %}
+                <!-- Loop three times for no comments placeholders -->
+                {% for _ in "12" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">Placeholder User:</strong>
+                        </div>
+                        No comments yet.
+                    </div>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
         {% if post.trade_image and 'placeholder' not in post.trade_image.url %}
         <!-- Actual Trade Image -->
         <img src="{{ post.trade_image.url }}" style="width: 50%;" alt="Trade Image">
@@ -351,27 +416,48 @@
         <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704492166/shutterstock_2281731899_vmmls4.jpg"
             style="width: 50%;" alt="Placeholder">
         {% endif %}
-        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center p-2">
-            {% csrf_token %}
-            <input type="hidden" name="object_id" value="{{ post.id }}">
-            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
-                {% if user_name and post.id in like_counts %}
-                <i class="fas fa-thumbs-up fa-1x"></i>
-                {% else %}
-                <i class="far fa-thumbs-up fa-1x"></i>
-                {% endif %}
-            </button>
-            <p class="like-count ml-2 mt-4" data-object-id="{{ post.id }}">{{ total_like_count }}</p>
-        </form>
+    </div>
+
+    <!-- View more container -->
+    <div class="d-flex align-items-center justify-content-center">
+        <a href="{% url 'view_post' post.id %}" class="text-decoration-none text-white " style="width: 100%;">
+            <div class="text-center light-blue" style=" border-radius: 10px; padding: 10px; width: 100%;">
+                View More
+            </div>
+        </a>
     </div>
 </div>
-
 {% endfor %}
 {% endblock blog_content %}
 
 {% block blog_content_two %}
 {% for post in posts_sets.1 %}
 <div class="box-2">
+    <!-- Like Buttons Container -->
+    <div class="position-absolute top-0 end-0 mt-2 mr-2 p-4">
+        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
+            {% csrf_token %}
+            <input type="hidden" name="object_id" value="{{ post.id }}">
+            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+                {% if user_name and post.id in individual_like_counts %}
+                <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% else %}
+                <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% endif %}
+            </button>
+            {% for post_id, like_count in individual_like_counts.items %}
+            {% if post.id == post_id %}
+            <p class="like-count ml-2 mt-1" data-object-id="{{ post.id }}">
+                {% if like_count > 0 %}
+                {{ like_count }}
+                {% else %}
+                0
+                {% endif %}
+            </p>
+            {% endif %}
+            {% endfor %}
+        </form>
+    </div>
     <div class="d-flex align-items-center justify-content-start mt-2">
         <div class="rounded-circle bg-dk-blue overflow-hidden mx-1" style="width: 35px; height: 35px;"></div>
         <div class="ml-2">
@@ -384,7 +470,46 @@
     <div class="container">
         <hr>
     </div>
-    <div class="d-flex justify-content-between align-items-end">
+    <div class="d-flex align-items-center mt-2">
+        <!-- Display existing comments if any -->
+        <div class="existing-comments mt-3 mr-2">
+            <h3 class="mb-2 small">
+                Comments:
+            </h3>
+            <ul class="list-unstyled">
+                {% if post.comment_set.all %}
+                {% for comment in post.comment_set.all|slice:":2" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">{{ comment.user.username }}:</strong>
+                        </div>
+                        {{ comment.content }}
+                    </div>
+                </li>
+                {% endfor %}
+                {% else %}
+                <!-- Loop three times for no comments placeholders -->
+                {% for _ in "12" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">Placeholder User:</strong>
+                        </div>
+                        No comments yet.
+                    </div>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
         {% if post.trade_image and 'placeholder' not in post.trade_image.url %}
         <!-- Actual Trade Image -->
         <img src="{{ post.trade_image.url }}" style="width: 50%;" alt="Trade Image">
@@ -393,18 +518,15 @@
         <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704492166/shutterstock_2281731899_vmmls4.jpg"
             style="width: 50%;" alt="Placeholder">
         {% endif %}
-        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center p-2">
-            {% csrf_token %}
-            <input type="hidden" name="object_id" value="{{ post.id }}">
-            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
-                {% if user_name and post.id in like_counts %}
-                <i class="fas fa-thumbs-up fa-1x"></i>
-                {% else %}
-                <i class="far fa-thumbs-up fa-1x"></i>
-                {% endif %}
-            </button>
-            <p class="like-count ml-2 mt-4" data-object-id="{{ post.id }}">{{ total_like_count }}</p>
-        </form>
+    </div>
+
+    <!-- View more container -->
+    <div class="d-flex align-items-center justify-content-center">
+        <a href="{% url 'view_post' post.id %}" class="text-decoration-none text-white " style="width: 100%;">
+            <div class="text-center light-blue" style=" border-radius: 10px; padding: 10px; width: 100%;">
+                View More
+            </div>
+        </a>
     </div>
 </div>
 {% endfor %}
@@ -413,6 +535,31 @@
 {% block blog_content_three %}
 {% for post in posts_sets.2 %}
 <div class="box-3">
+    <!-- Like Buttons Container -->
+    <div class="position-absolute top-0 end-0 mt-2 mr-2 p-4">
+        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
+            {% csrf_token %}
+            <input type="hidden" name="object_id" value="{{ post.id }}">
+            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+                {% if user_name and post.id in individual_like_counts %}
+                <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% else %}
+                <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
+                {% endif %}
+            </button>
+            {% for post_id, like_count in individual_like_counts.items %}
+            {% if post.id == post_id %}
+            <p class="like-count ml-2 mt-1" data-object-id="{{ post.id }}">
+                {% if like_count > 0 %}
+                {{ like_count }}
+                {% else %}
+                0
+                {% endif %}
+            </p>
+            {% endif %}
+            {% endfor %}
+        </form>
+    </div>
     <div class="d-flex align-items-center justify-content-start mt-2">
         <div class="rounded-circle bg-dk-blue overflow-hidden mx-1" style="width: 35px; height: 35px;"></div>
         <div class="ml-2">
@@ -425,7 +572,46 @@
     <div class="container">
         <hr>
     </div>
-    <div class="d-flex justify-content-between align-items-end">
+    <div class="d-flex align-items-center mt-2">
+        <!-- Display existing comments if any -->
+        <div class="existing-comments mt-3 mr-2">
+            <h3 class="mb-2 small">
+                Comments:
+            </h3>
+            <ul class="list-unstyled">
+                {% if post.comment_set.all %}
+                {% for comment in post.comment_set.all|slice:":2" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">{{ comment.user.username }}:</strong>
+                        </div>
+                        {{ comment.content }}
+                    </div>
+                </li>
+                {% endfor %}
+                {% else %}
+                <!-- Loop three times for no comments placeholders -->
+                {% for _ in "12" %}
+                <li class="mb-2">
+                    <div class="comment-item d-flex flex-column p-2 rounded"
+                        style="background-color: #f2f2f2; font-size: 12px; min-width: 130px;">
+                        <div class="d-flex align-items-center mb-1">
+                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2"
+                                style="width: 15px; height: 15px;"></div>
+                            <strong class="mx-1">Placeholder User:</strong>
+                        </div>
+                        No comments yet.
+                    </div>
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
         {% if post.trade_image and 'placeholder' not in post.trade_image.url %}
         <!-- Actual Trade Image -->
         <img src="{{ post.trade_image.url }}" style="width: 50%;" alt="Trade Image">
@@ -434,18 +620,15 @@
         <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704492166/shutterstock_2281731899_vmmls4.jpg"
             style="width: 50%;" alt="Placeholder">
         {% endif %}
-        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center p-2">
-            {% csrf_token %}
-            <input type="hidden" name="object_id" value="{{ post.id }}">
-            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
-                {% if user_name and post.id in like_counts %}
-                <i class="fas fa-thumbs-up fa-1x"></i>
-                {% else %}
-                <i class="far fa-thumbs-up fa-1x"></i>
-                {% endif %}
-            </button>
-            <p class="like-count ml-2 mt-4" data-object-id="{{ post.id }}">{{ total_like_count }}</p>
-        </form>
+    </div>
+
+    <!-- View more container -->
+    <div class="d-flex align-items-center justify-content-center">
+        <a href="{% url 'view_post' post.id %}" class="text-decoration-none text-white " style="width: 100%;">
+            <div class="text-center light-blue" style=" border-radius: 10px; padding: 10px; width: 100%;">
+                View More
+            </div>
+        </a>
     </div>
 </div>
 {% endfor %}
@@ -467,18 +650,30 @@
     </div>
     <h4 class="d-flex align-items-center">
         {{ post.title }}
-        <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center p-2">
-            {% csrf_token %}
-            <input type="hidden" name="object_id" value="{{ post.id }}">
-            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
-                {% if user_name and post.id in like_counts %}
-                <i class="fas fa-thumbs-up fa-1x text-success"></i>
-                {% else %}
-                <i class="far fa-thumbs-up fa-1x"></i>
+        <div class="position-absolute top-0 end-0 mt-2 mr-2 p-4">
+            <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
+                {% csrf_token %}
+                <input type="hidden" name="object_id" value="{{ post.id }}">
+                <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+                    {% if user_name and post.id in individual_like_counts %}
+                    <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
+                    {% else %}
+                    <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
+                    {% endif %}
+                </button>
+                {% for post_id, like_count in individual_like_counts.items %}
+                {% if post.id == post_id %}
+                <p class="like-count ml-2 mt-1" data-object-id="{{ post.id }}">
+                    {% if like_count > 0 %}
+                    {{ like_count }}
+                    {% else %}
+                    0
+                    {% endif %}
+                </p>
                 {% endif %}
-            </button>
-            <p class="like-count ml-2 mt-4" data-object-id="{{ post.id }}">{{ total_like_count }}</p>
-        </form>
+                {% endfor %}
+            </form>
+        </div>
     </h4>
     <p>{{ post.content }}</p>
     <hr>
@@ -487,12 +682,12 @@
     <div class="existing-comments mt-3">
         <h3 class="mb-2 small">Comments:</h3>
         <ul class="list-unstyled">
-            {% for comment in post.comments.all %}
+            {% for comment in post.comment_set.all %}
             <li class="mb-2">
                 <div class="comment-item d-flex align-items-center p-2 rounded" style="background-color: #f2f2f2;">
                     <div class="rounded-circle bg-dk-blue overflow-hidden mr-2" style="width: 25px; height: 25px;">
                     </div>
-                    <strong>{{ comment.user.username }}</strong>: {{ comment.text }}
+                    <strong class="mx-1">{{ comment.user.username }}</strong>: {{ comment.content }}
                 </div>
             </li>
             {% endfor %}
@@ -506,12 +701,25 @@
         <form method="post" action="{% url 'add_comment' post.id %}">
             {% csrf_token %}
             <input type="hidden" name="post_id" value="{{ post.id }}">
-            <!--Need to add input fields for the user to enter their comment -->
-            <textarea class="form-control" name="comment" rows="4" placeholder="Add your comment"></textarea>
+            <!-- Need to add input fields for the user to enter their comment -->
+            <textarea class="form-control" name="content" rows="4" placeholder="Add your comment"></textarea>
+
             <button type="submit" class="btn bg-dk-blue mt-2">Add Comment</button>
         </form>
     </div>
+    {% else %}
+    <!-- Display the Cloudinary image and the call-to-action statement -->
+    <div class="no-posts position-relative">
+        <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704549667/shutterstock_226194922911_xpn1nz.jpg"
+            alt="No Posts Image" style="width: 100%;">
 
+        <!-- Overlay div with absolute positioning -->
+        <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 15px; max-width: 350px ;">
+            <h3 style="font-size: 35px;">Join the Trader Tribe community.</h3>
+            <p class="">Share your trades, connect with fellow traders, and learn together. Your journey starts here!
+            </p>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endblock blog_content_four %}

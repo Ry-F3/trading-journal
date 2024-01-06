@@ -156,6 +156,9 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.title} - {self.timestamp}"
+    
+    def number_of_likes(self):
+        return self.likes.count()
 
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)

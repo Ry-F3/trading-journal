@@ -18,6 +18,14 @@ $(document).ready(function () {
             success: function (data) {
                 // Update the like count on the page without reloading
                 $('.like-count[data-object-id="' + object_id + '"]').text(data.like_count);
+
+                // Update the like status on the page without reloading
+                var likeButton = $('.like-button[data-object-id="' + object_id + '"]');
+                if (data.user_like_status === 'liked') {
+                    likeButton.addClass('liked');
+                } else {
+                    likeButton.removeClass('liked');
+                }
             },
             error: function (error) {
                 console.log('Error:', error);

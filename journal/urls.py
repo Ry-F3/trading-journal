@@ -20,6 +20,7 @@ urlpatterns = [
     path('contact/', ContactView.as_view(), name='contact'),
     path('blog/', BlogView.as_view(), name='blog'),
     path('blog/<int:post_id>/', BlogView.as_view(), name='view_post'),  # Detailed view for a specific post
+    path('view_post/<int:post_id>/', view_post, name='view_post'),
     path('add_comment/<int:post_id>/', add_comment, name='add_comment'),
     path('search_trade/', search_trade, name='search_trade'),
     path('like_toggle/', like_toggle, name='like_toggle'),

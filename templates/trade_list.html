@@ -7,15 +7,31 @@
 {% block heading_home %}
 <h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
 <a href="{% url 'generate_report' %}?format=pdf"
-class="d-none d-sm-inline-block btn btn-sm bg-dk-blue shadow-sm"><i
+class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
     class="fas fa-download fa-sm text-white-50"></i> Generate PDF Report</a>
     
 {% endblock heading_home %}
 
+{% block blog_call_to_action %}
+<!-- Display the Cloudinary image and the call-to-action statement -->
+<div class="no-posts position-relative" style="max-height: 155px; overflow: hidden;">
+    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704570758/shutterstock_2277352867_ibiznv.jpg"
+        alt="No Posts Image" class="mx-5" style="width: 35%; float: right;">
+
+    <!-- Overlay div with absolute positioning -->
+    <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 5px; max-width: 350px;">
+        <h3 class="txt-dk-grey" style="font-size: 35px;">Start Journaling your Trades Today.</h3>
+        <p class="">Share your trades & connect with fellow traders.
+        </p>
+    </div>
+</div>
+
+{% endblock blog_call_to_action %}
+
 <!-- Sidebar Header -->
 {% block sidebar_header_home %}
 <div 
-     class="card-header py-3 d-flex bg-dk-grey flex-row align-items-center justify-content-between"
+     class="card-header py-3 d-flex light-blue flex-row align-items-center justify-content-between"
      data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
     <h6 class="m-0 font-weight-bold text-white">
         Filters 

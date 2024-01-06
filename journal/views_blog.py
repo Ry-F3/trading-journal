@@ -25,21 +25,28 @@ def initialise_blog_context(request, posts):
 
     remaining_posts = posts.exclude(id__in=[post.id for posts_set in posts_sets for post in posts_set])
 
-    like_counts = {}
+    # Initialise individual_like_counts outside the loop
+    individual_like_counts = {}
+
     total_like_count = 0
     for post_set in posts_sets:
         for post in post_set:
-            like_count = post.likes.filter(id=request.user.id).count()
-            like_counts[post.id] = int(like_count)
-            total_like_count += like_counts[post.id]
-            print(like_counts)
-            print("Total Like Count:", total_like_count)
+            like_count = post.likes.count()
+            individual_like_counts[post.id] = like_count  # Store like count for each post
+            total_like_count += like_count
+
+    # Update the total like count in the session after the calculation
+    request.session['total_like_count'] = total_like_count
+
+    # Print for debugging
+    print('post like count:', like_count)
+    print("Total Like Count:", total_like_count)
 
     return {
         'posts_sets': posts_sets,
         'remaining_posts': remaining_posts,
-        'like_counts': like_counts,
-        'total_like_count': total_like_count,
+        'individual_like_counts': individual_like_counts,
+        'like_count': like_count,
     }
 
     
@@ -47,6 +54,7 @@ def initialise_blog_context(request, posts):
 def view_post(request, post_id):
     blog_post_form = BlogPostForm()
     all_posts = BlogPost.objects.order_by('-timestamp')
+    # Retrieve like_counts from session
 
     context = initialise_blog_context(request, all_posts)
     context.update({
@@ -57,9 +65,21 @@ def view_post(request, post_id):
     post = get_object_or_404(BlogPost, pk=post_id)
     context['post'] = post
 
+    if request.method == 'POST':
+        # Check if the form is submitted for adding a comment
+        if 'add_comment' in request.POST:
+            comment_text = request.POST.get('comment', '')
+            if comment_text:
+                Comment.objects.create(post=post, user=request.user, content=comment_text)
+
+                # Print statement to check if comment is being added
+                print(f"Comment added by {request.user.username} to post {post_id}")
+
+                # Redirect to the same post after adding a comment
+                return redirect('view_post', post_id=post_id)
+
     return render(request, 'blog.html', context)
 
-@login_required
 @require_POST
 def like_toggle(request):
     object_id = request.POST.get('object_id')
@@ -74,13 +94,28 @@ def like_toggle(request):
     else:
         blog_post.likes.add(request.user)
 
-    # Return the updated like count
+    # Update the like count in the session for the specific post
     like_count = blog_post.likes.count()
-    return JsonResponse({'like_count': like_count})
+    request.session[f'post_like_count_{object_id}'] = like_count
+
+    # Calculate the total like count based on individual post counts
+    total_like_count = sum(request.session.get(f'post_like_count_{post.id}', 0) for post in BlogPost.objects.all())
+
+    # Update the total like count in the session
+    request.session['total_like_count'] = total_like_count
+
+    # Update user_like_status after toggling like status
+    user_like_status = "liked" if blog_post.likes.filter(id=request.user.id).exists() else "unliked"
+
+    # Print liked status and like count to the terminal
+    print(f"User {request.user.username} has {user_like_status} post {object_id}. New like count: {like_count}")
+
+    # Return the updated like count and the user's like status
+    return JsonResponse({'like_count': like_count, 'user_like_status': user_like_status, 'total_like_count': total_like_count})
 
 @login_required
 def add_comment(request, post_id):
-    post = BlogPost.objects.get(pk=post_id)
+    post = get_object_or_404(BlogPost, pk=post_id)
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -89,7 +124,14 @@ def add_comment(request, post_id):
             comment.post = post
             comment.user = request.user
             comment.save()
+
+            # Print statement to check if comment is being added
+            print(f"Comment added by {request.user.username} to post {post_id}")
+
             return redirect('view_post', post_id=post.id)
+        else:
+            # Print form errors for debugging
+            print("Form errors:", form.errors)
     else:
         form = CommentForm()
 
@@ -97,24 +139,54 @@ def add_comment(request, post_id):
 
 class BlogView(View):
     blog = 'blog.html'
-    
+
     def get(self, request, *args, **kwargs):
         post_id = kwargs.get('post_id')
         blog_post_form = BlogPostForm()
         all_posts = BlogPost.objects.order_by('-timestamp')
 
-        context = initialise_blog_context(request, all_posts)
-        context.update({
+        posts_per_box = 1
+        posts_sets = []
+
+        start = 0
+        individual_like_counts = {}  # Dictionary to store individual like counts
+
+        for i in range(3):
+            if start < len(all_posts):
+                posts_sets.append(all_posts[start:start + posts_per_box])
+                start += posts_per_box
+            else:
+                posts_sets.append([])
+
+        remaining_posts = all_posts.exclude(id__in=[post.id for posts_set in posts_sets for post in posts_set])
+
+        # Initialise individual_like_counts outside the loop
+        individual_like_counts = {}
+
+        total_like_count = 0
+        for post_set in posts_sets:
+            for post in post_set:
+                like_count = post.likes.count()
+                individual_like_counts[post.id] = like_count  # Store like count for each post
+                total_like_count += like_count
+
+        # Update the total like count in the session after the calculation
+        request.session['total_like_count'] = total_like_count
+
+        context = {
+            'posts_sets': posts_sets,
+            'remaining_posts': remaining_posts,
+            'individual_like_counts': individual_like_counts,  # Pass individual like counts to the template
+            'like_count': like_count,
             'blog_post_form': blog_post_form,
             'user_name': request.user.username if request.user.is_authenticated else None,
-        })
+        }
 
-
-        # Check if post_id is present in the URL
-        if post_id:
-            # If present, retrieve the specific post and add it to the context
-            post = get_object_or_404(BlogPost, pk=post_id)
-            context['post'] = post
+        # Print for debugging
+        print('Individual Like', individual_like_counts)
+        print("Total Like Count:", total_like_count)
+        for post_id, like_count in individual_like_counts.items():
+            print(f"Post ID: {post_id}, Like Count: {like_count}")
 
         return render(request, self.blog, context)
 
