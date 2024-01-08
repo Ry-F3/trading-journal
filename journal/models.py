@@ -67,20 +67,12 @@ class Trade(models.Model):
                 self.date = datetime.strptime(self.date, '%Y-%m-%d').date()
 
         super().save(*args, **kwargs)
-        print(f"Saved Trade with row_number: {self.row_number}, User ID: {self.user.id}")
-        print(f"Trade Details: Symbol: {self.symbol}, Status: {self.status}, Position: {self.position}, etc.")
-
-        
+   
         # Print the user ID and the list of rows for the user
         all_users = User.objects.all()
         for user in all_users:
             user_rows = Trade.objects.filter(user=user).values_list('row_number', flat=True).order_by('row_number')
             user_rows = [int(row_number) for row_number in user_rows]
-
-            print(f"User ID: {user.id}, User Rows: {user_rows}")
-
-
-
 
     def save_overwrite(self, overwrite_id, overwrite_row, edited_trade_data=None):
         """
@@ -91,7 +83,6 @@ class Trade(models.Model):
         try:
             existing_trade = Trade.objects.get(id=overwrite_id, row_number=overwrite_row)
         except Trade.DoesNotExist:
-            print(f"Trade with ID {overwrite_id} and row {overwrite_row} does not exist.")
             return
 
         if edited_trade_data:
@@ -99,11 +90,7 @@ class Trade(models.Model):
                 setattr(existing_trade, key, value)
 
         existing_trade.save()
-        print(f"Trade overwritten successfully.")
-        print(f"Trade Details: Symbol: {self.symbol}, Status: {self.status}, Position: {self.position}, etc.")
-
-
-
+      
 
     def delete(self, user, *args, **kwargs):
         # Ensure that the user deleting the trade is the owner of the trade
@@ -114,7 +101,6 @@ class Trade(models.Model):
         deleted_row_number = self.row_number
 
         super().delete(*args, **kwargs)
-        print(f"Deleted Trade with row_number: {deleted_row_number}")
 
         # After deletion, re-order the remaining rows
         remaining_trades = Trade.objects.filter(user=self.user).order_by('row_number')
@@ -122,7 +108,6 @@ class Trade(models.Model):
         for index, trade in enumerate(remaining_trades, start=1):
             trade.row_number = index
             trade.save()
-            print(f"Updated Trade with row_number: {trade.row_number}")
             
     def __str__(self):
         return f"{self.symbol} - {self.row_number}"
@@ -164,15 +149,6 @@ class Comment(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     content = models.TextField()
 
-# User Connection Model
-class UserConnection(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
-
-    def __str__(self):
-        return f"{self.follower.username} follows {self.following.username}"
-    
-
 # FAQ models
    
 class FAQRequest(models.Model):
@@ -180,7 +156,7 @@ class FAQRequest(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     question = models.TextField()
-    is_approved = models.BooleanField(default=False)  # Add this field
+    is_approved = models.BooleanField(default=False)  
     
     def __str__(self):
         return self.title
@@ -188,10 +164,9 @@ class FAQRequest(models.Model):
     class Meta:
         verbose_name_plural = "FAQ Requests"
 
-    
 class AdminResponse(models.Model):
     faq_request = models.ForeignKey(FAQRequest, on_delete=models.CASCADE)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_sent = models.BooleanField(default=False)  # Add this field
+    is_sent = models.BooleanField(default=False) 

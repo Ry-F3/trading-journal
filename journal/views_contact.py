@@ -11,7 +11,6 @@ from django.utils import timezone
 class ContactUsView(View):
     contact = 'contact.html'
 
-
     @staticmethod
     def initialize_faq_context():
         faqs_per_box = 1
@@ -49,14 +48,7 @@ class ContactUsView(View):
         # Append all FAQs starting from the fourth one to updated_remaining_faqs
         remainder_index = 3
         updated_remaining_faqs += all_faqs_ordered[remainder_index:] if len(all_faqs_ordered) > remainder_index else []
-            
-        # Print statements for debugging after appending the fourth FAQ
-        print("=== remaining_faqs after appending remainder_faq ===")
-        for faq in updated_remaining_faqs:
-            print(f"{faq.timestamp} - {faq.title}")
-        print(updated_remaining_faqs)
-
-                
+              
         # Return the initialised context
         return {
             'faqs_sets': faqs_sets,
@@ -122,15 +114,6 @@ def faq_list(request):
     # Get all approved FAQRequest objects with their AdminResponse
     faqs_with_responses = FAQRequest.objects.filter(is_approved=True, adminresponse__is_sent=True).order_by('-timestamp')
 
-    # Print information to the console for debugging
-    for faq in faqs_with_responses:
-        print(f"FAQ ID: {faq.id} | Title: {faq.title} | Approved: {faq.is_approved}")
-
-        # Print information about associated AdminResponses
-        for response in faq.adminresponse_set.all():
-            print(
-                f"  Response ID: {response.id} | Content: {response.content} | Sent: {response.is_sent} | Timestamp: {response.timestamp}")
-
     context = {'faqs_with_responses': faqs_with_responses}
     return render(request, 'contact.html', context)
 
@@ -147,3 +130,4 @@ def view_faq(request, faq_id):
 
     # Render the HTML with the updated FAQs and the specific FAQ
     return render(request, 'contact.html', context)
+

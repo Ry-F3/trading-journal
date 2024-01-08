@@ -72,7 +72,8 @@
 <!-- Display a separate box for viewing all FAQs as a list -->
 <div class="all-faqs-box p-3 rounded text-center" style="max-height: 300px; overflow-y: auto; width: 100%;">
     {% for faq in updated_remaining_faqs %}
-        {% if faq.is_approved %}    
+    {% if faq.is_approved %}
+    <ul class="list-group">
         <li class="list-group-item small mb-1 bg-light">
             <span class="text-muted">{{ faq.timestamp }}</span> -
             <a href="{% url 'view_faq' faq.id %}" class="txt-dk-blue">{{ faq.title }}</a>
@@ -83,7 +84,8 @@
             <p class="txt-dk-blue text-decoration-underline">Pending</p>
         </li>
         {% endif %}
-    {% endfor %}
+        {% endfor %}
+    </ul>
 </div>
 {% endblock sidebar_contact %}
 
@@ -96,6 +98,7 @@
             <div class="box">
                 {% if faq.is_approved %}
                 <h4>{{ faq.title }}</h4>
+                <p>{{ faq.timestamp }}</p>
                 <p>{{ faq.question }}</p>
                 {% else %}
                 <h4>FAQs</h4>
@@ -148,10 +151,11 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="" class="text-decoration-none text-white " style="width: 100%;">
+                    <a href="{% url 'view_faq' faq.id %}" class="text-decoration-none text-white "
+                        style="min-width: 100%;">
                         <div class="text-center light-blue" style="border-radius: 10px; padding: 10px; width: 100%;">
                             {% if faq.is_approved %}
-                            <a href="{% url 'view_faq' faq.id %}">FAQs</a>
+                            FAQs
                             {% else %}
                             Pending
                             {% endif %}
@@ -325,14 +329,26 @@
 
 {% block contact_content_four %}
 <!-- Content from contact.html goes here -->
-<div class="container mt-3">
+<!-- Content to display when contact form is submitted -->
+<div id="thankYouContainer" class="container mt-3" style="display: none;">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h2 class="mb-4">Thank you for your submission!</h2>
+            <p class="small mb-4">We appreciate your feedback. Our team will review it shortly.</p>
+        </div>
+    </div>
+</div>
+<!-- Content from contact.html goes here -->
+<div id="containerForm" class="container mt-3">
     <div class="row">
         <div class="col-md-8 offset-md-2 text-center">
             <h2 class="mb-4">Your Voice Matters!</h2>
-            <p class="small mb-4">We're Open to Your Suggestions! Drop us an email, and let's discuss how we can tailor
-                our platform to better serve the needs of trades. Your input shapes the future!</p>
+            <p class="small mb-4">We're Open to Your Suggestions! Drop us an email, and let's discuss how we
+                can tailor our platform to better serve the needs of trades. Your input shapes the future!</p>
 
-            <form id="contactForm" action="#" method="post">
+            <form id="contactForm" onsubmit="return sendMail(this);" method="POST">
+                {% csrf_token %}
+                <!-- Your simplified contact form code goes here -->
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" class="form-control" id="name" name="name" required>
@@ -342,7 +358,6 @@
                     <label for="email">Email:</label>
                     <input type="email" class="form-control" id="email" name="email" required>
                 </div>
-
                 <div class="form-group">
                     <label for="message">Message:</label>
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
@@ -351,61 +366,61 @@
                 <div class="form-group mt-3 mb-2">
                     <button type="submit" class="btn bg-dk-blue btn-block">Contact Us</button>
                 </div>
-
             </form>
         </div>
     </div>
 </div>
-
+<script src="{% static 'js/email.js' %}"></script>
+</script>
 {% endblock contact_content_four %}
 
 {% block contact_call_to_action %}
-  {% if faq %}
-    <div class="faq-details">
-      <div class="d-flex align-items-center justify-content-between mt-2">
+{% if faq %}
+<div class="faq-details">
+    <div class="d-flex align-items-center justify-content-between mt-2">
         <div class="d-flex align-items-center">
-          <div class="rounded-circle bg-dk-blue overflow-hidden mx-1" style="width: 35px; height: 35px;"></div>
-          <div class="ml-2">
-            <h3 class="small"><strong>Admin</strong></h3>
-            <h3 class="small">Published: {{ faq.timestamp }}</h3>
-          </div>
+            <div class="rounded-circle bg-dk-blue overflow-hidden mx-1" style="width: 35px; height: 35px;"></div>
+            <div class="ml-2">
+                <h3 class="small"><strong>Admin</strong></h3>
+                <h3 class="small">Published: {{ faq.timestamp }}</h3>
+            </div>
         </div>
-      </div>
-      <h4>{{ faq.title }}</h4>
-      <p>{{ faq.content }}</p>
+    </div>
+    <h4>{{ faq.title }}</h4>
+    <p>{{ faq.content }}</p>
 
-      <!-- Display admin responses -->
-      {% if faq.adminresponse_set.all %}
-        <h5>Admin Responses:</h5>
-        <ul class="list-unstyled">
-          {% for admin_response in faq.adminresponse_set.all %}
-            <li class="mb-2">
-              <div class="comment-item d-flex align-items-center p-2 rounded" style="background-color: #f2f2f2;">
+    <!-- Display admin responses -->
+    {% if faq.adminresponse_set.all %}
+    <h5>Admin Responses:</h5>
+    <ul class="list-unstyled">
+        {% for admin_response in faq.adminresponse_set.all %}
+        <li class="mb-2">
+            <div class="comment-item d-flex align-items-center p-2 rounded" style="background-color: #f2f2f2;">
                 <div class="rounded-circle bg-dk-blue overflow-hidden mr-2" style="width: 25px; height: 25px;"></div>
                 <strong class="mx-1">Admin</strong>: {{ admin_response.response }}
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
 
-  {% else %}
-    <!-- Display the Cloudinary image and the call-to-action statement -->
-    <div class="no-posts position-relative">
-      <!-- Overlay div with absolute positioning -->
-      <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 15px; max-width: 350px;">
+{% else %}
+<!-- Display the Cloudinary image and the call-to-action statement -->
+<div class="no-posts position-relative">
+    <!-- Overlay div with absolute positioning -->
+    <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 15px; max-width: 350px;">
         <h3 style="font-size: 35px;">Join the FAQ Community.</h3>
         <p class="">Ask, connect, learn – where your questions find answers and your journey begins!
         </p>
         <div class="d-none d-sm-inline-block">
-          <button type="button" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
-            FAQ Request
-          </button>
+            <button type="button" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
+                FAQ Request
+            </button>
         </div>
-      </div>
-      <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg"
-           alt="No Posts Image" style="width: 40%; float: right;">
     </div>
-  {% endif %}
+    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg" alt="No Posts Image"
+        style="width: 40%; float: right;">
+</div>
+{% endif %}
 {% endblock contact_call_to_action %}

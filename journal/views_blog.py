@@ -48,10 +48,6 @@ def initialise_blog_context(request, posts):
     # Update the total like count in the session after the calculation
     request.session['total_like_count'] = total_like_count
 
-    # Print for debugging
-    print('post like counts:', individual_like_counts)
-    print("Total Like Count:", total_like_count)
-
     return {
         'posts_sets': posts_sets,
         'remaining_posts': remaining_posts,
@@ -82,17 +78,8 @@ def view_post(request, post_id):
             if comment_text:
                 Comment.objects.create(post=post, user=request.user, content=comment_text)
 
-                # Print statement to check if comment is being added
-                print(f"Comment added by {request.user.username} to post {post_id}")
-
                 # Redirect to the same post after adding a comment
                 return redirect('view_post', post_id=post_id)
-
-    # Add print statements here
-    print("Individual Like Counts:", context['individual_like_counts'])
-    print("Like Count for Post ID", post_id, ":", context['like_count'])
-    for post_id, like_count in context['individual_like_counts'].items():
-        print(f'Like Count for Post ID {post_id}: {like_count}')
 
     return render(request, 'blog.html', context)
 
@@ -123,9 +110,6 @@ def like_toggle(request):
     # Update user_like_status after toggling like status
     user_like_status = "liked" if blog_post.likes.filter(id=request.user.id).exists() else "unliked"
 
-    # Print liked status and like count to the terminal
-    print(f"User {request.user.username} has {user_like_status} post {object_id}. New like count: {like_count}")
-
     # Return the updated like count and the user's like status
     return JsonResponse({'like_count': like_count, 'user_like_status': user_like_status, 'total_like_count': total_like_count})
 
@@ -141,13 +125,7 @@ def add_comment(request, post_id):
             comment.user = request.user
             comment.save()
 
-            # Print statement to check if comment is being added
-            print(f"Comment added by {request.user.username} to post {post_id}")
-
             return redirect('view_post', post_id=post.id)
-        else:
-            # Print form errors for debugging
-            print("Form errors:", form.errors)
     else:
         form = CommentForm()
 
@@ -201,19 +179,11 @@ class BlogView(View):
             'user_name': request.user.username if request.user.is_authenticated else None,
         }
 
-        # Print for debugging
-        print('Individual Like', individual_like_counts)
-        print("Total Like Count:", total_like_count)
-        for post_id, like_count in individual_like_counts.items():
-            print(f"Post ID: {post_id}, Like Count: {like_count}")
-
         return render(request, self.blog, context)
 
 
     def post(self, request, *args, **kwargs):
         blog_post_form = BlogPostForm(request.POST, request.FILES)
-
-        print("POST request received.")
         
         if blog_post_form.is_valid():
             new_post = blog_post_form.save(commit=False)
@@ -223,7 +193,6 @@ class BlogView(View):
             if not new_post.title or not new_post.content:
                 # Handle form validation errors
                 errors = blog_post_form.errors
-                print(f"Form validation errors: {errors}")
                 return render(request, self.blog, {'error': 'Form validation failed', 'errors': errors})
 
             # If trade_image is present, process it
@@ -231,7 +200,6 @@ class BlogView(View):
 
             # Save the new post
             new_post.save()
-            print(f"Post saved successfully: {new_post.title}")
 
             return redirect('blog')  # Redirect to the blog page after successful post
 
@@ -271,10 +239,8 @@ def search_trade(request):
     try:
         # Attempt to convert the user_id to an integer
         user_id = int(user_id)
-        print(f"User ID: {user_id}")
     except ValueError:
         # Handle the case where the user_id is not a valid integer
-        print("Invalid user ID. Could not convert to integer.")
         return JsonResponse([], safe=False)
 
     # Get the user's trades based on the query
@@ -302,28 +268,21 @@ def search_trade(request):
     results = [{'id': trade.id, 'symbol': trade.symbol, 'date': trade.date} for trade in trades_results]
 
     # Return the results as a JSON response
-    print(f"Results: {results}")
     return JsonResponse(results, safe=False)
 
 
     # Prepare the results as a list of dictionaries
     results = [{'id': trade.id, 'symbol': trade.symbol, 'date': trade.date} for trade in trades_results]
 
-    # Return the results as a JSON response
-    print(f"Results: {results}")
     return JsonResponse(results, safe=False)
 
 def get_trade_details(request):
     trade_id = request.GET.get('trade_id')
 
-    print(f"Searching for trade details with trade_id: {trade_id}")
-
     # Perform a database query to get trade details based on trade_id
     try:
         trade = Trade.objects.get(id=trade_id)
         trade_details = {'id': trade.id, 'symbol': trade.symbol, 'date': trade.date}
-        print(f"Trade details found: {trade_details}")
         return JsonResponse(trade_details)
     except Trade.DoesNotExist:
-        print("Trade not found.")
         return JsonResponse({'error': 'Trade not found'}, status=404)

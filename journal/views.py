@@ -110,8 +110,7 @@ class HomeView(View):
                 'filter_form': filter_form, 
                 'messages_to_display': messages_to_display,
             }
-            # Debugging output
-            print(f"Last Page: {last_page}, Current Page: {current_page}")
+    
             return render(request, self.home, context)
         else:
             return redirect('account/login')
@@ -191,11 +190,6 @@ class TradeFilterView(ListView):
         date_filter_month = self.request.GET.get('date_filter_month')
         date_filter_day = self.request.GET.get('date_filter_day')
         date_filter_year = self.request.GET.get('date_filter_year')
-
-        print(f"Date filter: {date_filter_month}/{date_filter_day}/{date_filter_year}")
-        print(f"Symbol filter: {symbol_filter}")
-        print(f"Long/Short filter: {long_short_filter}")
-        print(f"PnL filter: {pnl_filter}")
 
         if date_filter == 'today':
             # Filter trades for today
@@ -277,15 +271,11 @@ def handle_portfolio_balance_form_submission(request, user_profile):
             # Calculate PnL only if the form is valid
             pnl_data = calculate_pnl(request.user)
 
-            print('PnL Calculation Result:', pnl_data)  # Add this line for debugging purposes
-            print('Portfolio Balance after PnL Calculation:', user_profile.portfolio_balance)  # Add this line for debugging purposes
-
             # Redirect to the same page to avoid reposting on refresh
             return HttpResponseRedirect(request.path)
     else:
         portfolio_balance_form = PortfolioBalanceForm()
-        print('Not a POST request. Portfolio Balance Form:', portfolio_balance_form)  # Add this line for debugging purposes
-
+    
 def update_portfolio_balance(request):
     user_profile = request.user.userprofile  # Assuming userprofile is related to the User model
     handle_portfolio_balance_form_submission(request, user_profile)
@@ -320,7 +310,7 @@ def trade_list(request):
 
                 # Calculate PnL only if the form is valid
                 pnl_data = calculate_pnl(request.user)
-                print('pnl:', pnl_data)
+
                 # Redirect to the same page to avoid reposting on refresh
                 return HttpResponseRedirect(request.path)
                 
@@ -346,10 +336,6 @@ def trade_list(request):
                 messages.success(request, 'Trade edited successfully!')
                 messages.success(request, 'Balance Updated!')
                 messages.success(request, 'PnL Updated!')
-                
-                # Print debugging information
-                print(f"Overwrite ID: {overwrite_id}, Row: {overwrite_row}")
-                print("Edited Trade Data:", edited_trade_data)
 
                 if overwrite_id is not None and overwrite_row is not None:
                     # Overwrite logic here
@@ -544,11 +530,6 @@ def calculate_pnl(user):
     # Update UserProfile with total_realized_pnl
     user_profile, created = UserProfile.objects.get_or_create(user=user)
 
-    # Print debugging information
-    print('Before Update - Portfolio Balance:', user_profile.portfolio_balance)
-    print('Before Update - Total Realized PnL:', user_profile.total_realized_pnl)
-    print('Before Update - Last Realized PnL:', user_profile.last_realized_pnl)
-
     # Calculate the change in realized profit since the last update
     realized_pnl_change = total_realized_pnl - user_profile.last_realized_pnl
 
@@ -563,8 +544,6 @@ def calculate_pnl(user):
     # Update portfolio_balance only if there is a positive change
     if realized_pnl_change > 0:
         user_profile.portfolio_balance += realized_pnl_change
-        print('Total Realized PnL Change:', realized_pnl_change)
-        print('After Update - Portfolio Balance:', user_profile.portfolio_balance)
 
     # Update last_realized_pnl with the current total_realized_pnl
     user_profile.last_realized_pnl = total_realized_pnl
@@ -588,18 +567,10 @@ def calculate_unrealized_pnl(open_returns):
     positive_returns = [return_pnl for return_pnl in open_returns if return_pnl > 0]
     negative_returns = [return_pnl for return_pnl in open_returns if return_pnl < 0]
 
-    # Debug prints
-    print("Calculate Unrealized PnL - Debug Prints:")
-    print("Positive Returns:", positive_returns)
-    print("Negative Returns:", negative_returns)
-
     # Calculate total unrealized PnL
     total_positive_pnl = sum(positive_returns)
     total_negative_pnl = sum(negative_returns)
     total_unrealized_pnl = total_positive_pnl + total_negative_pnl
-
-    # Debug prints
-    print("Total Unrealized PnL:", total_unrealized_pnl)
 
     return total_unrealized_pnl
 
@@ -607,9 +578,7 @@ def calculate_unrealized_pnl(open_returns):
 @login_required
 def get_trade_details(request, row_number, trade_id):
     try:
-        # Print row_number and trade_id for debugging purposes
-        print(f"Row Number: {row_number}, Trade ID: {trade_id}")
-        
+       
         trade = Trade.objects.get(row_number=row_number, id=trade_id, user=request.user)
         trade_details = {
             'symbol': str(trade.symbol),
@@ -627,7 +596,6 @@ def get_trade_details(request, row_number, trade_id):
         
         return JsonResponse({'success': True, 'trade_details': trade_details})
     except Trade.DoesNotExist as e:
-        print(f"Error: {e}")
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
  
 
