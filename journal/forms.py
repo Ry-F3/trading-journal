@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trade, BlogPost, Comment  
+from .models import Trade, BlogPost, Comment, AdminResponse, FAQRequest
 
 class TradeForm(forms.ModelForm):
     class Meta:
@@ -157,4 +157,15 @@ class BlogPostForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']        
+        fields = ['content']       
+        
+        
+class FAQForm(forms.ModelForm):
+    class Meta:
+        model = FAQRequest
+        fields = ['title', 'question'] 
+        
+class AdminResponseForm(forms.ModelForm):
+    class Meta:
+        model = AdminResponse
+        fields = ['response']

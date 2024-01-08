@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Trade, BlogPost
+from .models import Trade, BlogPost, FAQRequest, Comment, AdminResponse
 
 class TradeAdmin(admin.ModelAdmin):
     list_display = ('display_user', 'id', 'symbol', 'date', 'status', 'long_short', 'position', 'margin', 'leverage', 'open_price', 'current_price', 'return_pnl')
@@ -65,3 +65,50 @@ class BlogPostAdmin(admin.ModelAdmin):
         return super().has_delete_permission(request, obj)
 
 admin.site.register(BlogPost, BlogPostAdmin)
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post', 'content', 'timestamp')
+    list_filter = ('user', 'timestamp')
+    search_fields = ('content',)
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_delete_permission(request, obj)
+
+admin.site.register(Comment, CommentAdmin)
+
+class AdminResponseInline(admin.TabularInline):
+    model = AdminResponse
+    extra = 1  # Set the number of empty forms to display
+
+@admin.register(FAQRequest)
+class FAQRequestAdmin(admin.ModelAdmin):
+    list_display = ('user', 'timestamp', 'title', 'is_approved')
+    list_filter = ('user', 'timestamp', 'is_approved')
+    search_fields = ('title', 'question')
+    inlines = [AdminResponseInline]  # Add the inline for AdminResponse
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        super().save_model(request, obj, form, change)
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.user != request.user:
+            return False
+        return super().has_delete_permission(request, obj)
+

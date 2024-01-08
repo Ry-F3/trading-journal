@@ -16,6 +16,8 @@ def initialise_blog_context(request, posts):
     posts_sets = []
 
     start = 0
+    all_post_ids = []  # New list to store all post IDs
+
     for i in range(3):
         if start < len(posts):
             posts_sets.append(posts[start:start + posts_per_box])
@@ -34,12 +36,20 @@ def initialise_blog_context(request, posts):
             like_count = post.likes.count()
             individual_like_counts[post.id] = like_count  # Store like count for each post
             total_like_count += like_count
+            all_post_ids.append(post.id)  # Add post ID to the list
+
+    # Get like counts for remaining posts
+    for post in remaining_posts:
+        like_count = post.likes.count()
+        individual_like_counts[post.id] = like_count
+        total_like_count += like_count
+        all_post_ids.append(post.id)  # Add remaining post ID to the list
 
     # Update the total like count in the session after the calculation
     request.session['total_like_count'] = total_like_count
 
     # Print for debugging
-    print('post like count:', like_count)
+    print('post like counts:', individual_like_counts)
     print("Total Like Count:", total_like_count)
 
     return {
@@ -47,8 +57,8 @@ def initialise_blog_context(request, posts):
         'remaining_posts': remaining_posts,
         'individual_like_counts': individual_like_counts,
         'like_count': like_count,
+        'all_post_ids': all_post_ids,  # Add the list of all post IDs
     }
-
     
 @login_required
 def view_post(request, post_id):
@@ -77,6 +87,12 @@ def view_post(request, post_id):
 
                 # Redirect to the same post after adding a comment
                 return redirect('view_post', post_id=post_id)
+
+    # Add print statements here
+    print("Individual Like Counts:", context['individual_like_counts'])
+    print("Like Count for Post ID", post_id, ":", context['like_count'])
+    for post_id, like_count in context['individual_like_counts'].items():
+        print(f'Like Count for Post ID {post_id}: {like_count}')
 
     return render(request, 'blog.html', context)
 
@@ -150,6 +166,9 @@ class BlogView(View):
 
         start = 0
         individual_like_counts = {}  # Dictionary to store individual like counts
+        
+        # Set a default value for like_count
+        like_count = 0
 
         for i in range(3):
             if start < len(all_posts):

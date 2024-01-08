@@ -251,15 +251,22 @@
                             </div>
                         </div>
 
+                        {% if 'blog' not in request.path %}
+                        <!-- Only display content if not in the blog section -->
                         <div class="col-xl-12 col-lg-7">
                             <div id="rectangleOne" class="card shadow mb-3">
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    {% block blog_call_to_action %}
-                                    {% endblock blog_call_to_action %}
+                                    {% block home_call_to_action %}
+                                    <!-- Content from home.html goes here -->
+                                    {% endblock home_call_to_action %}
+                                    {% block contact_call_to_action %}
+                                    <!-- Content from contact.html goes here -->
+                                    {% endblock contact_call_to_action %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="row">
                         <!-- Box-Four-->

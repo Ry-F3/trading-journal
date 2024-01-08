@@ -1,10 +1,11 @@
 
 from . import views
 from django.urls import path
+from .views_contact import ContactUsView, submit_faq_request, faq_list, view_faq
 from .views_blog import BlogView, search_trade, get_trade_details, view_post, like_toggle, add_comment
 from .views import (
     HomeView,
-    ContactView,
+    # ContactView,
     TradeFilterView,
     trade_list,
     delete_trade,
@@ -17,10 +18,12 @@ from .views import (
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('trade_list/', TradeFilterView.as_view(), name='trade_list'),
-    path('contact/', ContactView.as_view(), name='contact'),
     path('blog/', BlogView.as_view(), name='blog'),
     path('blog/<int:post_id>/', BlogView.as_view(), name='view_post'),  # Detailed view for a specific post
-    path('view_post/<int:post_id>/', view_post, name='view_post'),
+    path('contact/', ContactUsView.as_view(), name='contact'),
+    path('submit_faq_request/', submit_faq_request, name='submit_faq_request'),
+    path('faq-list/', faq_list, name='faq_list'),
+     path('faq/<int:faq_id>/', view_faq, name='view_faq'),
     path('add_comment/<int:post_id>/', add_comment, name='add_comment'),
     path('search_trade/', search_trade, name='search_trade'),
     path('like_toggle/', like_toggle, name='like_toggle'),

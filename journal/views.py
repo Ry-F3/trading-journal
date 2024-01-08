@@ -62,7 +62,7 @@ class HomeView(View):
             trades, last_page, current_page = get_trade_list(request.user, request)
 
             
-             # Get the user's portfolio balance
+            # Get the user's portfolio balance
             portfolio_balance = user_profile.portfolio_balance
             
             # Initialize the Portfolio Balance Form
@@ -119,15 +119,6 @@ class HomeView(View):
     def post(self, request):
         # Handle POST request if needed
         return HttpResponse("POST request")
-        
-class ContactView(View):
-    contact = 'contact.html' 
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            user_name = request.user.username 
-            context = {'user_name': user_name}
-        return render(request, self.contact, context)
     
 class TradeFilterView(ListView):
     model = Trade

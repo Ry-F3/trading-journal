@@ -135,13 +135,11 @@ class Meta:
 # Blog Post Model
 class BlogPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     title = models.CharField(max_length=255)
     content = models.TextField()
-    timestamp = models.DateTimeField(default=timezone.now, blank=True)
     likes = models.ManyToManyField(User, related_name='blog_post_likes', blank=True)
-    shares = models.ManyToManyField(User, related_name='blog_post_shares', blank=True)
-    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
-    profit_percentage = models.FloatField(null=True, blank=True)
     profit_loss = models.FloatField(null=True, blank=True)
     entry_price = models.FloatField(null=True, blank=True)
     exit_price = models.FloatField(null=True, blank=True)
@@ -161,10 +159,10 @@ class BlogPost(models.Model):
         return self.likes.count()
 
 class Comment(models.Model):
-    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+    content = models.TextField()
 
 # User Connection Model
 class UserConnection(models.Model):
@@ -173,3 +171,27 @@ class UserConnection(models.Model):
 
     def __str__(self):
         return f"{self.follower.username} follows {self.following.username}"
+    
+
+# FAQ models
+   
+class FAQRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=255)
+    question = models.TextField()
+    is_approved = models.BooleanField(default=False)  # Add this field
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name_plural = "FAQ Requests"
+
+    
+class AdminResponse(models.Model):
+    faq_request = models.ForeignKey(FAQRequest, on_delete=models.CASCADE)
+    admin = models.ForeignKey(User, on_delete=models.CASCADE)
+    response = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_sent = models.BooleanField(default=False)  # Add this field
