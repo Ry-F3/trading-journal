@@ -5,7 +5,7 @@
 
 <!-- Heading -->
 {% block heading_home %}
-<h1 class="h4 m-1 --gray-dark text-muted">Dashboard</h1>
+<h1 class="h4 m-1 text-muted">Dashboard</h1>
 <a href="{% url 'generate_report' %}?format=pdf"
 class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
     class="fas fa-download fa-sm text-white-50"></i> Generate PDF Report</a>
@@ -14,14 +14,14 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 
 {% block home_call_to_action %}
 <!-- Display the Cloudinary image and the call-to-action statement -->
-<div class="no-posts position-relative" style="max-height: 155px; overflow: hidden;">
+<div class="no-posts position-relative overflow-hidden">
     <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704570758/shutterstock_2277352867_ibiznv.jpg"
-        alt="No Posts Image" class="mx-5" style="width: 35%; float: right;">
+        alt="No Posts Image" class="mx-5 float-right">
 
     <!-- Overlay div with absolute positioning -->
-    <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 5px; max-width: 350px;">
-        <h3 class="txt-dk-grey" style="font-size: 35px;">Start Journaling your Trades Today.</h3>
-        <p class="">Share your trades & connect with fellow traders.
+    <div class="position-absolute top-0 start-0 txt-container">
+        <h3 class="txt-dk-grey font-m-size">Start Journaling your Trades Today.</h3>
+        <p class="text-muted">Share your trades & connect with fellow traders.
         </p>
     </div>
 </div>
@@ -95,7 +95,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
             <div class="modal-body">
                 <form method="post" action="{% url 'update_portfolio_balance' %}">
                 <!-- Portfolio Balance Update Form -->
-                    <div class="mb-3" style="height: 120px;">
+                    <div class="mb-3 portfolio-h">
                         {% csrf_token %}
                         {{ portfolio_balance_form.as_p }}
                     </div>
@@ -128,10 +128,10 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 <img src="data:image/png;base64,{{ image_base64 }}" alt="Realized Profit Chart">
 
 <!-- Left arrow button -->
-<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent" style="width: 15px; font-weight: bold; margin: auto auto;">&lt;</button>
+<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent chart-style">&lt;</button>
 
 <!-- Right arrow button -->
-<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent" style="width: 15px; font-weight: bold; margin: auto auto;">&gt;</button>
+<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent chart-style">&gt;</button>
 
 <!-- Interval options -->
 <form method="get" action="#" id="timeIntervalForm" style="display: none;">
@@ -150,31 +150,6 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 
 {% block trade_content %}
 <!-- Box 4 -->
-
-<style>
-    .pencil_color {
-        color: #6c757d;
-    }
-
-    .hide-cell {
-        display: none;
-    }
-
-    .hidden-cell {
-        display: table-cell;
-
-    }
-
-    .letter-spacing {
-        letter-spacing: 1px;
-    }
-
-    /* .id-cell {
-        display: none;
-    } */
-    
- 
-</style>
 <span><a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted small"></i></a></span>
 <div class="p-3 m-2 scrollbar-container card-body">
     <div class="table-responsive">
@@ -297,16 +272,6 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
         </table>
     </div>
 </div>
-
-
-<!-- 
-<div class="p-5 m-3">
-    <h1>Trades</h1>
-    {% for trade in trades %}
-    <p>Trade ID: {{ trade.id }} Row Number: {{ trade.row_number }}</p>
-    {% endfor %}
-</div> -->
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="{% static 'js/global.js' %}"></script>
