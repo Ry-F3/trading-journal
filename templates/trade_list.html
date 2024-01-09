@@ -61,7 +61,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
             {{ filter_form.long_short_filter }}
         </label>
     </div>
-    <button type="submit btn-btn" class="submit-button mx-2">Apply Filters</button>
+    <button type="submit" class="submit-button btn-btn mx-2">Apply Filters</button>
 </form>
 {% endblock sidebar_home %}
 
@@ -134,7 +134,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 <button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent" style="width: 15px; font-weight: bold; margin: auto auto;">&gt;</button>
 
 <!-- Interval options -->
-<form method="get" action="" id="timeIntervalForm" style="display: none;">
+<form method="get" action="#" id="timeIntervalForm" style="display: none;">
     <label for="time_interval"></label>
     <div class="d-flex align-items-center">
         <select name="time_interval" id="time_interval" onchange="submitForm()" class="form-control">

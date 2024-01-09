@@ -27,9 +27,6 @@ $(document).ready(function () {
                     likeButton.removeClass('liked');
                 }
             },
-            error: function (error) {
-                console.log('Error:', error);
-            }
         });
     });
 });

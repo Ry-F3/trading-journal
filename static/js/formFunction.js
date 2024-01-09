@@ -1,4 +1,3 @@
-console.log()
 $(document).ready(function () {
     // jQuery code
     const createTradeForm = $('#createTradeForm');
@@ -19,7 +18,6 @@ $(document).ready(function () {
 
     // Add an event listener for pagination links
     $('.pagination a').on('click', function (e) {
-        console.log('Pagination link clicked.');
         // Call the function to update row numbers and IDs
         updateRowNumbersAndIds();
 
@@ -28,7 +26,6 @@ $(document).ready(function () {
 
     showCreateTradeForm.click(function () {
         const buttonText = $(this).text();
-        console.log('Current state of createTradeForm:', createTradeForm);
 
         if (buttonText === 'Create Trade') {
             createTradeForm.css('display', 'block');
@@ -38,7 +35,6 @@ $(document).ready(function () {
         } else if (buttonText === 'Cancel Trade') {
             createTradeForm.css('display', 'none');
             // Code for handling "Cancel Trade" button click
-            console.log('editMode:', editMode);
             createTradeFormActive = false;
             handleFormVisibility();
         }
@@ -49,7 +45,6 @@ $(document).ready(function () {
 
         if (createTradeFormActive) {
             // Code for when the form is active
-            console.log('Form is now active');
             container.scrollTop(container[0].scrollHeight);
 
             // Additional logic specific to form activation
@@ -66,17 +61,13 @@ $(document).ready(function () {
             $('#id_current_price').val('');
             $('#id_return_pnl').val('');
 
-            console.log('Script is running 1st.');
-
             // Toggle the visibility of the ID cell based on createTradeFormActive
             $('.id-cell').each(function () {
                 if (createTradeFormActive) {
                     // If form is active, hide the ID cell
-                    console.log('Form is active. Hiding ID cell.');
                     $(this).css('display', 'none');
                 } else {
                     // If form is inactive, show the ID cell as table-cell
-                    console.log('Form is inactive. Showing ID cell as table-cell.');
                     $(this).css('display', 'table-cell');
                 }
             });
@@ -111,17 +102,13 @@ $(document).ready(function () {
             // Toggle the visibility of the hide-cell elements
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
 
-            console.log('Script is running 2nd.');
-
             // Toggle the visibility of the ID cell based on createTradeFormActive
             $('.id-cell').each(function () {
                 if (createTradeFormActive) {
                     // If form is active, hide the ID cell
-                    console.log('Form is active. Hiding ID cell.');
                     $(this).css('display', 'none');
                 } else {
                     // If form is inactive, show the ID cell as table-cell
-                    console.log('Form is inactive. Showing ID cell as table-cell.');
                     $(this).css('display', 'table-cell');
                 }
             });
@@ -195,8 +182,6 @@ $(document).ready(function () {
             // Update row numbers and IDs in the UI after deletion
             updateRowNumbersAndIds();
 
-            // Add a message or log to indicate success
-            console.log(`Trade successfully deleted: Trade ID - ${tradeId}, Row Number - ${rowNumber}`);
         } else {
             // Handle errors or provide feedback to the user
             console.error('Deletion failed:', data.error);
@@ -211,8 +196,7 @@ $(document).ready(function () {
 function handleSaveResponse(data, tradeId) {
     // Handle the response from the server after saving
     if (data.success) {
-        // You may update other UI elements as needed
-        console.log('Trade successfully saved:', tradeId);
+
         createTradeFormActive = false;
 
         // Update row numbers and IDs in the UI after saving

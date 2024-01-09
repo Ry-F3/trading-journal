@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log('Script now loaded');
 
     const createTradeForm = $('#createTradeForm');
     const hideCells = $('.hide-cell');  // Select hide-cell elements
@@ -30,9 +29,7 @@ $(document).ready(function () {
         // Check if the user is in edit mode
         if (editMode) {
             saveEditedTrade();
-        } else {
-            saveNewTrade();
-        }
+        } 
     });
 
     function editTrade(tradeId, rowNumber) {
@@ -54,7 +51,6 @@ $(document).ready(function () {
                         editMode = true;
                         currentTradeId = tradeId;
                         currentRowNumber = rowNumber;
-                        console.log('ID:', currentTradeId, "Row:", currentRowNumber);
                         // Add or update hidden input fields for current_trade_id and current_row_number
                         addOrUpdateHiddenInput('currentTradeId', 'current_trade_id', currentTradeId);
                         addOrUpdateHiddenInput('currentRowNumber', 'current_row_number', currentRowNumber);
@@ -123,20 +119,12 @@ $(document).ready(function () {
                 $('.id-cell').each(function () {
                     if (editMode) {
                         // If form is active, hide the ID cell
-                        console.log('Form is active. Hiding ID cell.');
                         $(this).css('display', 'none');
                     } else {
                         // If form is inactive, show the ID cell as table-cell
-                        console.log('Form is inactive. Showing ID cell as table-cell.');
                         $(this).css('display', 'table-cell');
                     }
                 });
-
-
-
-                // $('.id-cell').css('display', function (i, value) {
-                //     return value === 'none' ? 'table-cell' : 'none';
-                // });
 
 
                 // Function to enable input fields

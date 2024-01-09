@@ -181,6 +181,7 @@
             <div class="box">
                 {% if faq.is_approved %}
                 <h4>{{ faq.title }}</h4>
+                <p>{{ faq.timestamp }}</p>
                 <p>{{ faq.question }}</p>
                 {% else %}
                 <h4>FAQs</h4>
@@ -233,10 +234,11 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="" class="text-decoration-none text-white " style="width: 100%;">
+                    <a href="{% url 'view_faq' faq.id %}" class="text-decoration-none text-white "
+                        style="min-width: 100%;">
                         <div class="text-center light-blue" style="border-radius: 10px; padding: 10px; width: 100%;">
                             {% if faq.is_approved %}
-                            <a href="{% url 'view_faq' faq.id %}">FAQs</a>
+                            FAQs
                             {% else %}
                             Pending
                             {% endif %}
@@ -258,6 +260,7 @@
             <div class="box">
                 {% if faq.is_approved %}
                 <h4>{{ faq.title }}</h4>
+                <p>{{ faq.timestamp }}</p>
                 <p>{{ faq.question }}</p>
                 {% else %}
                 <h4>FAQs</h4>
@@ -310,10 +313,11 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="" class="text-decoration-none text-white " style="width: 100%;">
+                    <a href="{% url 'view_faq' faq.id %}" class="text-decoration-none text-white "
+                        style="min-width: 100%;">
                         <div class="text-center light-blue" style="border-radius: 10px; padding: 10px; width: 100%;">
                             {% if faq.is_approved %}
-                            <a href="{% url 'view_faq' faq.id %}">FAQs</a>
+                            FAQs
                             {% else %}
                             Pending
                             {% endif %}
@@ -387,11 +391,11 @@
         </div>
     </div>
     <h4>{{ faq.title }}</h4>
-    <p>{{ faq.content }}</p>
+    <p>{{ faq.question }}</p>
 
     <!-- Display admin responses -->
     {% if faq.adminresponse_set.all %}
-    <h5>Admin Responses:</h5>
+    <h5 class="small">Admin Responses:</h5>
     <ul class="list-unstyled">
         {% for admin_response in faq.adminresponse_set.all %}
         <li class="mb-2">
@@ -411,7 +415,7 @@
     <!-- Overlay div with absolute positioning -->
     <div class="position-absolute top-0 start-0" style="color: #343a40; padding: 15px; max-width: 350px;">
         <h3 style="font-size: 35px;">Join the FAQ Community.</h3>
-        <p class="">Ask, connect, learn – where your questions find answers and your journey begins!
+        <p>Ask, connect, learn – where your questions find answers and your journey begins!
         </p>
         <div class="d-none d-sm-inline-block">
             <button type="button" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
