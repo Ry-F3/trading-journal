@@ -23,9 +23,12 @@ $(document).ready(function () {
                 var likeButton = $('.like-button[data-object-id="' + object_id + '"]');
                 if (data.user_like_status === 'liked') {
                     likeButton.addClass('liked');
+                    alert('Post Liked!');
                 } else {
                     likeButton.removeClass('liked');
+                    alert('Post Unliked!');
                 }
+
             },
         });
     });

@@ -16,26 +16,41 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 <!-- Display the Cloudinary image and the call-to-action statement -->
 <div class="no-posts position-relative overflow-hidden">
     <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704570758/shutterstock_2277352867_ibiznv.jpg"
-        alt="No Posts Image" class="mx-5 float-right">
+        alt="call-to-action" class="mx-5 float-right" aria-label="Call to action">
+
+    <div class="position-absolute img-hide">
+        <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704892795/icon2-sm_arikdq.jpg" class="img-cat-home-size" alt="arrows" aria-label="arrows">
+    </div>
+
+    <div class="position-absolute top-50 start-50 translate-middle mx-6 img-hide">
+        <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704892434/iccon2_o9msbr.jpg" class="img-two-thirds-size" alt="arrows" aria-label="arrows">
+    </div>
 
     <!-- Overlay div with absolute positioning -->
-    <div class="position-absolute top-0 start-0 txt-container">
-        <h3 class="txt-dk-grey font-m-size">Start Journaling your Trades Today.</h3>
-        <p class="text-muted">Share your trades & connect with fellow traders.
-        </p>
+    <div class="position-absolute top-0 start-0 txt-container p-1 mx-6 mt-4">
+        <h1 class="txt-dk-grey font-size-heading-1">
+            <a href="#sectionTrade" aria-label="Start Journaling" class="text-decoration-none"><strong>Start Journaling</strong></a>
+             your Trades Today.
+        </h1>
+        <div class="bg-light d-flex align-items-center p-1 p-box">
+            <p class="small mb-1 p-1">
+                <a href="{% url 'blog' %}" aria-label="Share your trade" class="font-size-txt-m text-decoration-none txt-light-blue">Share</a>
+                <strong class="text-muted"> your trades with fellow traders.</strong>
+            </p>
+        </div>
     </div>
 </div>
+
 
 {% endblock home_call_to_action %}
 
 <!-- Sidebar Header -->
 {% block sidebar_header_home %}
-<div 
-     class="card-header py-3 d-flex light-blue flex-row align-items-center justify-content-between"
+<div class="card-header py-3 d-flex bg-m-blue flex-row align-items-center justify-content-between"
      data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
-    <h6 class="m-0 font-weight-bold text-white">
-        Filters 
-    </h6>
+    <h3 class="m-0 font-size-heading-2 font-weight-bold text-white">
+        <strong>Filters</strong>
+    </h3>
     <span class="toggle-icon pointer">&#x25BC;</span>
 </div>
 {% endblock sidebar_header_home %}
@@ -61,7 +76,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
             {{ filter_form.long_short_filter }}
         </label>
     </div>
-    <button type="submit" class="submit-button btn-btn mx-2">Apply Filters</button>
+    <button type="submit" aria-label="Apply filters" class="submit-button light-blue btn-btn mx-2">Apply Filters</button>
 </form>
 {% endblock sidebar_home %}
 
@@ -69,16 +84,16 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 <!-- Box 1 -->
 <div class="ms-auto">
     <div class="card-body">
-        <h5 class="card-title">Portfolio Balance</h5>
-        <div class="mt-2">
+        <h1 class="font-size-heading-1 card-title">Portfolio Balance</h1>
+        <div class="mt-2 mb-2">
             <!-- Display the updated portfolio balance -->
             <span>
-                <p class="card-text col-auto"><i class="fas fa-dollar-sign fa-2x --gray-dark p-1 mb-3 mt-2"></i>{{request.user.userprofile.portfolio_balance }}</p>
+                <p class="card-text col-auto font-size-heading-1 swap-symbols mb-3 mt-3"><i class="fas fa-dollar-sign fa-2x txt-dk-grey p-1 mb-3 mt-2"></i>{{request.user.userprofile.portfolio_balance }}</p>
             </span>
         </div>
 
         <!-- Button to trigger the form modal -->
-        <button type="button" class="btn bg-dk-blue mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">
+        <button type="button" class="btn bg-dk-blue mt-1" data-bs-toggle="modal" data-bs-target="#updateBalanceModal" aria-label="Update balance">
             <i class="fas fa-exchange-alt"></i>  Update Balance
         </button>
     </div>
@@ -89,7 +104,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateBalanceModalLabel">Add or Subtract Money</h5>
+                <h3 class="modal-title" id="updateBalanceModalLabel">Add or Subtract Money</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -101,8 +116,8 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" name="action" value="add" class="btn bg-dk-blue">Add Money</button>
-                        <button type="submit" name="action" value="subtract" class="btn btn-secondary">Withdraw Money</button>
+                        <button type="submit" name="action" aria-label="Add money to porfolio balance" value="add" class="btn bg-dk-blue">Add Money</button>
+                        <button type="submit" name="action" aria-label="Withdraw money from porfolio balance" value="subtract" class="btn btn-secondary">Withdraw Money</button>
                     </div>
                 </form>
             </div>
@@ -115,9 +130,15 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 <!-- Box 2 -->
 <div class="ms-auto">
     <div class="card-body">
-        <h5 class="card-title">PnL</h5>
-        <p class="card-text">Realized PnL: <i class="fas fa-dollar-sign fa-1x --gray-dark p-1 mb-1 mt-4"></i> {{ pnl_data.total_realized_pnl }}</p>
-        <p class="card-text">Unrealized PnL: <i class="fas fa-dollar-sign fa-1x --gray-dark p-1 mb-1 mt-1"></i> {{ pnl_data.total_unrealized_pnl }}</p>
+        <h1 class="font-size-heading-1 card-title">PnL</h1>
+        <div class="card-text mt-3">
+            <p class="pnl-label">Realized PnL:</p>
+            <p class="pnl-value swap-symbols font-size-heading-1 swap-symbols mb-3 mt-3"><i class="fas fa-dollar-sign fa-1x txt-dk-grey p-1 mb-1 mt-4"></i><strong class="font-size-txt-m">{{ pnl_data.total_realized_pnl }}</strong></p>
+        </div>
+        <div class="card-text mt-3">
+            <p class="pnl-label">Unrealized PnL:</p>
+            <p class="pnl-value swap-symbols font-size-heading-1 swap-symbols mb-3 mt-3"><i class="fas fa-dollar-sign fa-1x txt-dk-grey p-1 mb-1 mt-1"></i><strong class="font-size-txt-m">{{ pnl_data.total_unrealized_pnl }}</strong></p>
+        </div>
     </div>
 </div>
 {% endblock pnl_content %}
@@ -125,23 +146,42 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 {% block chart_content %}
 <!-- Box 3 -->
 
-<img src="data:image/png;base64,{{ image_base64 }}" alt="Realized Profit Chart">
+<img src="data:image/png;base64,{{ image_base64 }}" alt="Realized Profit Chart" aria-label="Chart represening users profit and loss">
 
 <!-- Left arrow button -->
-<button type="button" onclick="cycleChart(-1)" class="btn btn-sm bg-transparent chart-style">&lt;</button>
+<button type="button" onclick="cycleChart(-1)" aria-label="Left arrow" class="btn btn-sm bg-transparent chart-style">&lt;</button>
 
 <!-- Right arrow button -->
-<button type="button" onclick="cycleChart(1)" class="btn btn-sm bg-transparent chart-style">&gt;</button>
+<button type="button" onclick="cycleChart(1)" aria-label="Right arrow" class="btn btn-sm bg-transparent chart-style">&gt;</button>
 
 <!-- Interval options -->
 <form method="get" action="#" id="timeIntervalForm" style="display: none;">
     <label for="time_interval"></label>
     <div class="d-flex align-items-center">
         <select name="time_interval" id="time_interval" onchange="submitForm()" class="form-control">
-            <option value="hourly" {% if time_interval == 'hourly' %}selected{% endif %}>Hourly</option>
-            <option value="daily" {% if time_interval == 'daily' %}selected{% endif %}>Daily</option>
-            <option value="monthly" {% if time_interval == 'monthly' %}selected{% endif %}>Monthly</option>
-            <option value="yearly" {% if time_interval == 'yearly' %}selected{% endif %}>Yearly</option>
+        {% if time_interval == 'hourly' %}
+            <option value="hourly" selected>Hourly</option>
+        {% else %}
+            <option value="hourly">Hourly</option>
+        {% endif %}
+        
+        {% if time_interval == 'daily' %}
+            <option value="daily" selected>Daily</option>
+        {% else %}
+            <option value="daily">Daily</option>
+        {% endif %}
+        
+        {% if time_interval == 'monthly' %}
+            <option value="monthly" selected>Monthly</option>
+        {% else %}
+            <option value="monthly">Monthly</option>
+        {% endif %}
+        
+        {% if time_interval == 'yearly' %}
+            <option value="yearly" selected>Yearly</option>
+        {% else %}
+            <option value="yearly">Yearly</option>
+        {% endif %}
         </select>
     </div>
 </form>
@@ -150,23 +190,23 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 
 {% block trade_content %}
 <!-- Box 4 -->
-<span><a class="nav-link" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted small"></i></a></span>
+<span id="sectionTrade"><a class="nav-link" aria-label="Reload page" href="{% url 'trade_list' %}"><i class="fas fa-redo text-muted small"></i></a></span>
 <div class="p-3 m-2 scrollbar-container card-body">
     <div class="table-responsive">
-        <table id="tContainer" class="table table-sm">
+        <table id="tContainer" class="table table-sm txt-dk-grey font-style-m">
             <thead>
                 <tr>
-                    <th class="id-cell">ID</th>
-                    <th>Symbol</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th class="letter-spacing">L/S</th>
-                    <th>Risk</th>
-                    <th>Margin</th>
-                    <th>Leverage</th>
-                    <th>Open</th>
-                    <th>Closed</th>
-                    <th>PnL</th>
+                    <th scope="col" class="id-cell">ID</th>
+                    <th scope="col">Symbol</th>
+                    <th ascope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="letter-spacing">L/S</th>
+                    <th scope="col">Risk</th>
+                    <th scope="col">Margin</th>
+                    <th scope="col">Leverage</th>
+                    <th scope="col">Open</th>
+                    <th scope="col">Closed</th>
+                    <th scope="col">PnL</th>     
                 </tr>
             </thead>
 
@@ -190,24 +230,24 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
                         <!-- Edit Trade button -->
                         <button class="btn btn-sm square-btn bg-black edit-trade-button"
                             data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}"><i id="pencil"
-                                class="fas fa-pencil-alt pencil_color"></i></button>
+                                class="fas fa-pencil-alt pencil_color" aria-label="Edit trade"></i></button>
                     </td>
                     <td>
                         <!-- Delete button -->
-                        <button class="btn bg-dk-grey btn-sm square-btn delete-trade-button"
+                        <button class="btn bg-dk-grey btn-sm square-btn delete-trade-button" aria-label="Delete trade"
                             data-row-number="{{ trade.row_number }}" data-trade-id="{{ trade.id }}">X</button>
                     </td>
                 </tr>
                 {% endfor %}
                 <div class="d-flex align-items-center">
-                    <button id="showCreateTradeForm" class="btn bg-dk-blue mb-3">Create Trade</button>
+                    <button id="showCreateTradeForm" aria-label="Create trade and cancel trade" class="btn bg-dk-blue mb-3">Create Trade</button>
 
                     <!-- Pagination Links -->
                     <div class="pagination">
                         <span class="step-links p-3 pb-4 m-2 txt-dk-blue">
                             {% if trades.has_previous %}
-                                <a class="txt-dk-blue" href="?page=1{% if get_params %}&{{ get_params.urlencode }}{% endif %}">&laquo; first</a>
-                                <a class="txt-dk-blue" href="?page={{ trades.previous_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">previous</a>
+                                <a aria-label="First page" class="txt-dk-blue" href="?page=1{% if get_params %}&{{ get_params.urlencode }}{% endif %}">&laquo; first</a>
+                                <a aria-label="Previous" class="txt-dk-blue" href="?page={{ trades.previous_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">previous</a>
                             {% endif %}
                     
                             <span class="current text-muted">
@@ -215,8 +255,8 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
                             </span>
                     
                             {% if trades.has_next %}
-                                <a class="txt-dk-blue" href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
-                                <a class="txt-dk-blue" href="?page={{ trades.paginator.num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
+                                <a aria-label="Next" class="txt-dk-blue" href="?page={{ trades.next_page_number }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">next</a>
+                                <a aria-label="Last" class="txt-dk-blue" href="?page={{ trades.paginator.num_pages }}{% if get_params %}&{{ get_params.urlencode }}{% endif %}">last &raquo;</a>
                             {% endif %}
                         </span>
                     </div>
@@ -263,7 +303,7 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 
                             <!-- Save button -->
                             <td class="hide-cell" colspan="2">
-                                <button id="save" type="submit" class="btn btn-success save-button">Save</button>
+                                <button id="save" type="submit" aria-label="Save Trade" class="btn bg-light-green save-button">Save</button>
                             </td>
                         </tr>
                     </form>
@@ -283,8 +323,8 @@ class="d-none d-sm-inline-block btn btn-sm light-blue shadow-sm"><i
 {% endblock trade_content %}
 
 {% block help_button %}
-<button type="button" class="outline-0 border-0 bg-dk-blue" data-bs-toggle="modal"
-data-bs-target="#helpModal1">
+<button type="button" class="outline-0 border-0 light-blue" data-bs-toggle="modal"
+data-bs-target="#helpModal1" aria-label="Help?">
 <i class="fas fa-question-circle"></i>
 </button>
 {% endblock help_button %}

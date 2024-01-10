@@ -108,7 +108,7 @@ class Trade(models.Model):
         for index, trade in enumerate(remaining_trades, start=1):
             trade.row_number = index
             trade.save()
-            
+           
     def __str__(self):
         return f"{self.symbol} - {self.row_number}"
     
@@ -138,7 +138,7 @@ class BlogPost(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username} - {self.title} - {self.timestamp}"
+        return f"{self.user.username} - {self.likes} -{self.title} - {self.timestamp}"
     
     def number_of_likes(self):
         return self.likes.count()

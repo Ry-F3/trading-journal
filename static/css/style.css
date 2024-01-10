@@ -5,14 +5,17 @@
     --gray: #b9bbc0;
     --gray-dark: #5a5c69;
     --primary-light: #7ca6bb;
+    --primary-medium: #4e85a0;
     --primary-dark: #0231f1;
+    --green: #00796b;
+    --red: #b30000;
 
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
     --breakpoint-lg: 992px;
     --breakpoint-xl: 1200px;
-    --font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-sans-serif: Roboto, "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -28,30 +31,59 @@
     color: white;
 }
 
+.bg-light-green {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
+.bg-light-green:hover {
+    background-color: var(--green);
+    border-color: var(--green);
+    color: white;
+}
+
 .light-blue {
     background-color: var(--primary-light);
     border-color: var(--primary-light);
     color: white;
 }
 
+.bg-m-blue {
+    background-color: var(--primary-medium);
+    border-color: var(--primary-medium);
+    color: white;
+}
+
 .light-blue:hover {
-    background-color: var(--primary-light);
-    border-color: var(--primary-light);
+    background-color: var(--primary-medium);
+    border-color: var(--primary-medium);
     color: var(--custom-white);
 }
 
 .bg-dk-blue:hover {
-    /* background-color: #2c4ed4;
-    border-color: #2c4ed4; */
     color: white;
 }
 
+.txt-dk-red {
+    color: var(--red);
+}
+
 .txt-dk-blue {
-    color: #0231f1;
+    color: var(--primary-dark);
+}
+
+.txt-light-blue {
+    color: var(--primary-light);
+    font-weight: 600;
 }
 
 .txt-dk-grey {
-    color: #5a5c69;
+    color: var(--gray-dark);
+}
+
+.txt-dk-green {
+    color: var(--primary-medium);
 }
 
 .bg-dk-grey {
@@ -62,10 +94,7 @@
 }
 
 .bg-dk-grey:hover {
-    /* background-color: rgb(198, 200, 204);
-    border-color: rgb(198, 200, 204); */
     color: #ffffff;
-
 }
 
 /* --------------------------------------------------------------- fonts */
@@ -82,6 +111,11 @@
     font-size: 0.87rem;
 }
 
+.font-size-txt-m {
+    font-size: 1.25rem;
+}
+
+
 /* --------------------------------------------------------------- base.html */
 
 *,
@@ -95,11 +129,12 @@ html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
-    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: var(--font-family-sans-serif);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -137,6 +172,21 @@ p {
     flex-grow: 1;
 }
 
+form {
+    width: 100%;
+}
+
+.font-style-m {
+ font-family: var(--font-family-monospace);
+}
+
+.font-style-s {
+    font-family: var(--font-family-sans-serif);
+   }
+   
+
+
+
 /* --------------------------------------------------------------- navbar */
 
 .logo {
@@ -145,7 +195,6 @@ p {
 
 
 /* --------------------------------------------------------------- sidebar */
-
 
 .profile-placeholder {
     width: 100%;
@@ -170,6 +219,28 @@ p {
 
 /* --------------------------------------------------------------- trade_list.html */
 
+.img-cat-home-size {
+    max-width: 30%;
+    height: auto;
+}
+
+.mx-6 {
+    margin-left: 6rem;
+    margin-right: 6rem;
+}
+
+.p-box {
+    border-radius: 5px;
+    max-width: 325px;
+    letter-spacing: 0.751px;
+}
+
+.card-text p {
+    display: inline;
+    margin-right: 10px;
+    /* Add some margin if needed */
+}
+
 .float-right {
     width: 35%;
     float: right;
@@ -178,7 +249,7 @@ p {
 .txt-container {
     color: #343a40;
     padding: 5px;
-    max-width: 350px;
+    max-width: 410px;
 }
 
 .overflow-hidden {
@@ -259,20 +330,11 @@ select {
 
 /* Style for submit button */
 .submit-button {
-    background-color: var(--primary-light);
-    color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-
-/* Hover effect for the submit button */
-.submit-button:hover {
-    background-color: var(--primary-light);
-    color: var(--custom-white);
-}
-
 
 /* Custom styles for the left column */
 .custom-left-column {
@@ -337,7 +399,7 @@ hr {
 }
 
 .input-size {
-    width: 70%;
+    max-width: 150px;
 }
 
 .view-div {
@@ -406,6 +468,12 @@ hr {
     width: 100%;
 }
 
+.img-cat-size-blog {
+    width: 25%;
+    height: auto; 
+    float: right;
+}
+
 /* --------------------------------------------------------------- contact.html */
 
 /* Thin scrollbar for WebKit browsers (Chrome, Safari) */
@@ -429,6 +497,13 @@ hr {
     height: 95px;
 }
 
+.response-item-scale-3 {
+    background-color: #f2f2f2;
+    font-size: 12px;
+    min-width: 130px;
+    height: 95px;
+}
+
 .faqs-container {
     max-height: 300px;
     overflow-y: auto;
@@ -437,6 +512,18 @@ hr {
 
 .img-third-size {
     width: 30%;
+    height: auto;
+}
+
+.img-cat-size {
+    width: 25%;
+    height: auto; 
+    float: right;
+}
+
+.img-two-thirds-size {
+    width: 40%;
+    height: auto;
 }
 
 .min-width {
@@ -458,4 +545,212 @@ hr {
 .scale-float {
     width: 40%;
     float: right;
+}
+
+
+/* --------------------------------------------------------------- Media qQeries */
+
+@media (min-width: 1200px) {
+    /* Styles for extra large devices */
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+    /* Styles for large devices */
+
+    .response-item-scale-3 {
+        width: 450px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+    /* Styles for large devices */
+    .font-size-heading-1 {
+        font-size: 1.2rem;
+    }
+
+    .font-size-txt-m {
+        font-size: 1rem;
+    }
+
+    .img-third-size {
+        width: 25%;
+    }
+
+    .mt-4 {
+        margin-top: .5rem !important;
+    }
+
+    .d-sm-inline-block {
+        display: inline-block!important;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
+    }
+
+    .font-small {
+        font-size: 0.75rem;
+        margin-bottom: -10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Styles for medium devices */
+    .response-item-scale-3 {
+        width: 350px;
+    }
+
+    .font-size-heading-1 {
+        font-size: 1.2rem;
+    }
+
+    .font-size-txt-m {
+        font-size: 1rem;
+    }
+
+    .img-third-size {
+        width: 25%;
+    }
+
+    .mt-4 {
+        margin-top: .5rem !important;
+    }
+
+    .d-sm-inline-block {
+        display: inline-block!important;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
+    }
+
+    .font-small {
+        font-size: 0.5rem;
+        margin-bottom: 0px;
+    }
+
+    .img-cat-size {
+        width: 80%;
+        height: auto;
+        margin-left: 8rem;
+        margin-right: 8rem;
+        float: none;
+    }
+
+    
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    /* Styles for small devices */
+    .d-sm-inline-block {
+        display: inline-block!important;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
+    }
+
+    .font-size-heading-1 {
+        font-size: 1.2rem;
+    }
+
+    .font-size-txt-m {
+        font-size: 1rem;
+    }
+
+    .img-third-size {
+        width: 25%;
+    }
+
+    .mt-4 {
+        margin-top: .5rem !important;
+    }
+
+    .font-small {
+        font-size: 0.5rem;
+        margin-bottom: 0px;
+    }
+
+    .img-cat-size {
+        width: 90%;
+        height: auto;
+        margin-left: 8rem;
+        margin-right: 8rem;
+        float: none;
+    }
+}
+
+@media (min-width: 326px) and (max-width: 567.98px) {
+    .d-sm-inline-block {
+        display: inline-block!important;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
+    }
+
+}
+
+
+@media (max-width: 575.98px) {
+
+    /* Styles for extra small devices */
+
+    .font-size-heading-1 {
+        font-size: 1rem;
+    }
+
+    .font-size-txt-m {
+        font-size: 1rem;
+    }
+
+    .img-cat-home-size {
+        width: 10%;
+    }
+
+    
+    .img-cat-size {
+        width: 99%;
+        height: auto;
+        margin-left: 8rem;
+        margin-right: 8rem;
+        float: none;
+    }
+
+    .img-cat-size-blog {
+        width: 82%;
+    }
+
+    .float-right {
+        width: 92%;
+        float: none;
+    }
+
+    .mt-4 {
+        margin-top: 0.1rem !important;
+    }
+
+    .txt-container {
+        width: 170px;
+        
+    }
+    
+
+    .p-box {
+        font-size: 0.4rem;
+        padding: 2px;
+    }
+
+    .font-small {
+        font-size: 0.5rem;
+        margin-bottom: 0px;
+    }
+
+    .mt-4 {
+        margin-top: .5rem !important;
+    }
+
+    .mx-6 {
+        margin-left: 0rem;
+        margin-right: 3rem;
+    }
+
+    .img-hide {
+      display: none;  
+    }
+  
 }

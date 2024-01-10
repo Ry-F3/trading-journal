@@ -1,3 +1,4 @@
+console.log("Form function");
 $(document).ready(function () {
     // jQuery code
     const createTradeForm = $('#createTradeForm');
@@ -168,7 +169,7 @@ $(document).ready(function () {
         });
     });
 
-    function handleDeleteResponse(data, tradeId, rowNumber) {
+    function handleDeleteResponse(data, tradeId) {
         const rowId = `tradeRow${tradeId}`;
 
         // Handle the response from the server
@@ -193,7 +194,7 @@ $(document).ready(function () {
 
 
 
-function handleSaveResponse(data, tradeId) {
+function handleSaveResponse(data) {
     // Handle the response from the server after saving
     if (data.success) {
 

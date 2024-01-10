@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from .forms import FAQForm, AdminResponseForm
 from .models import FAQRequest
 from django.utils import timezone
+from django.contrib import messages
 
 class ContactUsView(View):
     contact = 'contact.html'
@@ -86,7 +87,7 @@ class ContactUsView(View):
 @login_required
 def submit_faq_request(request):
     context = {}  # Initialise an empty context
-
+    messages.success(request, 'FAQ request sent!')
     if request.method == 'POST':
         # Handle the form data here
         title = request.POST.get('title')

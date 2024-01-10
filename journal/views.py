@@ -14,7 +14,7 @@ from reportlab.lib.pagesizes import letter
 from datetime import date, timedelta 
 from django.utils import timezone
 from reportlab.pdfgen import canvas
-from io import StringIO,  BytesIO
+from io import BytesIO
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter, HourLocator
 import matplotlib.dates as mdates
@@ -151,9 +151,6 @@ class TradeFilterView(ListView):
         # Initialise filter form here
         filter_form = TradeFilterForm(request.GET) 
         
-        # Check if any filter parameters were applied
-        if request.GET:
-            messages.success(request, 'Filter applied successfully!')
         
         # Preserve the filter parameters in pagination links
         get_params = request.GET.copy()
@@ -179,7 +176,9 @@ class TradeFilterView(ListView):
 
     def get_filtered_trades(self, user, request):
         queryset = Trade.objects.filter(user=user).order_by('row_number')
-
+        
+        messages.success(request, 'Filter applied successfully!')
+        
         # Filter trades based on request parameters
         date_filter = request.GET.get('date_filter')
         symbol_filter = request.GET.get('symbol_filter')
@@ -235,6 +234,7 @@ class TradeFilterView(ListView):
 
 @login_required
 def delete_trade(request, trade_id):
+    messages.success(request, 'Trade Deleted!')
     try:
         trade = Trade.objects.get(id=trade_id, user=request.user)
         time_interval = request.GET.get('time_interval', 'hourly')
@@ -245,6 +245,7 @@ def delete_trade(request, trade_id):
         Trade.objects.filter(user=request.user, row_number__gt=deleted_row_number).update(
             row_number=F('row_number') - 1
         )
+        
 
         return JsonResponse({'success': True, 'deleted_row_number': deleted_row_number})
     except Trade.DoesNotExist:

@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 from django.core.files.base import ContentFile
 from io import BytesIO
+from django.contrib import messages
 
 
 def initialise_blog_context(request, posts):
@@ -77,7 +78,6 @@ def view_post(request, post_id):
             comment_text = request.POST.get('comment', '')
             if comment_text:
                 Comment.objects.create(post=post, user=request.user, content=comment_text)
-
                 # Redirect to the same post after adding a comment
                 return redirect('view_post', post_id=post_id)
 
@@ -96,6 +96,7 @@ def like_toggle(request):
         blog_post.likes.remove(request.user)
     else:
         blog_post.likes.add(request.user)
+
 
     # Update the like count in the session for the specific post
     like_count = blog_post.likes.count()
@@ -116,7 +117,7 @@ def like_toggle(request):
 @login_required
 def add_comment(request, post_id):
     post = get_object_or_404(BlogPost, pk=post_id)
-
+    messages.success(request, 'Comment Added!')
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -184,7 +185,7 @@ class BlogView(View):
 
     def post(self, request, *args, **kwargs):
         blog_post_form = BlogPostForm(request.POST, request.FILES)
-        
+        messages.success(request, 'Post Created!')
         if blog_post_form.is_valid():
             new_post = blog_post_form.save(commit=False)
             new_post.user = request.user

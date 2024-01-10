@@ -1,5 +1,6 @@
 // Form Calculations
 // Global Variables
+console.log("global");
 var isShortSelected = false;
 var isLongSelected = false;
 
@@ -140,3 +141,13 @@ function checkSelectionAndEnableFields() {
 
 }
 
+// Smooth scroll on anchor click
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});

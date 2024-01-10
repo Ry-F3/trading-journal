@@ -43,9 +43,9 @@
 
 <!-- Sidebar Header -->
 {% block sidebar_header_contact %}
-<div class="card-header light-blue py-3 d-flex flex-row align-items-center justify-content-between"
+<div class="card-header bg-m-blue py-3 d-flex flex-row align-items-center justify-content-between"
     data-bs-toggle="collapse" data-bs-target="#sidebarCollapse">
-    <p class="m-0 font-weight-bold text-white">FAQs</p>
+    <p class="m-0 font-weight-bold font-size-heading-2 text-white"><strong>FAQs</strong></p>
     <span class="toggle-icon pointer">&#x25BC;</span>
 </div>
 {% endblock sidebar_header_contact %}
@@ -257,7 +257,7 @@
                             {% if faq.adminresponse_set.all %}
                             {% for response in faq.adminresponse_set.all %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
+                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale-3">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -269,7 +269,7 @@
                             {% endfor %}
                             {% else %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
+                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale-3">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -289,7 +289,7 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending" class="text-decoration-none text-center light-blue txt-scaletext-white min-width">
+                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending" class="text-decoration-none text-white min-width">
                         <div class="text-center light-blue txt-scale">
                             {% if faq.is_approved %}
                             FAQs
@@ -385,21 +385,22 @@
 </div>
 
 {% else %}
+
 <!-- Display the Cloudinary image and the call-to-action statement -->
-<div class="no-posts position-relative">
+<div class="no-posts position-relative overflow-hidden">
+    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg"
+        alt="call-to-action" class="mx-5 img-cat-size" aria-label="Call to action">
     <!-- Overlay div with absolute positioning -->
-    <div class="position-absolute top-0 start-0 call-to-action-contact">
-        <h1 class="font-m-size">Join the FAQ Community.</h1>
-        <p class="text-muted">Ask, connect, learn – where your questions find answers and your journey begins!
-        </p>
+    <div class="position-absolute top-0 start-0 txt-container p-1 mx-2 mt-2">
+        <h1 class="font-size-heading-1">Join the FAQ Community.</h1>
+        <p class="text-muted font-small bg-light p-box font-size-heading-2">Ask, connect, learn – where your questions find answers and your journey begins!</p>
         <div class="d-none d-sm-inline-block">
-            <button type="button" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
+            <button type="button" id="button-request" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
                 FAQ Request
             </button>
         </div>
     </div>
-    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg" aria-label="Arrow direction picture" class="scale-float"
-        alt="No Posts Image">
 </div>
+
 {% endif %}
 {% endblock contact_call_to_action %}
