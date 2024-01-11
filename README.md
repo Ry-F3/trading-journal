@@ -186,6 +186,125 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 
 ## **Features**
 
+![Home-dashboard](/readme/screenshots/home-dashboard.png)
+
+### **Home Dashboard Overview:**
+
+#### **Files used:**
+* Front end Javascript/jQuery: chart.js, currencySwap.js, editButton.js, formFunction.js, global.js, longShort.js
+* Backend (Django): views.py, urls.py, models.py, forms.py
+
+1. Diverse Toolset:
+    * Empower users with a comprehensive range of tools for effective trade management. The dashboard is designed to provide users with a versatile toolkit, catering to various aspects of trade analysis and record-keeping.
+2. Alpha Mockup Stage:
+    * The current stage of development is the alpha mockup, acknowledging that there are features yet to be implemented. Due to time constraints, some functionalities were left out. The dashboard serves as a foundation for future enhancements and refinements.
+3. Progress Tracking with Matplotlib:
+    * For ease of learning, the dashboard incorporates the matplotlib.pyplot package to offer users a visual representation of their progress. Interactive chart investigation remains a potential avenue for future development.
+4. Trade Summaries in PDF:
+    * Users have the capability to generate PDF summaries of their trades. This feature provides a convenient way to document and review trade activities.
+5. Dynamic Trade Recording:
+    * Enable users to dynamically record trades by creating, saving, editing, and deleting entries. This flexibility ensures efficient management of trade data.
+6. Realised and Unrealized Profit Tracking:
+    * The Profit and Loss (PnL) feature updates in real-time, reflecting both realised and unrealized profits. This dynamic display is dependent on the status of each trade (open or closed).
+7. Portfolio Balance Updates:
+    * Users can update their portfolio balance, and the system automatically adjusts it based on closed trades. This ensures an accurate and up-to-date reflection of the user's financial standing.
+8. Trade Search Functionality:
+    * The dashboard includes a side-bar with filters, allowing users to easily search and filter trades. This feature streamlines the process of locating specific trade records.
+9. Call to Action for Trade Journaling:
+    * Encourage users to start journaling their trades through a prominent call to action. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
+The dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
+
+### **Generate PDF Report**
+
+![Home-dashboard-trade-report](/readme/screenshots/home-dashboard-trade-report.png)
+
+#### **Implementation Details**
+
+1. Import Necessary Modules into views.py: <br> <code> from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen <br> import canvas
+from io import BytesIO </code>
+
+2. Define the <code>generate_pdf_report</code> Function: <br> This function takes a user object and a queryset of trades as input and generates a PDF report with trade details. It uses ReportLab's canvas module to create a PDF document.
+
+3. Usage in <code>generate_report</code> View Function: <br> In the generate_report view function, when the user selects the PDF format, it calls generate_pdf_report to create the PDF content. The generated PDF is then sent as an HTTP response for the user to download. The code for future iterations has been left to show how more file types could be called by the user i.e CSV files.
+
+### **Create Trade**
+
+![Home-dashboard-create-trade](/readme/screenshots/home-dashboard-create-trade.png)
+
+
+#### **Implementation Details**
+
+1. Frontend (JavaScript/jQuery):
+    * The functionality starts with a button or element with the id showCreateTradeForm. This element is used to trigger the visibility of the form for creating a new trade.
+The function is wrapped in $(document).ready(), ensuring that it executes once the document is fully loaded.
+The form elements and related components are selected using jQuery, such as createTradeForm, showCreateTradeForm, hideCells, and container.
+A flag createTradeFormActive is used to track whether the form is currently active or not.
+
+2. Event Listeners:
+    * The "Create Trade" button click is captured using showCreateTradeForm.click(function () {...}). Depending on the current state, it either displays or hides the trade creation form.
+Inside the click event handler, the text of the button is checked. If it's "Create Trade," it shows the form; if it's "Cancel Trade," it hides the form.
+
+3. Form Visibility Handling:
+    * The handleFormVisibility function is defined to manage the visibility and behavior of the form.
+If the form is active (createTradeFormActive is true), it adjusts the styling and behavior for an active form. It clears form fields, hides specific cells, and disables certain input fields.
+If the form is inactive, it resets the styling and behavior for an inactive form, scrolls to the top of the container, and clears form fields.
+
+4. Save Type and Button Text:
+    * The function sets the value of a hidden input field with the id saveType based on whether the form is active or not.
+It toggles the CSS classes of the "Save" button based on the form's activity, changing the button's appearance.
+
+5. Input Field Handling:
+    * The function handles the enabling and disabling of input fields based on the form's activity.
+It sets the value of saveType to 'regular' if the form is active and 'overwrite' if the form is inactive.
+
+6. Reverting Button Text:
+    * The text of the button is reverted based on the form's activity. If the form is active, the button text becomes "Cancel Trade"; if inactive, it becomes "Create Trade."
+
+7. Backend (Django):
+    * In Django, there are views (HomeView and update_portfolio_balance, among others) that handle the backend logic when a trade is created or canceled.
+The Trade model is used to store trade-related data, and there are functions to calculate and update the portfolio balance and realized profits.
+Usage:
+
+The functionality is used within Django templates to create and cancel trades. It interacts with Django views to handle the backend logic and updates.
+
+
+### **Long and Short Calculations**
+
+#### **As seen in file global.js & longShort.js :**
+
+1. Long Position Calculation (performLongCalculations()):
+* Input Parameters:
+    * leverage: The leverage used for the trade.
+    * margin: The margin allocated for the trade.
+    * openPrice: The initial price at which the position was opened.
+    * currentPrice: The current market price.
+* Steps:
+    * Calculate the percentage change in the asset's price:<br> <code> // Calculate percentage Long Change <br> var percentageLongChange = ((currentPrice - openPrice) / openPrice) * leverage * 100; </code>
+    * Format the percentage change to two decimal places.
+    * Calculate the return PnL (Profit and Loss): <br><code> // Calculate Return PnL for Long Position <br> var returnPnlLong = (100 / percentageLongChange) * margin; </code>
+    * Update the HTML element with the id 'id_return_pnl' with the calculated return PnL value.
+
+2. Short Position Calculation (performShortCalculations()):
+* Input Parameters:
+    * leverage: The leverage used for the trade.
+    * margin: The margin allocated for the trade.
+    * openPrice: The initial price at which the short position was opened.
+    * currentPrice: The current market price.
+* Steps:
+    * Calculate the percentage change in the asset's price for a short position: <code> // Calculate percentage Short Change <br> var percentageShortChange = ((openPrice - currentPrice) / openPrice) * leverage * 100; </code>
+    * Format the percentage change to two decimal places.
+    * Calculate the return PnL (Profit and Loss): <br><code> // Calculate Return PnL for Short Position <br> var returnPnlShort = (100 / percentageShortChange) * margin; </code>
+    * Update the HTML element with the id 'id_return_pnl' with the calculated return PnL value.
+
+
+### **Edit Trade**
+
+![Home-dashboard-edit-trade](/readme/screenshots/home-dashboard-edit-trade.png)
+
+
+
+
 ### **Trading Journal**
 
 jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
