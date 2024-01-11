@@ -684,7 +684,28 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **HTML validation** using [W3C](https://validator.w3.org/#validate_by_uri) :
 
-https://trader-tribe-7c9dc3cf075d.herokuapp.com/
+**Please note: Validation of Django templates was conducted based on the Code Institute's guidance, which advocates for validation through URL inspection.**
+
+[Home Url](https://trader-tribe-7c9dc3cf075d.herokuapp.com/)
+/
+[Blog Url](https://trader-tribe-7c9dc3cf075d.herokuapp.com/blog/)
+/
+[Contact Url](https://trader-tribe-7c9dc3cf075d.herokuapp.com/contact/)
+
+
+1. In-Line CSS for Login Page
+    * Issue: The login page contained an error related to styling.
+    * Resolution: To address this, the usage of in-line CSS was implemented instead of the <code> style  tag. </code>
+2. Script Type for Email.js
+    * Issue: An error was detected related to the script type for Email.js.
+    * Resolution: The recommendation from the Email.js documentation was followed. The script type <code> script type="text/javascript" </code> was removed, aligning with the recommended installation process outlined in the Email.js [documentation](https://www.emailjs.com/docs/sdk/installation/)
+
+<br>
+
+![home-validation](/readme/screenshots/main-page-validator.png)
+
+**Please note: All 3 urls displayed the same errors**
+
 
 
 #### **Lighthouse performance testing**
