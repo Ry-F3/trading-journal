@@ -1,4 +1,3 @@
-console.log("Form function");
 $(document).ready(function () {
     // jQuery code
     const createTradeForm = $('#createTradeForm');
