@@ -211,8 +211,9 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 8. Trade Search Functionality:
     * The dashboard includes a side-bar with filters, allowing users to easily search and filter trades. This feature streamlines the process of locating specific trade records.
 9. Call to Action for Trade Journaling:
-    * Encourage users to start journaling their trades through a prominent call to action. The link start journalling if clicked directs the user to the trades section of the page.  The link share trades if clicked directs the user to the trades section of the page. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
-The dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
+    * Encourage users to start journaling their trades through a prominent call to action. The link start journalling, if clicked directs the user to the trades section of the page.  The link share trades if clicked directs the user to the trades section of the page. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
+
+The home dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
 
 ### **Generate PDF Report**
 
@@ -237,33 +238,33 @@ from io import BytesIO </code>
 
 1. Frontend (JavaScript/jQuery):
     * The functionality starts with a button or element with the id showCreateTradeForm. This element is used to trigger the visibility of the form for creating a new trade.
-The function is wrapped in $(document).ready(), ensuring that it executes once the document is fully loaded.
-The form elements and related components are selected using jQuery, such as createTradeForm, showCreateTradeForm, hideCells, and container.
-A flag createTradeFormActive is used to track whether the form is currently active or not.
+    * The function is wrapped in $(document).ready(), ensuring that it executes once the document is fully loaded.
+    * The form elements and related components are selected using jQuery, such as createTradeForm, showCreateTradeForm, hideCells, and container.
+    * A flag createTradeFormActive is used to track whether the form is currently active or not.
 
 2. Event Listeners:
     * The "Create Trade" button click is captured using showCreateTradeForm.click(function () {...}). Depending on the current state, it either displays or hides the trade creation form.
-Inside the click event handler, the text of the button is checked. If it's "Create Trade," it shows the form; if it's "Cancel Trade," it hides the form.
+    * Inside the click event handler, the text of the button is checked. If it's "Create Trade," it shows the form; if it's "Cancel Trade," it hides the form.
 
 3. Form Visibility Handling:
     * The handleFormVisibility function is defined to manage the visibility and behavior of the form.
-If the form is active (createTradeFormActive is true), it adjusts the styling and behavior for an active form. It clears form fields, hides specific cells, and disables certain input fields.
-If the form is inactive, it resets the styling and behavior for an inactive form, scrolls to the top of the container, and clears form fields.
+    * If the form is active (createTradeFormActive is true), it adjusts the styling and behavior for an active form. It clears form fields, hides specific cells, and disables certain input fields.
+    * If the form is inactive, it resets the styling and behavior for an inactive form, scrolls to the top of the container, and clears form fields.
 
 4. Save Type and Button Text:
     * The function sets the value of a hidden input field with the id saveType based on whether the form is active or not.
-It toggles the CSS classes of the "Save" button based on the form's activity, changing the button's appearance.
+    * It toggles the CSS classes of the "Save" button based on the form's activity, changing the button's appearance.
 
 5. Input Field Handling:
     * The function handles the enabling and disabling of input fields based on the form's activity.
-It sets the value of saveType to 'regular' if the form is active and 'overwrite' if the form is inactive.
+    * It sets the value of saveType to 'regular' if the form is active and 'overwrite' if the form is inactive.
 
 6. Reverting Button Text:
     * The text of the button is reverted based on the form's activity. If the form is active, the button text becomes "Cancel Trade"; if inactive, it becomes "Create Trade."
 
 7. Backend (Django):
     * In Django, there are views (HomeView and update_portfolio_balance, among others) that handle the backend logic when a trade is created or canceled.
-The Trade model is used to store trade-related data, and there are functions to calculate and update the portfolio balance and realized profits.
+    * The Trade model is used to store trade-related data, and there are functions to calculate and update the portfolio balance and realized profits.
 
 8. Usage:
     * The functionality is used within Django templates to create and cancel trades. It interacts with Django views to handle the backend logic and updates.
@@ -303,7 +304,7 @@ The Trade model is used to store trade-related data, and there are functions to 
 1. Frontend (JavaScript/jQuery):
     * Event Binding: The $(document).on('click', '.edit-trade-button', function () { ... }) code binds a click event handler to any element with the class edit-trade-button. This links to the HTML elements (buttons, links, etc.) with this class that represent the "Edit Trade" functionality.
     * Callback Function: When a button with the class edit-trade-button is clicked, the provided callback function is executed.
-    * Fetching Trade Details for Editing: Inside the callback function, editTrade(tradeId, rowNumber) is called, passing the tradeId and rowNumber as parameters. This function seems to handle the logic for fetching trade details associated with the clicked button.
+    * Fetching Trade Details for Editing: Inside the callback function, editTrade(tradeId, rowNumber) is called, passing the tradeId and rowNumber as parameters. This function handles the logic for fetching trade details associated with the clicked button.
     * Error Handling: There's a try-catch block to handle any errors that might occur during the execution of the click event.
 
 2. Backend (Django):
@@ -404,7 +405,7 @@ $('.delete-trade-button').click(function () {
     * There is a function generate_trade_image that creates an image summarizing trade details.
     * The search_trade and get_trade_details functions handle AJAX requests related to searching for trades and fetching trade details.
 7. Messages:
-    * Success messages are displayed using Django's messages framework after certain actions, like adding a comment or creating a post (CRUD).
+    * Success messages are displayed using Django's messages framework after certain actions, like adding a comment or creating a post.
 
 ### **Blog Post**
 
@@ -412,17 +413,116 @@ $('.delete-trade-button').click(function () {
 
 #### **Implementation Details**
 
+1. Backend (Django - Blog Post Handling):
+* Post Initialisation:
+    * The initialise_blog_context function sets up the context for displaying blog posts. It organizes posts into sets, calculates like counts, and handles remaining posts.
+* View Post:
+    * The view_post function renders a specific blog post, along with a form for adding comments.
+    * It handles comment submissions, creating Comment objects and redirecting to the same post after submission.
+* Like Toggle:
+The like_toggle function toggles the like status of a blog post, updating like counts in the session and determining the user's like status.
+2. Backend (Django - Blog Post Creation):
+* BlogView Class:
+    * The BlogView class handles both GET and POST requests related to blog posts.
+    * It initialises the context for displaying blog posts and handles the creation of new blog posts.
+    * The generate_trade_image function creates images from the trade details.
+3. Challenges and Considerations:
+* AJAX Integration:
+    * AJAX is utilized for dynamic updates, such as like toggling, without page reloads.
+    Challenges were encountered in externalising AJAX scripts due to site layout complexities and the need for scripts within specific code blocks.
+* Modular Django Templates:
+The design choice for the dashboard effect within Django templates required scripts to be within those blocks for recognition.
+Multiple scripts on the page within the code blocks needed careful handling for proper recognition.
+
+<strong>Unfortunately</strong>, due to time constraints, the features for updating and deleting blog posts were not implemented. It's worth noting that I have previously demonstrated a comprehensive understanding of CRUD operations within the home dashboard, where users can effectively create, edit, and delete trades. While these specific features are pending for the blog posts, the existing foundation showcases a solid grasp of CRUD operations in other sections of the application.
+
 ### **Blog Search Trade and Image generator**
 
 ![Blog-search-trade](/readme/screenshots/blog-search-trade.png)
 
 #### **Implementation Details**
 
+1. Frontend (JavaScript/jQuery): 
+* Initialisation:
+    * The script is wrapped inside $(document).ready(function () {...}), ensuring that it executes when the DOM is fully loaded.
+2. Trade Search Function:
+    * The searchTrade function is defined to handle the trade search functionality.
+    * It uses $.ajax to make an asynchronous HTTP request to the server.
+    * The request is a GET type to the '/search_trade/' endpoint, and it sends the query and user ID as parameters.
+    * The success callback processes the response, updating the search results container (#search-results) based on the received data.
+    * If trades are found, it displays the selected trade details, generates a trade image preview, and sets the base64-encoded image data to a hidden field (#trade-image).
+    * Error handling is included in case there's an issue with the AJAX request.
+3. Trade Image Preview Generation:
+    * The generateTradeImagePreview function creates a trade image preview using HTML5 Canvas.
+    * It dynamically generates a canvas, draws trade details on it, and converts it to a base64-encoded PNG image.
+4. Event Listeners:
+    * Event listeners are set up for various elements such as the trade search input (#trade-search), "Download Image" link (#download-image-link), "Share Trade" button (#share-trade-btn), and "Post" button (#post-btn).
+    * The listeners handle actions like triggering the trade search on input, downloading the generated image, toggling the visibility of the trade container, and handling the posting of trade details.
+5. Additional Functions:
+    * 'toggleAttachTradeContainer' is a utility function used to toggle the visibility of the checkbox container (#attach-trade-container).
+    * 'resetTradeForm' resets various form elements and hides unnecessary components.
+6. Modal Interaction:
+    * The script manages the visibility of the trade container (#trade-container) and resets the form when the modal is closed.
+7. Validation and Alert:
+    * Before posting, the script validates that required fields (title and content) are filled in. If not, it displays an alert.
+    * If the user does not post an image it uses a placeholder image in the frontend.
+
+
+### **Inspiration for Creating a Dynamic Trade Image**
+
+![Bingx](/readme/screenshots/trade.jpg)
+
+#### **Reflection on Development Challenges:**
+
+* It's acknowledged that attempting to achieve a specific visual result, inspired by another platform like BingX, led to some development challenges.
+* Challenges were faced in combining base64 with a background image to overlay text dynamically.
+* A realisation occurred that a simpler text implementation, like the PDF generation, might be more practical for sharing trade details.
+
+#### **Reflection Statement:**
+
+* This development experience emphasizes the importance of staying adaptable and not getting overly attached to specific implementation ideas.
+* There's recognition that spending too much time pursuing a complex visual goal may not always align with the practicality of achieving the desired functionality.
+* Learning from this, future iterations can explore simpler and more achievable solutions, allowing for a smoother development process and faster development.
+
+
 ### **Blog Comment**
 
 ![Blog-comment](/readme/screenshots/blog-comment.png)
 
 #### **Implementation Details**
+
+1. Backend (Django - Blog Comment Handling):
+* Checking Form Submission:
+    * The view checks if the form is submitted using request.method == 'POST'.
+    * It specifically looks for the presence of 'add_comment' in request.POST to determine if a comment is being added.
+* Adding a Comment:
+    * If a comment is being added, it retrieves the comment text from the submitted form (comment_text).
+    * It then creates a new Comment object using the Comment.objects.create method.
+    * The post, user, and content fields of the Comment model are populated with the corresponding values.
+    * The timestamp is automatically set to the current date and time due to auto_now_add=True.
+    * After creating the comment, the view redirects back to the same post, refreshing the page with the newly added comment.
+
+### **Like Toggling**
+
+#### **Implementation Details**
+
+1. Backend (Django - Blog Like Toggle):
+    * The Django view is decorated with @require_POST to ensure it only responds to POST requests. It retrieves the blog post based on the provided object ID and toggles the like status.
+2. Toggle Like Status:
+    * The view checks if the user has already liked the post and toggles the like status accordingly.
+3. Update Like Counts:
+    * After toggling the like status, the view calculates and updates the like counts for the specific post and the total like count for all posts.
+4. Return JSON Response:
+    * The updated like count, user's like status, and total like count are returned as a JSON response to the frontend. Ajax updates the UI based on the JSON response.
+
+5.  Frontend (JavaScript/jQuery): 
+* AJAX Request:
+    * When the user clicks the "like" button, an AJAX POST request is sent to the Django backend (like_toggle view).
+    * The backend processes the request, updates the like status, and returns a JSON response containing the updated like count, user's like status, and total like count.
+6. AJAX Success Callback:
+    * The success callback function in the AJAX request processes the JSON response.
+    * It updates the UI elements based on the received data, such as updating the displayed like count and changing the appearance of the "like" button.
+    * The alert messages are displayed to notify the user about the success of the like action.
 
 ### **Blog Banner**
 
