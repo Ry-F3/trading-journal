@@ -523,7 +523,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="/static/js/signout.js"></script>
-    <script src="/static/js/tooltip.js"></script>
+    <script>
+        // JavaScript to close alerts after a delay
+        window.setTimeout(function () {
+            $(".alert").fadeTo(300, 0).slideUp(300, function () {
+                $(this).remove();
+            });
+        }, 3500);
+    </script>
 
 </body>
 
