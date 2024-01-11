@@ -322,6 +322,55 @@ The Trade model is used to store trade-related data, and there are functions to 
 * Redirect:
     * After processing, the view redirects to the same page to avoid reposting on refresh.
 
+### **Coding Decisions**
+
+jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
+
+**Key points on why jQuery best served the task at hand:**
+
+* **DOM Manipulation:**
+    * jQuery simplifies DOM manipulation, making it easier to select, traverse, and manipulate HTML elements. This is particularly useful when dynamically updating the UI in response to user actions or server responses.
+* **Event Handling:**
+    * jQuery provides a concise and cross-browser-compatible way to handle events. This is crucial for capturing user interactions like button clicks, input changes, and other events that trigger actions in the application.
+* **AJAX Communication:**
+    * jQuery simplifies AJAX requests, making it easier to communicate with the server asynchronously. In this code, AJAX is used to perform actions like deleting trades, fetching trade details, and saving trades without requiring a full page reload.
+* **Form Handling:**
+    * jQuery facilitates form handling, especially in conjunction with AJAX. It helps in managing form visibility, handling form submissions, and dynamically updating form elements based on user input.
+* **Real-time Calculations:**
+    * The code involves real-time calculations based on user input. jQuery, combined with event listeners, allows for efficient handling of user input changes and triggers the recalculation of trade values without the need for a page refresh.
+* **Cross-browser Compatibility:**
+    * jQuery abstracts away many of the cross-browser compatibility issues, ensuring that the code behaves consistently across different web browsers.
+* **Code Readability and Conciseness:**
+    * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
+* **Asynchronous User Experience:**
+    * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
+    
+
+#### **Initalisation and Event Listeners**
+
+<code> 
+$(document).ready(function () {
+    // jQuery code
+    // ... (Initialisation of variables and event listeners)
+});
+
+</code>
+
+* The code inside the $(document).ready() function ensures that the script runs after the HTML document is fully loaded.
+
+
+#### **Trade Deletetion**
+
+<code> 
+// Add an event listener for the delete button
+$('.delete-trade-button').click(function () {
+    // ... (Function to delete a trade using AJAX)
+});
+
+</code>
+
+* This code sets up an event listener for the click on a button with the class delete-trade-button. When clicked, it triggers a function to delete a trade using AJAX.
+
 ### **Blog**
 
 ![Blog](/readme/screenshots/blog.png)
@@ -357,61 +406,64 @@ The Trade model is used to store trade-related data, and there are functions to 
 7. Messages:
     * Success messages are displayed using Django's messages framework after certain actions, like adding a comment or creating a post (CRUD).
 
+### **Blog Post**
+
+![Blog-post](/readme/screenshots/blog-create-post.png)
+
 #### **Implementation Details**
 
-### **Dashboard Call to Action**
+### **Blog Search Trade and Image generator**
 
-![Home-dashboard](/readme/screenshots/home-dashboard.png)
+![Blog-search-trade](/readme/screenshots/blog-search-trade.png)
 
-### **Trading Journal**
+#### **Implementation Details**
 
-jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
+### **Blog Comment**
 
-**Key points on why jQuery best served the task at hand:**
+![Blog-comment](/readme/screenshots/blog-comment.png)
 
-* **DOM Manipulation:**
-    * jQuery simplifies DOM manipulation, making it easier to select, traverse, and manipulate HTML elements. This is particularly useful when dynamically updating the UI in response to user actions or server responses.
-* **Event Handling:**
-    * jQuery provides a concise and cross-browser-compatible way to handle events. This is crucial for capturing user interactions like button clicks, input changes, and other events that trigger actions in the application.
-* **AJAX Communication:**
-    * jQuery simplifies AJAX requests, making it easier to communicate with the server asynchronously. In this code, AJAX is used to perform actions like deleting trades, fetching trade details, and saving trades without requiring a full page reload.
-* **Form Handling:**
-    * jQuery facilitates form handling, especially in conjunction with AJAX. It helps in managing form visibility, handling form submissions, and dynamically updating form elements based on user input.
-* **Real-time Calculations:**
-    * The code involves real-time calculations based on user input. jQuery, combined with event listeners, allows for efficient handling of user input changes and triggers the recalculation of trade values without the need for a page refresh.
-* **Cross-browser Compatibility:**
-    * jQuery abstracts away many of the cross-browser compatibility issues, ensuring that the code behaves consistently across different web browsers.
-* **Code Readability and Conciseness:**
-    * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
-* **Asynchronous User Experience:**
-    * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
-    
+#### **Implementation Details**
+
+### **Blog Banner**
+
+![Blog-banner](/readme/screenshots/blog-banner.png)
+
+#### **Implementation Details**
 
 
-#### **Initalisation and Event Listeners**
+### **Contact Us**
 
-<code> 
-$(document).ready(function () {
-    // jQuery code
-    // ... (Initialisation of variables and event listeners)
-});
+![Contact-us-faq](/readme/screenshots/contact-us-faq.png)
 
-</code>
+### **Contact Us Overview:**
 
-* The code inside the $(document).ready() function ensures that the script runs after the HTML document is fully loaded.
+#### **Files used:**
+* Front end Javascript/jQuery: email.js
+* Backend (Django): views_contact.py, urls.py, models.py, forms.py
 
+### **FAQ Request**
 
-#### **Trade Deletetion**
+![Contact-us-faq-request](/readme/screenshots/contact-us-faq-request.png)
 
-<code> 
-// Add an event listener for the delete button
-$('.delete-trade-button').click(function () {
-    // ... (Function to delete a trade using AJAX)
-});
+#### **Implementation Details**
 
-</code>
+### **FAQ View**
 
-* This code sets up an event listener for the click on a button with the class delete-trade-button. When clicked, it triggers a function to delete a trade using AJAX.
+![Contact-us-view-faq](/readme/screenshots/contact-us-view-faq.png)
+
+#### **Implementation Details**
+
+### **Contact Us Banner**
+
+![Contact-us-view-faq](/readme/screenshots/contact-us-banner.png)
+
+#### **Implementation Details**
+
+### **Contact Us Email.js**
+
+![Contact-us-view-faq](/readme/screenshots/contact-us-your-voice-matters.png)
+
+#### **Implementation Details**
 
 ### **Future Enhancements:**
 
