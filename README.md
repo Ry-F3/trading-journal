@@ -211,7 +211,7 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 8. Trade Search Functionality:
     * The dashboard includes a side-bar with filters, allowing users to easily search and filter trades. This feature streamlines the process of locating specific trade records.
 9. Call to Action for Trade Journaling:
-    * Encourage users to start journaling their trades through a prominent call to action. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
+    * Encourage users to start journaling their trades through a prominent call to action. The link start journalling if clicked directs the user to the trades section of the page.  The link share trades if clicked directs the user to the trades section of the page. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
 The dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
 
 ### **Generate PDF Report**
@@ -264,10 +264,9 @@ It sets the value of saveType to 'regular' if the form is active and 'overwrite'
 7. Backend (Django):
     * In Django, there are views (HomeView and update_portfolio_balance, among others) that handle the backend logic when a trade is created or canceled.
 The Trade model is used to store trade-related data, and there are functions to calculate and update the portfolio balance and realized profits.
-Usage:
 
-The functionality is used within Django templates to create and cancel trades. It interacts with Django views to handle the backend logic and updates.
-
+8. Usage:
+    * The functionality is used within Django templates to create and cancel trades. It interacts with Django views to handle the backend logic and updates.
 
 ### **Long and Short Calculations**
 
@@ -297,13 +296,72 @@ The functionality is used within Django templates to create and cancel trades. I
     * Calculate the return PnL (Profit and Loss): <br><code> // Calculate Return PnL for Short Position <br> var returnPnlShort = (100 / percentageShortChange) * margin; </code>
     * Update the HTML element with the id 'id_return_pnl' with the calculated return PnL value.
 
-
-### **Edit Trade**
-
 ![Home-dashboard-edit-trade](/readme/screenshots/home-dashboard-edit-trade.png)
 
+#### **Implementation Details**
 
+1. Frontend (JavaScript/jQuery):
+    * Event Binding: The $(document).on('click', '.edit-trade-button', function () { ... }) code binds a click event handler to any element with the class edit-trade-button. This links to the HTML elements (buttons, links, etc.) with this class that represent the "Edit Trade" functionality.
+    * Callback Function: When a button with the class edit-trade-button is clicked, the provided callback function is executed.
+    * Fetching Trade Details for Editing: Inside the callback function, editTrade(tradeId, rowNumber) is called, passing the tradeId and rowNumber as parameters. This function seems to handle the logic for fetching trade details associated with the clicked button.
+    * Error Handling: There's a try-catch block to handle any errors that might occur during the execution of the click event.
 
+2. Backend (Django):
+* Form Validation:
+    * The view first checks if the submitted form (TradeForm) is valid.
+* Save Type Check:
+    * save_type = request.POST.get('save_type', 'regular'): Retrieves the save type from the POST data. If not provided, it defaults to "regular."
+* Handling "Regular" Save:
+    * If the save type is "regular," the trade is saved normally.
+    * Success messages are added for creating a new trade, and additional processes like updating balance and PnL occur dependant on the status of the trade.
+* Handling "Overwrite" Save:
+    * If the save type is "overwrite," the view retrieves the trade ID and row number to be overwritten.
+    * Form data for the edited trade is gathered.
+    * Success messages are added for editing a trade, and additional processes like updating balance and PnL might occur.
+    * The view then calls trade.save_overwrite to handle the specific logic for overwriting a trade, passing the necessary parameters.
+* Redirect:
+    * After processing, the view redirects to the same page to avoid reposting on refresh.
+
+### **Blog**
+
+![Blog](/readme/screenshots/blog.png)
+
+### **Blog Overview:**
+
+#### **Files used:**
+* Front end Javascript/jQuery: likeButton.js
+* Backend (Django): views_blog.py, urls.py, models.py, forms.py
+
+1. Blog Posts:
+    * Users can create new blog posts using the BlogPostForm.
+    * The BlogView class handles both GET and POST requests for managing blog posts.
+    * The blog posts are displayed on the main blog page (blog.html) in sets of three, with like counts for each post.
+    * Once the 3 boxes in the dashboard are populated the remaining posts are featured in the sidebar.
+2. Post Details:
+    * Users can view the details of a specific blog post by clicking on its title.
+    * The view_post function is responsible for rendering the detailed view of a single blog post.
+    * Users can add comments to a blog post, and these comments are displayed below the post.
+3. Likes and Like Toggling:
+    * Users can like blog posts, and the like counts are displayed for each post.
+    * The like_toggle function handles AJAX requests for toggling the like status of a post.
+    * Like counts are stored in the session, and the total like count is updated accordingly to the model.
+4. Comments:
+    * Users can add comments to a blog post.
+    * Comments are stored in the Comment model, associated with a specific blog post and user.
+5. User Authentication:
+    * Certain features, such as creating a blog post, adding comments, and liking posts, require user authentication.
+    * The @login_required decorator is used to enforce authentication for specific views.
+6. Trade-related Features:
+    * There is a function generate_trade_image that creates an image summarizing trade details.
+    * The search_trade and get_trade_details functions handle AJAX requests related to searching for trades and fetching trade details.
+7. Messages:
+    * Success messages are displayed using Django's messages framework after certain actions, like adding a comment or creating a post (CRUD).
+
+#### **Implementation Details**
+
+### **Dashboard Call to Action**
+
+![Home-dashboard](/readme/screenshots/home-dashboard.png)
 
 ### **Trading Journal**
 
@@ -327,6 +385,7 @@ jQuery was selected to craft a fully functional trading journal with an interact
     * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
 * **Asynchronous User Experience:**
     * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
+    
 
 
 #### **Initalisation and Event Listeners**
