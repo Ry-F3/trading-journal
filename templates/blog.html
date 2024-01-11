@@ -318,11 +318,11 @@
         <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
             {% csrf_token %}
             <input type="hidden" name="object_id" value="{{ post.id }}">
-            <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+            <button type="submit" class="bg-transparent outline-0 border-0 like-button" aria-label="like button">
                 {% if user_name and post.id in individual_like_counts %}
-                <i class="fas txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+                <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
                 {% else %}
-                <i class="far txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+                <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
                 {% endif %}
             </button>
             {% for post_id, like_count in individual_like_counts.items %}
@@ -416,11 +416,11 @@
     <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
         {% csrf_token %}
         <input type="hidden" name="object_id" value="{{ post.id }}">
-        <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+        <button type="submit" class="bg-transparent outline-0 border-0 like-button" aria-label="like button">
             {% if user_name and post.id in individual_like_counts %}
-            <i class="fas txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+            <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
             {% else %}
-            <i class="far txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+            <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
             {% endif %}
         </button>
         {% for post_id, like_count in individual_like_counts.items %}
@@ -514,11 +514,11 @@
     <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
         {% csrf_token %}
         <input type="hidden" name="object_id" value="{{ post.id }}">
-        <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+        <button type="submit" class="bg-transparent outline-0 border-0 like-button" aria-label="like button">
             {% if user_name and post.id in individual_like_counts %}
-            <i class="fas txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+            <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
             {% else %}
-            <i class="far txt-dk-grey fa-thumbs-up fa-1x" aria-label="like button"></i>
+            <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
             {% endif %}
         </button>
         {% for post_id, like_count in individual_like_counts.items %}
@@ -624,11 +624,11 @@
             <form method="post" action="{% url 'like_toggle' %}" class="like-form d-flex align-items-center">
                 {% csrf_token %}
                 <input type="hidden" name="object_id" value="{{ post.id }}">
-                <button type="submit" class="bg-transparent outline-0 border-0 like-button">
+                <button type="submit" class="bg-transparent outline-0 border-0 like-button"  aria-label="Like button">
                     {% if user_name and post.id in individual_like_counts %}
-                    <i class="fas txt-dk-grey fa-thumbs-up fa-1x" aria-label="Like button"></i>
+                    <i class="fas txt-dk-grey fa-thumbs-up fa-1x"></i>
                     {% else %}
-                    <i class="far txt-dk-grey fa-thumbs-up fa-1x" aria-label="Like button"></i>
+                    <i class="far txt-dk-grey fa-thumbs-up fa-1x"></i>
                     {% endif %}
                 </button>
                 {% for post_id, like_count in individual_like_counts.items %}

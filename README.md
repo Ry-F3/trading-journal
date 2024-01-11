@@ -682,6 +682,9 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **CSS validation** using [jigsaw](https://jigsaw.w3.org/css-validator/validator) :
 
+#### **HTML validation** using [W3C](https://validator.w3.org/#validate_by_uri) :
+
+https://trader-tribe-7c9dc3cf075d.herokuapp.com/
 
 
 #### **Lighthouse performance testing**
