@@ -85,9 +85,13 @@
                                 </div>
                             </div>
                             <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                <a href="" class="txt-dk-blue text-decoration-none">Account</a>
-                                <button type="button" class="outline-0 border-0 bg-transparent txt-dk-blue" data-bs-toggle="modal"
-                                    data-bs-target="#helpModal1" aria-label="Help?">
+                                <button type="button" class="outline-0 border-0 bg-transparent txt-dk-blue"
+                                    data-bs-toggle="modal" data-bs-target="#underConstructionModal"
+                                    aria-label="Account">
+                                    Account
+                                </button>
+                                <button type="button" class="outline-0 border-0 bg-transparent txt-dk-blue"
+                                    data-bs-toggle="modal" data-bs-target="#helpModal1" aria-label="Help?">
                                     Help
                                 </button>
                                 <button type="button" class="outline-0 border-0 btn light-blue mt-2"
@@ -297,18 +301,145 @@
                                 {% block help_button %}
                                 {% endblock help_button %}
 
+                                <!-- Under Construction Modal -->
+                                <div class="modal fade" id="underConstructionModal" tabindex="-1"
+                                    aria-labelledby="underConstructionModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="underConstructionModalLabel">Under
+                                                    Construction</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Sorry, the accounts section is currently under construction. We are
+                                                    working on enhancing your experience. Please check back later!</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn bg-dk-grey"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Modal -->
                                 <div class="modal fade" id="helpModal1" tabindex="-1" aria-labelledby="helpModalLabel1"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="helpModalLabel1">Help?</h5>
+                                                <h1 class="font-size-heading-1" id="helpModalLabel1">Help</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                <!-- Help content goes here -->
+                                            <div class="modal-body all-posts-box"
+                                                style="max-height: 300px; overflow-y: auto; width: 100%;">
+                                                <!-- First Image -->
+                                                <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704986444/help1_fnzcez.png"
+                                                    alt="Help Image 1" class="img-fluid">
+                                                <div class="mt-3 all-posts-box">
+                                                    <!-- Trade Journal Manual -->
+                                                    <h2 class="font-size-heading-1">Trade Journal Manual</h2>
+
+                                                    <!-- 1. Trade ID -->
+                                                    <h3 class="font-size-heading-2">1. Trade ID:</h3>
+                                                    <p class="font-size-heading-2">Each trade is assigned a unique Trade
+                                                        ID, allowing easy location
+                                                        and image creation for blog posts.</p>
+
+                                                    <!-- 2. Symbol -->
+                                                    <h3 class="font-size-heading-2">2. Symbol:</h3>
+                                                    <p class="font-size-heading-2">The trade symbol represents the
+                                                        stock, commodity, or
+                                                        cryptocurrency involved (e.g., Amazon = AMZ).</p>
+
+                                                    <!-- 3. Date -->
+                                                    <h3 class="font-size-heading-2">3. Date:</h3>
+                                                    <p class="font-size-heading-2">Record the date of the trade,
+                                                        providing a chronological overview
+                                                        of your trading activities.</p>
+
+                                                    <!-- 4. Status -->
+                                                    <h3 class="font-size-heading-2">4. Status:</h3>
+                                                    <p class="font-size-heading-2">
+                                                        <strong>Open:</strong> Reflects unrealized profits, indicating
+                                                        potential gains or losses.<br>
+                                                        <strong>Closed:</strong> Reflects realized profits, updating
+                                                        your portfolio balance upon closure.
+                                                    </p>
+
+                                                    <!-- 5. Risk -->
+                                                    <h3 class="font-size-heading-2">5. Risk:</h3>
+                                                    <p class="font-size-heading-2">Represents the proportion of risk
+                                                        relative to your portfolio
+                                                        balance. While it does not dynamically update, this feature may
+                                                        be implemented in the future.</p>
+
+                                                    <!-- 6. Margin -->
+                                                    <h3 class="font-size-heading-2">6. Margin:</h3>
+                                                    <p class="font-size-heading-2">The amount utilized for a particular
+                                                        trade, contributing to its
+                                                        financial exposure.</p>
+
+                                                    <!-- 7. Leverage -->
+                                                    <h3 class="font-size-heading-2">7. Leverage:</h3>
+                                                    <p class="font-size-heading-2">Indicates the degree of leverage
+                                                        applied to a trade, influencing
+                                                        potential returns and risks.</p>
+
+                                                    <!-- 8. Open and Closed Prices -->
+                                                    <h3 class="font-size-heading-2">8. Open and Closed Prices:</h3>
+                                                    <p class="font-size-heading-2">
+                                                        <strong>Open Price:</strong> The initial price at which the
+                                                        trade was executed.<br>
+                                                        <strong>Closed Price:</strong> The final price at which the
+                                                        trade was closed.
+                                                    </p>
+
+                                                    <!-- 9. Profit and Loss (PnL) -->
+                                                    <h3 class="font-size-heading-2">9. Profit and Loss (PnL):</h3>
+                                                    <p class="font-size-heading-2">PnL reflects the profit or loss
+                                                        incurred from a specific trade,
+                                                        providing insight into its financial outcome.</p>
+
+                                                    <!-- 10. Realized Profit Chart -->
+                                                    <h3 class="font-size-heading-2">10. Realized Profit Chart:</h3>
+                                                    <p class="font-size-heading-2">Utilize a chart that dynamically
+                                                        updates with realized profits,
+                                                        offering a visual representation of your overall success. This
+                                                        chart can be a valuable tool for assessing the growth and
+                                                        performance of your trading portfolio over time.</p>
+
+                                                </div>
+
+                                                <!-- Second Image -->
+                                                <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704986444/help_amljh1.png"
+                                                    alt="Help Image 2" class="img-fluid mt-3">
+                                                <div class="mt-3">
+                                                    <h3 class="font-size-heading-2">User-Editable Fields:</h3>
+                                                    <p class="font-size-heading-2">Users can edit the following fields
+                                                        for each trade:</p>
+                                                    <ul class="font-size-heading-2">
+                                                        <li><strong>Symbol</strong></li>
+                                                        <li><strong>Date</strong></li>
+                                                        <li><strong>Status (Open/Closed)</strong>: Choosing "Long or
+                                                            Short" dynamically updates the return PnL.</li>
+                                                        <li><strong>Risk</strong></li>
+                                                        <li><strong>Margin</strong></li>
+                                                        <li><strong>Leverage</strong></li>
+                                                        <li><strong>Open and Closed Prices</strong></li>
+                                                        <li><strong>Return PnL</strong></li>
+                                                    </ul>
+
+                                                    <!-- Saving Changes -->
+                                                    <h class="font-size-heading-2">Saving Changes:</h3>
+                                                        <p class="font-size-heading-2">Users can save changes, and the
+                                                            updated information will reflect
+                                                            in the balances and overall portfolio performance.</p>
+
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn bg-dk-grey"
@@ -357,7 +488,9 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class="mt-3"><p>Developed by Rhys Alexander Few @2024</p></div>
+                <div class="mt-3">
+                    <p>Developed by Rhys Alexander Few @2024</p>
+                </div>
             </div>
         </footer>
 
