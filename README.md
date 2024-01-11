@@ -6,7 +6,7 @@
 ### To view the project please [click here](https://trader-tribe-7c9dc3cf075d.herokuapp.com/).
 <br>
 
-**Please note: due to reasons unknown to me I Am Responsive would not show my application**
+**Please be aware: for reasons beyond my understanding, the "I Am Responsive" tool is not displaying my application.**
 
 ![Index page screenshot](readme/screenshots/index.png)
 
