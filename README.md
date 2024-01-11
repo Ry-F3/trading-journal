@@ -518,20 +518,13 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 4. Return JSON Response:
     * The updated like count, user's like status, and total like count are returned as a JSON response to the frontend. Ajax updates the UI based on the JSON response.
 
-5.  Frontend (JavaScript/jQuery): 
-* AJAX Request:
+5.  Frontend (JavaScript/jQuery - AJAX Request): 
     * When the user clicks the "like" button, an AJAX POST request is sent to the Django backend (like_toggle view).
     * The backend processes the request, updates the like status, and returns a JSON response containing the updated like count, user's like status, and total like count.
 6. AJAX Success Callback:
     * The success callback function in the AJAX request processes the JSON response.
     * It updates the UI elements based on the received data, such as updating the displayed like count and changing the appearance of the "like" button.
     * The alert messages are displayed to notify the user about the success of the like action.
-
-### **Blog Banner**
-
-![Blog-banner](/readme/screenshots/blog-banner.png)
-
-#### **Implementation Details**
 
 
 ### **Contact Us**
@@ -544,11 +537,89 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 * Front end Javascript/jQuery: email.js
 * Backend (Django): views_contact.py, urls.py, models.py, forms.py
 
+**ContactUsView (Class-Based View):**
+* Responsibility: Manages the rendering and form submission of the Contact Us page.
+* Methods:
+    * initialize_faq_context: Static method to initialize the context with FAQ sets and remaining FAQs.
+    * get: Renders the Contact Us page with the initialized FAQ context.
+    * post: Handles form submission for user queries, creates new FAQRequest instances, and redirects to the Contact Us page.
+**submit_faq_request (Function-Based View):**
+* Responsibility: Handles the submission of FAQ requests through a separate view.
+* Methods:
+    * submit_faq_request: Handles the form submission for FAQ requests, creates new FAQRequest instances, and redirects to the Contact Us page.
+    * GET Method: Handles other request methods by returning a JSON response indicating an invalid request.
+**faq_list (Function-Based View):**
+* Responsibility: Lists all approved FAQs along with their AdminResponses.
+* Methods:
+    * faq_list: Fetches and renders all approved FAQs with AdminResponses.
+**view_faq (Function-Based View):**
+* Responsibility: Displays a specific FAQ and fetches updated FAQs for rendering the FAQ section.
+* Methods:
+    * view_faq: Fetches the specific FAQ based on faq_id, initializes the FAQ context, and renders the Contact Us page with updated FAQs and the specific FAQ.
+* Note:
+* Service Call to [email.js](https://www.emailjs.com/):
+    * Javascript has been placed in the header of base.html as directed by the services documentation.
+
 ### **FAQ Request**
 
 ![Contact-us-faq-request](/readme/screenshots/contact-us-faq-request.png)
 
-#### **Implementation Details**
+#### **Workflow Details**
+
+1. User Submits FAQ Request:
+    * A user submits a FAQ request through the Contact Us page.
+    * The submitted form data includes the title and content of the FAQ.
+2. submit_faq_request View (Function-Based):
+    * This view handles the form submission.
+    * It creates a new FAQRequest instance with the user's details, timestamp, title, content, and sets is_approved to False.
+    * A success message is flashed to the user.
+3. Admin Approval Process:
+    * FAQs are initially marked as not approved (is_approved=False).
+    * Admins need to review and approve FAQs.
+4. Admin Response:
+    * Admins interact with the Django admin terminal to review and approve FAQs.
+    * Once approved, the is_approved and the adminresponse_is_sent field is set to True for the corresponding FAQ in the Django admin panel.
+5. faq_list View (Function-Based):
+    * Lists all approved and pending FAQs with their AdminResponses or placeholders.
+    * Retrieves FAQs where is_approved=True and there is a related AdminResponse marked as sent.
+6. view_faq View (Function-Based):
+    * Displays a specific FAQ based on faq_id.
+    * Initializes the FAQ context using ContactUsView to fetch updated FAQs for rendering.
+    * Renders the Contact Us page with the updated FAQs and the specific FAQ.
+
+### **Admin Responds to Request**
+
+![admin-faq](/readme/screenshots/admin-faq.png)
+
+#### **Key Admin Actions:**
+* Admins must manually review and mark FAQs as approved in the Django admin interface.
+* Admins can provide responses and associate them with the FAQ through the admin panel.
+* For an FAQ to be rendered in the HTML, it needs to be both approved and have a corresponding admin response marked as sent.
+
+<br>
+
+![admin-faq-overview](/readme/screenshots/admin-faq-overview.png)
+
+#### **Admin Panel View for FAQ Management:**
+
+1. Admin Interface:
+    * Accessible through the Django admin panel.
+    * Provides a dedicated section for managing FAQ requests.
+2. FAQ List:
+    * Displays a comprehensive list of all FAQ requests.
+    * Each FAQ entry includes details such as title, content, user, timestamp, and approval status.
+3. Approval Status:
+    * Admins can easily identify which FAQs have been approved (is_approved=True) and which ones are pending approval (is_approved=False).
+    * Pending FAQs require review and approval to be considered for rendering on the Contact Us page.
+4. Response Management:
+    * Admins can view and manage responses associated with each FAQ.
+    * Responses include the admin's username, timestamp, and response content.
+5. Workflow Control:
+    * Admins have the ability to mark an FAQ as approved or disapproved.
+    * Can provide responses to FAQs directly from the admin panel.
+6. Enhanced Visibility:
+    * Efficiently organizes FAQs, responses, and approval status for streamlined management.
+    * Is Appoved has a green tick or red cross for quick decision-making for FAQ approval and response dissemination.
 
 ### **FAQ View**
 
@@ -556,15 +627,14 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Implementation Details**
 
-### **Contact Us Banner**
-
-![Contact-us-view-faq](/readme/screenshots/contact-us-banner.png)
-
-#### **Implementation Details**
 
 ### **Contact Us Email.js**
 
-![Contact-us-view-faq](/readme/screenshots/contact-us-your-voice-matters.png)
+![Contact-us-view-faq](/readme/screenshots/contact-email.png)
+
+![Contact-us-view-faq](/readme/screenshots/contact-email-update.png)
+
+![Contact-us-view-faq](/readme/screenshots/contact-email-feedback.png)
 
 #### **Implementation Details**
 
