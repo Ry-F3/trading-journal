@@ -72,7 +72,7 @@ Trader Tribe caters to a diverse audience of traders seeking a comprehensive too
     * Needs: Cryptocurrency market data, blockchain analysis tools, secure wallets.
 
 ### **Bringing Traders Together: A Common Ground in Recording**
-Regardless of their specific trading style—be it day trading, swing trading, position trading, or any other approach—serious traders share a common need: the ability to meticulously record and analyse their trades. Many exchanges have limitations on data retention, often erasing valuable trading history after a certain period.
+Regardless of their specific trading style be it day trading, swing trading, position trading, or any other approach. Serious traders share a common need: the ability to meticulously record and analyse their trades. Many exchanges have limitations on data retention, often erasing valuable trading history after a certain period.
 
 Trader Tribe unifies this diverse community by providing a secure and reliable platform for traders to log their transactions comprehensively. Whether a day trader chasing intraday opportunities or a position trader taking a long-term investment approach, every trader benefits from a central repository that safeguards their trading data.
 By offering categorization and filtering tools, Trader Tribe ensures that traders can effortlessly navigate through their trade history. This not only aids in performance analysis but also fosters a sense of confidence, knowing that their trading journey is documented and accessible whenever needed.
@@ -215,6 +215,57 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 
 The home dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
 
+#### **Coding Decisions**
+
+jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
+
+**Key points on why jQuery best served the task at hand:**
+
+* **DOM Manipulation:**
+    * jQuery simplifies DOM manipulation, making it easier to select, traverse, and manipulate HTML elements. This is particularly useful when dynamically updating the UI in response to user actions or server responses.
+* **Event Handling:**
+    * jQuery provides a concise and cross-browser-compatible way to handle events. This is crucial for capturing user interactions like button clicks, input changes, and other events that trigger actions in the application.
+* **AJAX Communication:**
+    * jQuery simplifies AJAX requests, making it easier to communicate with the server asynchronously. In this code, AJAX is used to perform actions like deleting trades, fetching trade details, and saving trades without requiring a full page reload.
+* **Form Handling:**
+    * jQuery facilitates form handling, especially in conjunction with AJAX. It helps in managing form visibility, handling form submissions, and dynamically updating form elements based on user input.
+* **Real-time Calculations:**
+    * The code involves real-time calculations based on user input. jQuery, combined with event listeners, allows for efficient handling of user input changes and triggers the recalculation of trade values without the need for a page refresh.
+* **Cross-browser Compatibility:**
+    * jQuery abstracts away many of the cross-browser compatibility issues, ensuring that the code behaves consistently across different web browsers.
+* **Code Readability and Conciseness:**
+    * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
+* **Asynchronous User Experience:**
+    * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
+    
+
+#### **Initalisation and Event Listeners Examples:**
+
+<code> 
+$(document).ready(function () {
+    // jQuery code
+    // ... (Initialisation of variables and event listeners)
+});
+
+</code>
+
+* The code inside the $(document).ready() function ensures that the script runs after the HTML document is fully loaded.
+
+
+#### **Trade Deletetion**
+
+<code> 
+// Add an event listener for the delete button
+$('.delete-trade-button').click(function () {
+    // ... (Function to delete a trade using AJAX)
+});
+
+</code>
+
+* This code sets up an event listener for the click on a button with the class delete-trade-button. When clicked, it triggers a function to delete a trade using AJAX.
+
+<br>
+
 ### **Generate PDF Report**
 
 ![Home-dashboard-trade-report](/readme/screenshots/home-dashboard-trade-report.png)
@@ -323,54 +374,6 @@ from io import BytesIO </code>
 * Redirect:
     * After processing, the view redirects to the same page to avoid reposting on refresh.
 
-### **Coding Decisions**
-
-jQuery was selected to craft a fully functional trading journal with an interactive and user-friendly interface. The vision was to ensure a seamless development process, elevate code readability, and enrich the user experience by leveraging jQuery's robust utilities for DOM manipulation, event handling, and AJAX communication. This choice proved especially valuable in constructing dynamic web applications, where real-time updates and user interactions are pivotal components of the overall experience.
-
-**Key points on why jQuery best served the task at hand:**
-
-* **DOM Manipulation:**
-    * jQuery simplifies DOM manipulation, making it easier to select, traverse, and manipulate HTML elements. This is particularly useful when dynamically updating the UI in response to user actions or server responses.
-* **Event Handling:**
-    * jQuery provides a concise and cross-browser-compatible way to handle events. This is crucial for capturing user interactions like button clicks, input changes, and other events that trigger actions in the application.
-* **AJAX Communication:**
-    * jQuery simplifies AJAX requests, making it easier to communicate with the server asynchronously. In this code, AJAX is used to perform actions like deleting trades, fetching trade details, and saving trades without requiring a full page reload.
-* **Form Handling:**
-    * jQuery facilitates form handling, especially in conjunction with AJAX. It helps in managing form visibility, handling form submissions, and dynamically updating form elements based on user input.
-* **Real-time Calculations:**
-    * The code involves real-time calculations based on user input. jQuery, combined with event listeners, allows for efficient handling of user input changes and triggers the recalculation of trade values without the need for a page refresh.
-* **Cross-browser Compatibility:**
-    * jQuery abstracts away many of the cross-browser compatibility issues, ensuring that the code behaves consistently across different web browsers.
-* **Code Readability and Conciseness:**
-    * jQuery provides a concise syntax for common tasks, resulting in more readable and maintainable code compared to raw JavaScript. This is especially beneficial when dealing with complex interactions and manipulations.
-* **Asynchronous User Experience:**
-    * The use of AJAX in combination with jQuery contributes to an asynchronous user experience. Instead of waiting for full page reloads, users can see real-time updates and interactions, enhancing the overall responsiveness of the application.
-    
-
-#### **Initalisation and Event Listeners**
-
-<code> 
-$(document).ready(function () {
-    // jQuery code
-    // ... (Initialisation of variables and event listeners)
-});
-
-</code>
-
-* The code inside the $(document).ready() function ensures that the script runs after the HTML document is fully loaded.
-
-
-#### **Trade Deletetion**
-
-<code> 
-// Add an event listener for the delete button
-$('.delete-trade-button').click(function () {
-    // ... (Function to delete a trade using AJAX)
-});
-
-</code>
-
-* This code sets up an event listener for the click on a button with the class delete-trade-button. When clicked, it triggers a function to delete a trade using AJAX.
 
 ### **Blog**
 
