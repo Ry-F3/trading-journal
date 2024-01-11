@@ -1,6 +1,5 @@
 // Form Calculations
 // Global Variables
-console.log("global");
 var isShortSelected = false;
 var isLongSelected = false;
 
