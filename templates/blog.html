@@ -556,7 +556,7 @@
             {% if post.comment_set.all %}
             {% for comment in post.comment_set.all|slice:":2" %}
             <li class="mb-2">
-                <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                <div class="comment-style-1 comment-item d-flex flex-column p-2 rounded">
                     <div class="d-flex align-items-center mb-1">
                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
                         <strong class="mx-1">{{ comment.user.username }}:</strong>
@@ -569,7 +569,7 @@
             <!-- Loop three times for no comments placeholders -->
             {% for _ in "12" %}
             <li class="mb-2">
-                <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                <div class="comment-style-1 comment-item d-flex flex-column p-2 rounded">
                     <div class="d-flex align-items-center mb-1">
                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
                         <strong class="mx-1">Placeholder User:</strong>

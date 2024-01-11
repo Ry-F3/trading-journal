@@ -432,6 +432,12 @@ hr {
     min-width: 130px;
 }
 
+.comment-style-1 {
+    background-color: #f2f2f2;
+    font-size: 12px;
+    min-width: 130px;
+}
+
 /* Thin scrollbar for WebKit browsers (Chrome, Safari) */
 .all-posts-box::-webkit-scrollbar {
     width: 8px;
@@ -599,6 +605,8 @@ hr {
         font-size: 0.75rem;
         margin-bottom: -10px;
     }
+
+    
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
@@ -642,7 +650,13 @@ hr {
         float: none;
     }
 
+    .comment-style-1 {
+        background-color: #f2f2f2;
+        font-size: 12px;
+        min-width: 300px;
+    }
     
+
 }
 
 @media (min-width: 576px) and (max-width: 767.98px) {
@@ -680,6 +694,24 @@ hr {
         margin-left: 8rem;
         margin-right: 8rem;
         float: none;
+    }
+
+    .circle-container {
+        height: 10vw;
+        width: 10vw;
+        overflow: hidden;
+    }
+
+    .comment-style {
+        background-color: #f2f2f2;
+        font-size: 12px;
+        min-width: 280px;
+    }
+
+    .comment-style-1 {
+        background-color: #f2f2f2;
+        font-size: 12px;
+        min-width: 280px;
     }
 }
 
@@ -758,6 +790,12 @@ hr {
 
     .img-hide {
       display: none;  
+    }
+
+    .circle-container {
+        height: 15vw;
+        width: 15vw;
+        overflow: hidden;
     }
   
 }
