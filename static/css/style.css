@@ -196,6 +196,12 @@ form {
 
 /* --------------------------------------------------------------- sidebar */
 
+.scroll-contain {
+    max-height: 300px; 
+    overflow-y: auto;
+    width: 100%
+}
+
 .profile-placeholder {
     width: 100%;
     height: 100%;
@@ -473,6 +479,7 @@ hr {
     height: auto; 
     float: right;
 }
+
 
 /* --------------------------------------------------------------- contact.html */
 

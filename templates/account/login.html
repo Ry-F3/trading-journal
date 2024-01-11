@@ -5,24 +5,29 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock head_title %}
 
 {% block content %}
+<style>
+     .login{
+        max-width: 400px;
+    }
+</style>
 <div class="container d-flex align-items-center justify-content-center mt-4">
-    <div class="card mt-3" style="max-width: 400px;">
+    <div class="card mt-3 login">
         <div class="card-body p-4">
             <h3 class="card-title text-center mb-4">{% trans "Sign In" %}</h3>
 
-            <p class="card-text text-center mb-4">{% blocktrans %}Welcome. If you have not created an account yet, then
+            <p class="card-text text-center mb-4 font-size-heading-2">{% blocktrans %}Welcome. If you have not created an account yet, then
                 <a class="link" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
             </p>
 
             <form class="login" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="id_login" class="form-label">{% trans "Username or Email" %}</label>
+                <div class="mb-3 mx-auto"> 
+                    <label for="id_login" class="form-label"></label>
                     {{ form.login }}
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_password" class="form-label">{% trans "Password" %}</label>
+                <div class="mb-3 mx-auto"> 
+                    <label for="id_password" class="form-label"></label>
                     {{ form.password }}
                 </div>
 
@@ -30,7 +35,7 @@
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
 
-                <button class="btn bg-dk-blue btn-block" type="submit">{% trans "Sign In" %}</button>
+                <button class="btn bg-dk-blue btn-block mt-3 mb-3" type="submit">{% trans "Sign In" %}</button>
             </form>
         </div>
     </div>

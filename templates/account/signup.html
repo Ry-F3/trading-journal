@@ -13,36 +13,47 @@
     }
 
     #passwordHelp.show {
-        max-height: 200px;  /* Adjust the maximum height as needed */
+        max-height: 180px;
+    }
+
+       /* Center the 'Toggle Password Help' button */
+    #togglePasswordHelpBtn {
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+    }
+
+    .signout{
+        max-width: 400px;
     }
 </style>
 <div class="container d-flex align-items-center justify-content-center mt-4">
-    <div class="card mb-5 mt-4" style="max-width: 400px;">
+    <div class="card mb-4 mt-4 signout">
         <div class="card-body p-4">
-            <h3 class="card-title text-center mb-3">{% trans "Sign Up" %}</h3>
+            <h3 class="card-title text-center mb-3 mt-2">{% trans "Sign Up" %}</h3>
 
-            <p class="card-text text-center mb-4">{% blocktrans %}Welcome back to the code|star blog. Do you already have an account? Then please <a
+            <p class="card-text text-center mb-4 font-size-heading-2">{% blocktrans %}Welcome back to the code|star blog. Do you already have an account? Then please <a
                     class="link" href="{{ login_url }}">sign in</a> instead.{% endblocktrans %}</p>
 
             <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="id_username" class="form-label">{% trans "Username" %}</label>
+                <div class="mb-3 mx-auto">
+                    <label for="id_username" class="form-label"></label>
                     {{ form.username }}
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_email" class="form-label">{% trans "Email (optional)" %}</label>
+                <div class="mb-3 mx-auto">
+                    <label for="id_email" class="form-label"></label>
                     {{ form.email }}
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_password1" class="form-label">{% trans "Password" %}</label>
+                <div class="mb-3 mx-auto">
+                    <label for="id_password1" class="form-label"></label>
                     {{ form.password1 }}
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_password2" class="form-label">{% trans "Password (again)" %}</label>
+                <div class="mb-3 mx-auto">
+                    <label for="id_password2" class="form-label"></label>
                     {{ form.password2 }}
                 </div>
 
@@ -67,11 +78,11 @@
 
             <!-- Collapsible Password Help Section -->
             <div class="mb-5" id="passwordHelp">
-                <div class="card-body mb-3 small bg-light">
-                    <p>Your password can’t be too similar to your other personal information.</p>
-                    <p>Your password must contain at least 8 characters.</p>
-                    <p>Your password can’t be a commonly used password.</p>
-                    <p>Your password can’t be entirely numeric.</p>
+                <div class="card-body small mb-3 bg-light">
+                    <p class="small">Your password can’t be too similar to your other personal information.</p>
+                    <p class="small">Your password must contain at least 8 characters.</p>
+                    <p class="small">Your password can’t be a commonly used password.</p>
+                    <p class="small">Your password can’t be entirely numeric.</p>
                 </div>
             </div>
         </div>
