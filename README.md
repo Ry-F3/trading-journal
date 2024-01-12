@@ -147,15 +147,15 @@ Trader Tribe uses ElephantSQL as the database hosting provider. ElephantSQL is a
 
 **Key Points:**
 
-* Managed PostgreSQL Database: ElephantSQL takes care of managing the PostgreSQL database, handling tasks such as backups, updates, and scaling. This allows Trader Tribe developers to focus on building and improving the application rather than managing database infrastructure.
+* **Managed PostgreSQL Database:** ElephantSQL takes care of managing the PostgreSQL database, handling tasks such as backups, updates, and scaling. This allows Trader Tribe developers to focus on building and improving the application rather than managing database infrastructure.
 
-* Cloud-Based Service: ElephantSQL operates in the cloud, providing a scalable and reliable environment for hosting databases. This ensures that Trader Tribe's database can grow with the increasing number of users and data.
+* **Cloud-Based Service:** ElephantSQL operates in the cloud, providing a scalable and reliable environment for hosting databases. This ensures that Trader Tribe's database can grow with the increasing number of users and data.
 
-* Ease of Use: ElephantSQL offers a user-friendly interface for managing PostgreSQL databases. It simplifies database administration tasks, making it accessible for developers of varying skill levels.
+* **Ease of Use:** ElephantSQL offers a user-friendly interface for managing PostgreSQL databases. It simplifies database administration tasks, making it accessible for developers of varying skill levels.
 
-* Security: ElephantSQL implements security measures to protect databases, including encryption for data in transit and at rest. This is crucial for ensuring the confidentiality and integrity of user data in Trader Tribe.
+* **Security:** ElephantSQL implements security measures to protect databases, including encryption for data in transit and at rest. This is crucial for ensuring the confidentiality and integrity of user data in Trader Tribe.
 
-* Integration with Django: ElephantSQL seamlessly integrates with Django, the web framework used for developing Trader Tribe. Django's ORM (Object-Relational Mapping) simplifies the interaction with the database, allowing developers to work with database entities using Python code.
+* **Integration with Django:** ElephantSQL seamlessly integrates with Django, the web framework used for developing Trader Tribe. Django's ORM (Object-Relational Mapping) simplifies the interaction with the database, allowing developers to work with database entities using Python code.
 
 **User Stored Data:**
 * User-Centric Rows: The system employs a dynamic row system, where each user maintains their unique set of rows. For example:
@@ -198,23 +198,23 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 * Front end Javascript/jQuery: chart.js, currencySwap.js, editButton.js, formFunction.js, global.js, longShort.js
 * Backend (Django): views.py, urls.py, models.py, forms.py
 
-1. Diverse Toolset:
+1. **Diverse Toolset:**
     * Empower users with a comprehensive range of tools for effective trade management. The dashboard is designed to provide users with a versatile toolkit, catering to various aspects of trade analysis and record-keeping.
-2. Alpha Mockup Stage:
+2. **Alpha Mockup Stage:**
     * The current stage of development is the alpha mockup, acknowledging that there are features yet to be implemented. Due to time constraints, some functionalities were left out. The dashboard serves as a foundation for future enhancements and refinements.
-3. Progress Tracking with Matplotlib:
+3. **Progress Tracking with Matplotlib:**
     * For ease of learning, the dashboard incorporates the matplotlib.pyplot package to offer users a visual representation of their progress. Interactive chart investigation remains a potential avenue for future development.
-4. Trade Summaries in PDF:
+4. **Trade Summaries in PDF:**
     * Users have the capability to generate PDF summaries of their trades. This feature provides a convenient way to document and review trade activities.
-5. Dynamic Trade Recording:
+5. **Dynamic Trade Recording:**
     * Enable users to dynamically record trades by creating, saving, editing, and deleting entries. This flexibility ensures efficient management of trade data.
-6. Realised and Unrealized Profit Tracking:
+6. **Realised and Unrealized Profit Tracking:**
     * The Profit and Loss (PnL) feature updates in real-time, reflecting both realised and unrealized profits. This dynamic display is dependent on the status of each trade (open or closed).
-7. Portfolio Balance Updates:
+7. **Portfolio Balance Updates:**
     * Users can update their portfolio balance, and the system automatically adjusts it based on closed trades. This ensures an accurate and up-to-date reflection of the user's financial standing.
-8. Trade Search Functionality:
+8. **Trade Search Functionality:**
     * The dashboard includes a side-bar with filters, allowing users to easily search and filter trades. This feature streamlines the process of locating specific trade records.
-9. Call to Action for Trade Journaling:
+9. **Call to Action for Trade Journaling:**
     * Encourage users to start journaling their trades through a prominent call to action. The link start journalling, if clicked directs the user to the trades section of the page.  The link share trades if clicked directs the user to the trades section of the page. This guides users to the relevant section of the dashboard for accessing and maintaining their trade journals.
 
 The home dashboard, although in the alpha mockup stage, lays the groundwork for a feature-rich platform with a focus on user-friendly trade management and analysis.
@@ -297,56 +297,56 @@ from io import BytesIO </code>
     * The form elements and related components are selected using jQuery, such as createTradeForm, showCreateTradeForm, hideCells, and container.
     * A flag createTradeFormActive is used to track whether the form is currently active or not.
 
-2. Event Listeners:
+2. **Event Listeners:**
     * The "Create Trade" button click is captured using showCreateTradeForm.click(function () {...}). Depending on the current state, it either displays or hides the trade creation form.
     * Inside the click event handler, the text of the button is checked. If it's "Create Trade," it shows the form; if it's "Cancel Trade," it hides the form.
 
-3. Form Visibility Handling:
+3. **Form Visibility Handling:**
     * The handleFormVisibility function is defined to manage the visibility and behavior of the form.
     * If the form is active (createTradeFormActive is true), it adjusts the styling and behavior for an active form. It clears form fields, hides specific cells, and disables certain input fields.
     * If the form is inactive, it resets the styling and behavior for an inactive form, scrolls to the top of the container, and clears form fields.
 
-4. Save Type and Button Text:
+4. **Save Type and Button Text:**
     * The function sets the value of a hidden input field with the id saveType based on whether the form is active or not.
     * It toggles the CSS classes of the "Save" button based on the form's activity, changing the button's appearance.
 
-5. Input Field Handling:
+5. **Input Field Handling:**
     * The function handles the enabling and disabling of input fields based on the form's activity.
     * It sets the value of saveType to 'regular' if the form is active and 'overwrite' if the form is inactive.
 
-6. Reverting Button Text:
+6. **Reverting Button Text:**
     * The text of the button is reverted based on the form's activity. If the form is active, the button text becomes "Cancel Trade"; if inactive, it becomes "Create Trade."
 
-7. Backend (Django):
+7. *Backend (Django):*
     * In Django, there are views (HomeView and update_portfolio_balance, among others) that handle the backend logic when a trade is created or canceled.
     * The Trade model is used to store trade-related data, and there are functions to calculate and update the portfolio balance and realized profits.
 
-8. Usage:
+8. **Usage:**
     * The functionality is used within Django templates to create and cancel trades. It interacts with Django views to handle the backend logic and updates.
 
 ### **Long and Short Calculations**
 
 #### **As seen in file global.js & longShort.js :**
 
-1. Long Position Calculation (performLongCalculations()):
-* Input Parameters:
+1. *Long Position Calculation (performLongCalculations()):*
+* **Input Parameters:**
     * leverage: The leverage used for the trade.
     * margin: The margin allocated for the trade.
     * openPrice: The initial price at which the position was opened.
     * currentPrice: The current market price.
-* Steps:
+* **Steps:**
     * Calculate the percentage change in the asset's price:<br> <code> // Calculate percentage Long Change <br> var percentageLongChange = ((currentPrice - openPrice) / openPrice) * leverage * 100; </code>
     * Format the percentage change to two decimal places.
     * Calculate the return PnL (Profit and Loss): <br><code> // Calculate Return PnL for Long Position <br> var returnPnlLong = (100 / percentageLongChange) * margin; </code>
     * Update the HTML element with the id 'id_return_pnl' with the calculated return PnL value.
 
-2. Short Position Calculation (performShortCalculations()):
-* Input Parameters:
+2. *Short Position Calculation (performShortCalculations()):*
+* **Input Parameters:**
     * leverage: The leverage used for the trade.
     * margin: The margin allocated for the trade.
     * openPrice: The initial price at which the short position was opened.
     * currentPrice: The current market price.
-* Steps:
+* **Steps:**
     * Calculate the percentage change in the asset's price for a short position: <code> // Calculate percentage Short Change <br> var percentageShortChange = ((openPrice - currentPrice) / openPrice) * leverage * 100; </code>
     * Format the percentage change to two decimal places.
     * Calculate the return PnL (Profit and Loss): <br><code> // Calculate Return PnL for Short Position <br> var returnPnlShort = (100 / percentageShortChange) * margin; </code>
@@ -356,26 +356,26 @@ from io import BytesIO </code>
 
 #### **Implementation Details**
 
-1. Frontend (JavaScript/jQuery):
+1. *Frontend (JavaScript/jQuery):*
     * Event Binding: The $(document).on('click', '.edit-trade-button', function () { ... }) code binds a click event handler to any element with the class edit-trade-button. This links to the HTML elements (buttons, links, etc.) with this class that represent the "Edit Trade" functionality.
     * Callback Function: When a button with the class edit-trade-button is clicked, the provided callback function is executed.
     * Fetching Trade Details for Editing: Inside the callback function, editTrade(tradeId, rowNumber) is called, passing the tradeId and rowNumber as parameters. This function handles the logic for fetching trade details associated with the clicked button.
     * Error Handling: There's a try-catch block to handle any errors that might occur during the execution of the click event.
 
-2. Backend (Django):
-* Form Validation:
+2. *Backend (Django):*
+* **Form Validation:**
     * The view first checks if the submitted form (TradeForm) is valid.
-* Save Type Check:
+* **Save Type Check:**
     * save_type = request.POST.get('save_type', 'regular'): Retrieves the save type from the POST data. If not provided, it defaults to "regular."
-* Handling "Regular" Save:
+* **Handling "Regular" Save:**
     * If the save type is "regular," the trade is saved normally.
     * Success messages are added for creating a new trade, and additional processes like updating balance and PnL occur dependant on the status of the trade.
-* Handling "Overwrite" Save:
+* **Handling "Overwrite" Save:**
     * If the save type is "overwrite," the view retrieves the trade ID and row number to be overwritten.
     * Form data for the edited trade is gathered.
     * Success messages are added for editing a trade, and additional processes like updating balance and PnL might occur.
     * The view then calls trade.save_overwrite to handle the specific logic for overwriting a trade, passing the necessary parameters.
-* Redirect:
+* **Redirect:**
     * After processing, the view redirects to the same page to avoid reposting on refresh.
 
 
@@ -389,29 +389,29 @@ from io import BytesIO </code>
 * Front end Javascript/jQuery: likeButton.js
 * Backend (Django): views_blog.py, urls.py, models.py, forms.py
 
-1. Blog Posts:
+1. **Blog Posts:**
     * Users can create new blog posts using the BlogPostForm.
     * The BlogView class handles both GET and POST requests for managing blog posts.
     * The blog posts are displayed on the main blog page (blog.html) in sets of three, with like counts for each post.
     * Once the 3 boxes in the dashboard are populated the remaining posts are featured in the sidebar.
-2. Post Details:
+2. **Post Details:**
     * Users can view the details of a specific blog post by clicking on its title.
     * The view_post function is responsible for rendering the detailed view of a single blog post.
     * Users can add comments to a blog post, and these comments are displayed below the post.
-3. Likes and Like Toggling:
+3. **Likes and Like Toggling:**
     * Users can like blog posts, and the like counts are displayed for each post.
     * The like_toggle function handles AJAX requests for toggling the like status of a post.
     * Like counts are stored in the session, and the total like count is updated accordingly to the model.
-4. Comments:
+4. **Comments:**
     * Users can add comments to a blog post.
     * Comments are stored in the Comment model, associated with a specific blog post and user.
-5. User Authentication:
+5. **User Authentication:**
     * Certain features, such as creating a blog post, adding comments, and liking posts, require user authentication.
     * The @login_required decorator is used to enforce authentication for specific views.
-6. Trade-related Features:
+6. **Trade-related Features:**
     * There is a function generate_trade_image that creates an image summarizing trade details.
     * The search_trade and get_trade_details functions handle AJAX requests related to searching for trades and fetching trade details.
-7. Messages:
+7. **Messages:**
     * Success messages are displayed using Django's messages framework after certain actions, like adding a comment or creating a post.
 
 ### **Blog Post**
@@ -674,46 +674,46 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 ***Project set up***
 Given that this is a Django project, a number of terminal commands must be run before any real development work can begin:
 
-* Install Django v3 and the Gunicorn web-server:
-    * pip3 install 'django<3' gunicorn
+* **Install Django v3 and the Gunicorn web-server:**
+    * <code>pip3 install 'django3' gunicorn </code>
 
-* Install libraries necessary for working with PostgresQL:
-    * pip3 install dj_database_url psycopg2
+* **Install libraries necessary for working with PostgresQL:**
+    * <code>pip3 install dj_database_url psycopg2</code>
 
-* Install libraries needed for Cloudinary:
-    * pip3 install dj3_cloudinary_storage
+* **Install libraries needed for Cloudinary:**
+    * <code>pip3 install dj3_cloudinary_storage</code>
 
-* Create a requirements.txt file:
-    * pip3 freeze --local > requirements.txt
+* **Create a requirements.txt file:**
+    * <code>pip3 freeze --local > requirements.txt</code>
 
-* Create a new Django Project:
-    * django-admin startproject pnl .
+* **Create a new Django Project:**
+    * <code>django-admin startproject pnl .</code>
 
-* Create a new Django app for pnl:
-    * python3 manage.py startapp journal
+* **Create a new Django app for pnl:**
+    * <code>python3 manage.py startapp journal</code>
 
 * Then add 'journal' to pnl/settings.py
 
-* Now migrate the changes made by starting the pnl project and the journal; app to the database:
-    * python3 manage.py migrate
+* **Now migrate the changes made by starting the pnl project and the journal; app to the database:**
+    * <code>python3 manage.py migrate</code>
 
-* Check that Django and all other libraries have been installed by running the project locally:
-    * python3 manage.py runserver
+* **Check that Django and all other libraries have been installed by running the project locally:**
+    * <code>python3 manage.py runserver</code>
 
 ***AllAuth***
 
-* Integrate AllAuth into the project by executing the command: 
-    * pip3 install django-allauth.
+* **Integrate AllAuth into the project by executing the command:**
+    * <code>pip3 install django-allauth.</code>
 
-* Update the project's requirements by running:
-    * pip3 freeze --local > requirements.txt.
+* **Update the project's requirements by running:**
+    * <code>pip3 freeze --local > requirements.txt.</code>
 
 * In the 'pnl/urls' file, include a path for AllAuth URLs.
 
 * In 'settings.py', add 'allauth', 'allauth.account', and 'allauth.socialaccount' to the 'INSTALLED_APPS'. Additionally, include 'SITE_ID=1', 'LOGIN_REDIRECT_URL='/', and 'LOGOUT_REDIRECT_URL=/'.
 
-* Execute migrations with: 
-    * python3 manage.py migrate.
+* **Execute migrations with:**
+    * <code>python3 manage.py migrate</code>
 
 * Modify the templating language within the navbar to accommodate authenticated users.
 
@@ -721,9 +721,11 @@ Given that this is a Django project, a number of terminal commands must be run b
 
 *Adjust the AllAuth templates as follows:*
 
-* Identify the Python version using: ls ../.pip-modules/lib - Python v3.8.
+* **Identify the Python version using:**
+    * <code>ls ../.pip-modules/lib - Python v3.8</code>
 
-* Copy AllAuth templates to the 'templates' folder: cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates.
+* **Copy AllAuth templates to the 'templates' folder:**
+    * <code>cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates.</code>
 
 * In 'account/login.html', 'account/logout.html', and 'account/signup.html', replace {% extends "account/base.html" %} with {% extends "base.html" %}. Confirm proper extension of 'base.html' by visiting the login page.
 
@@ -733,11 +735,11 @@ Given that this is a Django project, a number of terminal commands must be run b
 
 * Setting up the Superuser and Django Admin Panel involves the following steps:
 
-* Create a superuser using the command: 
-    * python3 manage.py createsuperuser.
+* **Create a superuser using the command:**
+    * <code>python3 manage.py createsuperuser</code>
 
 * Launch a development server to access the Django admin panel with: 
-    * python3 manage.py runserver.
+    * <code>python3 manage.py runserver</code>
 
 * Append /admin/ to the URL.
 
