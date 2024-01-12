@@ -30,9 +30,12 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['trader-tribe-7c9dc3cf075d.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['8000-ryf3-tradingjournal-8t1ho63dpl9.ws-eu107.gitpod.io']
+
+# 8000-ryf3-tradingjournal-8t1ho63dpl9.ws-eu107.gitpod.io
+# 'trader-tribe-7c9dc3cf075d.herokuapp.com', 'localhost'
 
 
 # Application definition

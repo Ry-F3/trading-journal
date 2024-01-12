@@ -1269,6 +1269,24 @@ Note: Eliminating whitespaces didn't completely resolve the problem for all file
 
 #### **CSS validation** using [jigsaw](https://jigsaw.w3.org/css-validator/validator) :
 
+| Line | Error |
+|------|-------|
+| 123  | `-webkit-text-size-adjust` is a vendor extension |
+| 124  | `-webkit-tap-highlight-color` is a vendor extension |
+| 130  | Due to their dynamic nature, CSS variables are currently not statically checked |
+| 173  | Due to their dynamic nature, CSS variables are currently not statically checked |
+| 177  | Due to their dynamic nature, CSS variables are currently not statically checked |
+| 435  | `::-webkit-scrollbar` is a vendor extended pseudo-element |
+| 439  | `::-webkit-scrollbar-thumb` is a vendor extended pseudo-element |
+| 444  | `::-webkit-scrollbar-track` is a vendor extended pseudo-element |
+| 486  | `::-webkit-scrollbar` is a vendor extended pseudo-element |
+| 490  | `::-webkit-scrollbar-thumb` is a vendor extended pseudo-element |
+| 495  | `::-webkit-scrollbar-track` is a vendor extended pseudo-element |
+
+
+In general, it's common to encounter warnings related to vendor-specific properties or features that may not be universally supported. Ignoring such warnings is acceptable when you've consciously chosen styles that work well for your target audience and don't negatively impact the user experience across different browsers.
+
+
 #### **HTML validation** using [W3C](https://validator.w3.org/#validate_by_uri) :
 
 **Please note: Validation of Django templates was conducted based on the Code Institute's guidance, which advocates for validation through URL inspection.**

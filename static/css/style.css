@@ -27,37 +27,31 @@
 
 .bg-dk-blue {
     background-color: var(--primary-dark);
-    border-color: var(--primary-dark);
     color: white;
 }
 
 .bg-light-green {
     background-color: var(--green);
-    border-color: var(--green);
     color: white;
 }
 
 .bg-light-green:hover {
     background-color: var(--green);
-    border-color: var(--green);
     color: white;
 }
 
 .light-blue {
     background-color: var(--primary-light);
-    border-color: var(--primary-light);
     color: white;
 }
 
 .bg-m-blue {
     background-color: var(--primary-medium);
-    border-color: var(--primary-medium);
     color: white;
 }
 
 .light-blue:hover {
     background-color: var(--primary-medium);
-    border-color: var(--primary-medium);
     color: var(--custom-white);
 }
 
@@ -88,7 +82,6 @@
 
 .bg-dk-grey {
     background-color: #5a5c69;
-    border-color: #5a5c69;
     color: white;
 
 }
