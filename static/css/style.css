@@ -833,7 +833,7 @@ hr {
         overflow: hidden;
     }
 
-    input {
+    ul li div input {
         max-width: 140px;
     }
   
