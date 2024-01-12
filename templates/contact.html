@@ -7,7 +7,8 @@
 {% block heading_contact %}
 <h1 class="h4 m-1 text-muted">Contact Us</h1>
 <div class="d-none d-sm-inline-block">
-    <button type="button" class="btn btn-sm bg-dk-blue" aria-label="FAQ Request" data-bs-toggle="modal" data-bs-target="#faqModal">
+    <button type="button" class="btn btn-sm bg-dk-blue" aria-label="FAQ Request" data-bs-toggle="modal"
+        data-bs-target="#faqModal">
         FAQ Request
     </button>
 </div>
@@ -101,7 +102,8 @@
                             {% if faq.adminresponse_set.all %}
                             {% for response in faq.adminresponse_set.all %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
+                                <div
+                                    class="response-item overflow-hidden d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -115,7 +117,8 @@
                             <li class="mb-2">
                                 <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
-                                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
+                                        <div
+                                            class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
                                         <strong class="mx-1">Admin:</strong>
                                     </div>
@@ -133,7 +136,8 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending" class="text-decoration-none text-white min-width">
+                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending"
+                        class="text-decoration-none text-white min-width">
                         <div class="text-center light-blue txt-scale">
                             {% if faq.is_approved %}
                             FAQs
@@ -165,7 +169,7 @@
                 <p>{{ faq.timestamp }}</p>
                 <p>{{ faq.question }}</p>
                 {% else %}
-                <h1  class="font-size-heading-1">FAQs</h1>
+                <h1 class="font-size-heading-1">FAQs</h1>
                 <p>{{ faq.timestamp }}</p>
                 <p>Thank you for your patience.</p>
                 {% endif %}
@@ -181,7 +185,8 @@
                             {% if faq.adminresponse_set.all %}
                             {% for response in faq.adminresponse_set.all %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
+                                <div
+                                    class="response-item overflow-hidden d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -195,7 +200,8 @@
                             <li class="mb-2">
                                 <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
-                                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
+                                        <div
+                                            class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
                                         <strong class="mx-1">Admin:</strong>
                                     </div>
@@ -213,7 +219,8 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending" class="text-decoration-none text-white min-width">
+                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending"
+                        class="text-decoration-none text-white min-width">
                         <div class="text-center light-blue txt-scale">
                             {% if faq.is_approved %}
                             FAQs
@@ -241,7 +248,7 @@
                 <p>{{ faq.timestamp }}</p>
                 <p>{{ faq.question }}</p>
                 {% else %}
-                <h1  class="font-size-heading-1">FAQs</h1>
+                <h1 class="font-size-heading-1">FAQs</h1>
                 <p>{{ faq.timestamp }}</p>
                 <p>Thank you for your patience.</p>
                 {% endif %}
@@ -257,7 +264,7 @@
                             {% if faq.adminresponse_set.all %}
                             {% for response in faq.adminresponse_set.all %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale-3">
+                                <div class="response-item overflow-hidden d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -269,7 +276,7 @@
                             {% endfor %}
                             {% else %}
                             <li class="mb-2">
-                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale-3">
+                                <div class="response-item d-flex flex-column p-2 rounded response-item-scale">
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size">
                                         </div>
@@ -289,7 +296,8 @@
 
                 <!-- View more container -->
                 <div class="d-flex align-items-center justify-content-center">
-                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending" class="text-decoration-none text-white min-width">
+                    <a href="{% url 'view_faq' faq.id %}" aria-label="View FAQ or if no response pending"
+                        class="text-decoration-none text-white min-width">
                         <div class="text-center light-blue txt-scale">
                             {% if faq.is_approved %}
                             FAQs
@@ -343,7 +351,8 @@
                 </div>
 
                 <div class="form-group mt-3 mb-2">
-                    <button type="submit" aria-label="Contact us submission" class="btn bg-dk-blue btn-block">Contact Us</button>
+                    <button type="submit" aria-label="Contact us submission" class="btn bg-dk-blue btn-block">Contact
+                        Us</button>
                 </div>
             </form>
         </div>
@@ -370,13 +379,12 @@
 
     <!-- Display admin responses -->
     {% if faq.adminresponse_set.all %}
-    <h3 class="small">Admin Responses:</h3>
+    <h3 class="small"><strong>Admin Responses:</strong></h3>
     <ul class="list-unstyled">
         {% for admin_response in faq.adminresponse_set.all %}
         <li class="mb-2">
-            <div class="comment-item d-flex align-items-center p-2 rounded bg-c-white">
-                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                <strong class="mx-1">Admin</strong>: {{ admin_response.response }}
+            <div class="comment-item small d-flex align-items-center p-2 rounded bg-c-white overflow-hidden">
+                {{ admin_response.response }}
             </div>
         </li>
         {% endfor %}
@@ -388,14 +396,16 @@
 
 <!-- Display the Cloudinary image and the call-to-action statement -->
 <div class="no-posts position-relative overflow-hidden">
-    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg"
-        alt="call-to-action" class="mx-5 img-cat-size" aria-label="Call to action">
+    <img src="https://res.cloudinary.com/dwkn0vexk/image/upload/v1704719788/way_h06gb9.jpg" alt="call-to-action"
+        class="mx-5 img-cat-size" aria-label="Call to action">
     <!-- Overlay div with absolute positioning -->
     <div class="position-absolute top-0 start-0 txt-container p-1 mx-2 mt-2">
         <h1 class="font-size-heading-1">Join the FAQ Community.</h1>
-        <p class="text-muted font-small bg-light p-box font-size-heading-2">Ask, connect, learn – where your questions find answers and your journey begins!</p>
+        <p class="text-muted font-small bg-light p-box font-size-heading-2">Ask, connect, learn – where your questions
+            find answers and your journey begins!</p>
         <div class="d-none d-sm-inline-block">
-            <button type="button" id="button-request" class="btn bg-dk-blue" data-bs-toggle="modal" data-bs-target="#faqModal">
+            <button type="button" id="button-request" class="btn bg-dk-blue" data-bs-toggle="modal"
+                data-bs-target="#faqModal">
                 FAQ Request
             </button>
         </div>
