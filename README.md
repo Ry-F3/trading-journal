@@ -1065,14 +1065,27 @@ Note: Eliminating whitespaces didn't completely resolve the problem for all file
 
 <br>
 
+
+**Please note: All 3 Urls displayed the same errors.**
+
 ![home-validation](/readme/screenshots/main-page-validator.png)
 
-**Please note: All 3 Urls displayed the same errors**
 
-
+<br>
 
 #### **Lighthouse performance testing**
 
+**trade_list.html**
+
+![home-lighthouse](/readme/screenshots/lighthouse-home.png)
+
+**blog.html**
+
+![blog-lighthouse](/readme/screenshots/lighthouse-blog.png)
+
+**contact.html**
+
+![contact-lighthouse](/readme/screenshots/lighthouse-contact.png)
 
 ## **Credits**
 
@@ -1087,6 +1100,34 @@ Developed by **Rhys.Alexander.Few**
 
 
 **Bibliography:**
+
+**Picture Artist:**
+[DenisKolt - Shutterstock](https://www.shutterstock.com/g/DenisKolt)
+
+**Ajax References:**
+[jQuery Ajax Documentation](https://api.jquery.com/category/ajax/)
+
+**Email.js Documentation:**
+[Email.js Documentation](https://www.emailjs.com/docs/)
+
+**Dashboard Inspiration:**
+[Free Dashboard Templates by Colorlib](https://colorlib.com/wp/free-dashboard-templates/)
+
+**Trade Metric Inspiration:**
+[Tradezella](https://www.tradezella.com/)
+
+**Base64 Documentation:**
+[Base64 - Mozilla Developer Network](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
+
+**Matplotlib.pyplot.plot Documentation:**
+[Matplotlib.pyplot.plot Documentation](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)
+
+**Matplotlib YouTube Tutorial:**
+[Matplotlib Tutorial on YouTube](https://www.youtube.com/watch?v=yf-R1cvJllE)
+
+**Bootstrap Documentation:**
+[Bootstrap Documentation](https://getbootstrap.com/)
+
 
 
 
