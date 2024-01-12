@@ -420,24 +420,24 @@ from io import BytesIO </code>
 
 #### **Implementation Details**
 
-1. Backend (Django - Blog Post Handling):
-* Post Initialisation:
+1. *Backend (Django - Blog Post Handling):*
+* **Post Initialisation:**
     * The initialise_blog_context function sets up the context for displaying blog posts. It organizes posts into sets, calculates like counts, and handles remaining posts.
-* View Post:
+* **View Post:**
     * The view_post function renders a specific blog post, along with a form for adding comments.
     * It handles comment submissions, creating Comment objects and redirecting to the same post after submission.
-* Like Toggle:
+* **Like Toggle:**
 The like_toggle function toggles the like status of a blog post, updating like counts in the session and determining the user's like status.
-2. Backend (Django - Blog Post Creation):
-* BlogView Class:
+2. *Backend (Django - Blog Post Creation):*
+* **BlogView Class:**
     * The BlogView class handles both GET and POST requests related to blog posts.
     * It initialises the context for displaying blog posts and handles the creation of new blog posts.
     * The generate_trade_image function creates images from the trade details.
-3. Challenges and Considerations:
-* AJAX Integration:
+3. *Challenges and Considerations:*
+* **AJAX Integration:**
     * AJAX is utilized for dynamic updates, such as like toggling, without page reloads.
     Challenges were encountered in externalising AJAX scripts due to site layout complexities and the need for scripts within specific code blocks.
-* Modular Django Templates:
+* **Modular Django Templates:**
 The design choice for the dashboard effect within Django templates required scripts to be within those blocks for recognition.
 Multiple scripts on the page within the code blocks needed careful handling for proper recognition.
 
@@ -449,28 +449,28 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Implementation Details**
 
-1. Frontend (JavaScript/jQuery): 
-* Initialisation:
+1. *Frontend (JavaScript/jQuery):* 
+* **Initialisation:**
     * The script is wrapped inside $(document).ready(function () {...}), ensuring that it executes when the DOM is fully loaded.
-2. Trade Search Function:
+2. **Trade Search Function:**
     * The searchTrade function is defined to handle the trade search functionality.
     * It uses $.ajax to make an asynchronous HTTP request to the server.
     * The request is a GET type to the '/search_trade/' endpoint, and it sends the query and user ID as parameters.
     * The success callback processes the response, updating the search results container (#search-results) based on the received data.
     * If trades are found, it displays the selected trade details, generates a trade image preview, and sets the base64-encoded image data to a hidden field (#trade-image).
     * Error handling is included in case there's an issue with the AJAX request.
-3. Trade Image Preview Generation:
+3. **Trade Image Preview Generation:**
     * The generateTradeImagePreview function creates a trade image preview using HTML5 Canvas.
     * It dynamically generates a canvas, draws trade details on it, and converts it to a base64-encoded PNG image.
-4. Event Listeners:
+4. **Event Listeners:**
     * Event listeners are set up for various elements such as the trade search input (#trade-search), "Download Image" link (#download-image-link), "Share Trade" button (#share-trade-btn), and "Post" button (#post-btn).
     * The listeners handle actions like triggering the trade search on input, downloading the generated image, toggling the visibility of the trade container, and handling the posting of trade details.
-5. Additional Functions:
+5. **Additional Functions:**
     * 'toggleAttachTradeContainer' is a utility function used to toggle the visibility of the checkbox container (#attach-trade-container).
     * 'resetTradeForm' resets various form elements and hides unnecessary components.
-6. Modal Interaction:
+6. **Modal Interaction:**
     * The script manages the visibility of the trade container (#trade-container) and resets the form when the modal is closed.
-7. Validation and Alert:
+7. **Validation and Alert:**
     * Before posting, the script validates that required fields (title and content) are filled in. If not, it displays an alert.
     * If the user does not post an image it uses a placeholder image in the frontend.
 
@@ -498,11 +498,11 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Implementation Details**
 
-1. Backend (Django - Blog Comment Handling):
-* Checking Form Submission:
+1. *Backend (Django - Blog Comment Handling):*
+* **Checking Form Submission:**
     * The view checks if the form is submitted using request.method == 'POST'.
     * It specifically looks for the presence of 'add_comment' in request.POST to determine if a comment is being added.
-* Adding a Comment:
+* **Adding a Comment:**
     * If a comment is being added, it retrieves the comment text from the submitted form (comment_text).
     * It then creates a new Comment object using the Comment.objects.create method.
     * The post, user, and content fields of the Comment model are populated with the corresponding values.
@@ -513,19 +513,18 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Implementation Details**
 
-1. Backend (Django - Blog Like Toggle):
+1. *Backend (Django - Blog Like Toggle):*
     * The Django view is decorated with @require_POST to ensure it only responds to POST requests. It retrieves the blog post based on the provided object ID and toggles the like status.
-2. Toggle Like Status:
+2. **Toggle Like Status:**
     * The view checks if the user has already liked the post and toggles the like status accordingly.
-3. Update Like Counts:
+3. **Update Like Counts:**
     * After toggling the like status, the view calculates and updates the like counts for the specific post and the total like count for all posts.
-4. Return JSON Response:
+4. **Return JSON Response:**
     * The updated like count, user's like status, and total like count are returned as a JSON response to the frontend. Ajax updates the UI based on the JSON response.
-
-5.  Frontend (JavaScript/jQuery - AJAX Request): 
+5.  **Frontend (JavaScript/jQuery - AJAX Request):**
     * When the user clicks the "like" button, an AJAX POST request is sent to the Django backend (like_toggle view).
     * The backend processes the request, updates the like status, and returns a JSON response containing the updated like count, user's like status, and total like count.
-6. AJAX Success Callback:
+6. **AJAX Success Callback:**
     * The success callback function in the AJAX request processes the JSON response.
     * It updates the UI elements based on the received data, such as updating the displayed like count and changing the appearance of the "like" button.
     * The alert messages are displayed to notify the user about the success of the like action.
@@ -560,7 +559,6 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 * Responsibility: Displays a specific FAQ and fetches updated FAQs for rendering the FAQ section.
 * Methods:
     * view_faq: Fetches the specific FAQ based on faq_id, initializes the FAQ context, and renders the Contact Us page with updated FAQs and the specific FAQ.
-* Note:
 * Service Call to [email.js](https://www.emailjs.com/):
     * Javascript has been placed in the header of base.html as directed by the services documentation.
 
@@ -570,23 +568,23 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Workflow Details**
 
-1. User Submits FAQ Request:
+1. **User Submits FAQ Request:**
     * A user submits a FAQ request through the Contact Us page.
     * The submitted form data includes the title and content of the FAQ.
-2. submit_faq_request View (Function-Based):
+2. **submit_faq_request View (Function-Based):**
     * This view handles the form submission.
     * It creates a new FAQRequest instance with the user's details, timestamp, title, content, and sets is_approved to False.
     * A success message is flashed to the user.
-3. Admin Approval Process:
+3. **Admin Approval Process:**
     * FAQs are initially marked as not approved (is_approved=False).
     * Admins need to review and approve FAQs.
-4. Admin Response:
+4. **Admin Response:**
     * Admins interact with the Django admin terminal to review and approve FAQs.
     * Once approved, the is_approved and the adminresponse_is_sent field is set to True for the corresponding FAQ in the Django admin panel.
-5. faq_list View (Function-Based):
+5. **faq_list View (Function-Based):**
     * Lists all approved and pending FAQs with their AdminResponses or placeholders.
     * Retrieves FAQs where is_approved=True and there is a related AdminResponse marked as sent.
-6. view_faq View (Function-Based):
+6. **view_faq View (Function-Based):**
     * Displays a specific FAQ based on faq_id.
     * Initializes the FAQ context using ContactUsView to fetch updated FAQs for rendering.
     * Renders the Contact Us page with the updated FAQs and the specific FAQ.
@@ -606,22 +604,22 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Admin Panel View for FAQ Management:**
 
-1. Admin Interface:
+1. **Admin Interface:**
     * Accessible through the Django admin panel.
     * Provides a dedicated section for managing FAQ requests.
-2. FAQ List:
+2. **FAQ List:**
     * Displays a comprehensive list of all FAQ requests.
     * Each FAQ entry includes details such as title, content, user, timestamp, and approval status.
-3. Approval Status:
+3. **Approval Status:**
     * Admins can easily identify which FAQs have been approved (is_approved=True) and which ones are pending approval (is_approved=False).
     * Pending FAQs require review and approval to be considered for rendering on the Contact Us page.
-4. Response Management:
+4. **Response Management:**
     * Admins can view and manage responses associated with each FAQ.
     * Responses include the admin's username, timestamp, and response content.
-5. Workflow Control:
+5. **Workflow Control:**
     * Admins have the ability to mark an FAQ as approved or disapproved.
     * Can provide responses to FAQs directly from the admin panel.
-6. Enhanced Visibility:
+6. **Enhanced Visibility:**
     * Efficiently organizes FAQs, responses, and approval status for streamlined management.
     * Is Appoved has a green tick or red cross for quick decision-making for FAQ approval and response dissemination.
 
@@ -673,6 +671,85 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 ### **Deployment**
 
+***Project set up***
+Given that this is a Django project, a number of terminal commands must be run before any real development work can begin:
+
+* Install Django v3 and the Gunicorn web-server:
+    * pip3 install 'django<3' gunicorn
+
+* Install libraries necessary for working with PostgresQL:
+    * pip3 install dj_database_url psycopg2
+
+* Install libraries needed for Cloudinary:
+    * pip3 install dj3_cloudinary_storage
+
+* Create a requirements.txt file:
+    * pip3 freeze --local > requirements.txt
+
+* Create a new Django Project:
+    * django-admin startproject pnl .
+
+* Create a new Django app for pnl:
+    * python3 manage.py startapp journal
+
+* Then add 'journal' to pnl/settings.py
+
+* Now migrate the changes made by starting the pnl project and the journal; app to the database:
+    * python3 manage.py migrate
+
+* Check that Django and all other libraries have been installed by running the project locally:
+    * python3 manage.py runserver
+
+***AllAuth***
+
+* Integrate AllAuth into the project by executing the command: 
+    * pip3 install django-allauth.
+
+* Update the project's requirements by running:
+    * pip3 freeze --local > requirements.txt.
+
+* In the 'pnl/urls' file, include a path for AllAuth URLs.
+
+* In 'settings.py', add 'allauth', 'allauth.account', and 'allauth.socialaccount' to the 'INSTALLED_APPS'. Additionally, include 'SITE_ID=1', 'LOGIN_REDIRECT_URL='/', and 'LOGOUT_REDIRECT_URL=/'.
+
+* Execute migrations with: 
+    * python3 manage.py migrate.
+
+* Modify the templating language within the navbar to accommodate authenticated users.
+
+* Visit the Register page to create an account, and then proceed to the Login page to log in using the newly created account.
+
+*Adjust the AllAuth templates as follows:*
+
+* Identify the Python version using: ls ../.pip-modules/lib - Python v3.8.
+
+* Copy AllAuth templates to the 'templates' folder: cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates.
+
+* In 'account/login.html', 'account/logout.html', and 'account/signup.html', replace {% extends "account/base.html" %} with {% extends "base.html" %}. Confirm proper extension of 'base.html' by visiting the login page.
+
+* Ensure a seamless integration of AllAuth into the PNL project by following these steps.
+
+***Create superuser and Django Admin Set up***
+
+* Setting up the Superuser and Django Admin Panel involves the following steps:
+
+* Create a superuser using the command: 
+    * python3 manage.py createsuperuser.
+
+* Launch a development server to access the Django admin panel with: 
+    * python3 manage.py runserver.
+
+* Append /admin/ to the URL.
+
+* Log in to the Django admin backend using superuser credentials.
+
+* Update urls.py and admin.py to suit the projects needs.
+
+**Local Clone**
+
+Trader Tribe relies on an array of packages for its comprehensive functionality, meticulously listed in the <code>requirements.txt</code> file, and easily installed with the terminal command: <code>pip3 install -r requirements.txt.</code> Additionally, a Cloudinary account is crucial for storing and serving images and static files, while a Heroku account is required for hosting the app and managing the database.
+
+For local development of a Trader Tribe clone, it's vital to have an <code>env.py</code> file housing local environment variables, including <code>CLOUDINARY_URL</code>,<code> SECRET_KEY</code>, and<code> DATABASE_URL</code>. Obtain the<code> CLOUDINARY_URL </code>from your Cloudinary account. The DATABASE_URL, provided by a database service i.e connecting an ElephantSQL database to the app. The SECRET_KEY is a generated password. Ensure these variables are incorporated into your Heroku app Config Vars within the settings tab.
 
 
 ### **Testing on different devices**
@@ -738,20 +815,20 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 **email.js**
 
-**Errors**
-
-* One undefined variable - emailjs
-* One unused variable - sendMail
+* **Errors:**
+    * One undefined variable - emailjs
+    * One unused variable - sendMail
 
 Please be aware that the code was copied and utilised based on the guidance received from the email.js service.
 
 **likeButton.js**
 
-**No Errors**
+* **Errors:**
+    * None
 
 **blog.html - block script code**
 
-* File issues:
+* **File issues:**
     * In the blog.html file, the image generator and search trade code are embedded within the block script due to dependencies that are essential for the proper functioning of the code. Attempts to place these components in separate files may result in functionality issues. Therefore, it is recommended to keep them within the blog.html block script for seamless operation.
     * Additionally this is the case for Javascript left at the bottom of base.html and signup.html
 
