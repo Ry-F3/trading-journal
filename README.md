@@ -187,6 +187,58 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 
 ## **Layout**
 
+### **Desktop View**
+
+**Layout Inspiration**
+The layout design draws inspiration from platforms like [Tradezella](https://www.tradezella.com/), focusing on achieving a dashboard effect. This influence is evident in the structured and organized presentation of information, resembling the professional and efficient appearance of financial dashboards.
+
+**Modular Implementation**
+* *Few Templates, Blocked Code:*
+    * The project employed a modular approach with a limited number of templates. This choice aimed to maintain a clear and concise codebase by minimizing the number of HTML files.
+* *Blocked Code Sections:*
+    * Each section of the page is delineated by blocked code within a single HTML file. This organization ensures that distinct components and functionalities are visually separated.
+
+**Context Initialization**
+* *Usage of Empty Context:*
+    * Contexts were initialized using an empty dictionary <code>(context = {}) </code>and populated with relevant data based on different URLs. This approach ensured that all required content was present for rendering.
+
+**Challenges and Lessons Learned**
+*Implementation Difficulties:*
+* *Script Files and Django Templates:*
+    * The modular design, while offering visual fluidity, posed challenges with the implementation of external script files. Scripts had to be embedded within Django templates, leading to potential issues and limitations in script management.
+* *Maintenance Issues:*
+    * The design choice of utilizing a single HTML file with blocked code sections led to difficulties in maintaining and updating individual sections, particularly with the inclusion of script files.
+
+**Retrospective Thoughts**
+* *Template Cleanliness:*
+    * Acknowledging the messiness of the templates, there's a realization that a cleaner approach is essential for future developments. This involves reevaluating the project's structure to enhance maintainability and ease of implementation.
+* *Handling Script Files:*
+    * Consideration should be given to a more efficient method for handling script files, enabling external script management without constraints imposed by the current design.
+
+**Visual Fluidity and Purpose**
+* *Visual Appeal:*
+    * Despite the challenges, the chosen design successfully achieves visual fluidity, creating a professional and organized appearance that aligns with the project's objective of recording trades.
+* *Trade Recording Focus:*
+    * The layout suits the main feature of the project – trade recording. The dashboard-like structure contributes to an intuitive and efficient user experience for traders interacting with the system.
+
+### **Responsive Design and Mobile User Experience**
+
+**Mobile Views Rethinking**
+While the current design excels on desktop, it became evident that the user experience (UX) on mobile devices required thoughtful reconsideration. The following adjustments could be made in the future to enhance mobile responsiveness:
+
+**Sidebar Transformation:**
+*  *Challenge:*
+    * The sidebar, housing critical features trade filters and recent posts, presented challenges on mobile views, potentially leading to a less-than-ideal user experience.
+* *Future Solution:*
+    * The sidebar underwent a transformation into modals specifically designed for mobile views. This strategic redesign aims to create a cleaner and more user-friendly experience, optimizing screen space and ensuring consistency across different devices.
+
+**Account Box Refinement:**
+* *Challenge:*
+    * The existing account box was identified as underdeveloped, potentially hindering usability on mobile devices.
+* *Solution:*
+    * The account box was refined into a modal interface tailored for mobile usability. This modification enhances the overall mobile UX by providing a polished and intuitive design for users interacting with their account details.
+
+<br>
 
 ## **Features**
 
@@ -197,6 +249,7 @@ This dynamic row structure ensures a personalised and organized record-keeping s
 #### **Files used:**
 * Front end Javascript/jQuery: chart.js, currencySwap.js, editButton.js, formFunction.js, global.js, longShort.js
 * Backend (Django): views.py, urls.py, models.py, forms.py
+* Django Templates: base.html, trade_list.html
 
 1. **Diverse Toolset:**
     * Empower users with a comprehensive range of tools for effective trade management. The dashboard is designed to provide users with a versatile toolkit, catering to various aspects of trade analysis and record-keeping.
@@ -388,6 +441,7 @@ from io import BytesIO </code>
 #### **Files used:**
 * Front end Javascript/jQuery: likeButton.js
 * Backend (Django): views_blog.py, urls.py, models.py, forms.py
+* Django Templates: base.html, blog.html
 
 1. **Blog Posts:**
     * Users can create new blog posts using the BlogPostForm.
@@ -443,7 +497,7 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 <strong>Unfortunately</strong>, due to time constraints, the features for updating and deleting blog posts were not implemented. It's worth noting that I have previously demonstrated a comprehensive understanding of CRUD operations within the home dashboard, where users can effectively create, edit, and delete trades. While these specific features are pending for the blog posts, the existing foundation showcases a solid grasp of CRUD operations in other sections of the application.
 
-### **Blog Search Trade and Image generator**
+### **Search Trade and Image generator**
 
 ![Blog-search-trade](/readme/screenshots/blog-search-trade.png)
 
@@ -539,6 +593,7 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 #### **Files used:**
 * Front end Javascript/jQuery: email.js
 * Backend (Django): views_contact.py, urls.py, models.py, forms.py
+* Django Templates: base.html, contact.html
 
 **ContactUsView (Class-Based View):**
 * Responsibility: Manages the rendering and form submission of the Contact Us page.
@@ -629,16 +684,42 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 #### **Implementation Details**
 
+1. **Form Data Extraction:**
+    * Retrieve the title and content of the FAQ from the submitted form data using request.POST.get().
+2. **FAQRequest Creation:**
+    * Create a new instance of the FAQRequest model with the extracted data. The instance includes the user who submitted the FAQ, a timestamp, the title, the question content, and a flag indicating that the FAQ is not approved yet (is_approved=False).
+3. **Context Update:**
+    * Fetch the updated FAQs using the initialize_faq_context method to prepare the context for rendering.
+4. **Redirect:**
+    * Redirect the user to the same page (specified by reverse('contact')) to avoid resubmitting the form on page reload.
 
 ### **Contact Us Email.js**
 
+*Getting Started*
+1. Sign Up with Email.js:
+    * Create an account on the [email.js](https://www.emailjs.com/) platform.
+3. Obtain API Key:
+    * Retrieve your API key from the email.js platform. This key is used to authenticate your requests to the Email.js API.
+3. Set Up Email Template:
+    * Define an email template on the email.js platform with parameters.
+4. Include Email.js Library:
+    * In the head section of your base.html file, include the Email.js library using a script tag. 
+
 ![Contact-us-view-faq](/readme/screenshots/contact-email.png)
+
+*Frontend Integration*
+1. **User Interaction:**
+    * Implement a user interface on your website where users can input details such as email content, subject, and any other relevant information.
+2. **Sending Email:**
+    * Implement a function to handle other HTTP status codes or errors, providing appropriate feedback to the user.
 
 ![Contact-us-view-faq](/readme/screenshots/contact-email-update.png)
 
+**Note:** I can confirm the successful integration of Email.js into my web application using my personal account. To validate the functionality, I have provided a screenshot showcasing the system in a fully operational state. This integration allows users to send emails directly from the client side, leveraging the features provided by Email.js.
+
 ![Contact-us-view-faq](/readme/screenshots/contact-email-feedback.png)
 
-#### **Implementation Details**
+<br>
 
 ### **Future Enhancements:**
 
