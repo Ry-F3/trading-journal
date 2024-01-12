@@ -821,6 +821,7 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
 - **Django**: [Django](https://www.djangoproject.com/)
 - **Django Libraries and Packages**
 - **ElephantSQL**: [ElephantSQL](https://www.elephantsql.com/): PostgreSQL as a Service.
+- **Cloudinary:** [Cloud-based image and video management platform.](https://cloudinary.com/)
 - **GitHub**: [GitHub](https://github.com/)
 - **Gitpod**: [Gitpod](https://www.gitpod.io/): Online IDE for GitHub.
 - **Heroku**: [Heroku](https://www.heroku.com/): Cloud platform for deploying and managing applications.
