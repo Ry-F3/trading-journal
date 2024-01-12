@@ -762,8 +762,8 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
       - [x] Issue identified
       - [x] Investigation in progress
       - [x] Fix in development
-      - [ ] Fix in testing
-      - [ ] Fix deployed
+      - [x] Fix in testing
+      - [x] Fix deployed
 
 2. **Custom Templates for 403, 404, and 500 Errors:**
    - **Issue:** Custom error templates (403, 404, and 500) only appear on the login and register initial page due to block content being within user authentication checks. Finding a solution without triggering errors is challenging.
@@ -779,9 +779,9 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
    - **Status:** 
       - [x] Issue identified
       - [x] Investigation in progress
-      - [ ] Fix in development
-      - [ ] Fix in testing
-      - [ ] Fix deployed
+      - [x] Fix in development
+      - [x] Fix in testing
+      - [x] Fix deployed
 
 4. **Styling Gap in UX When User Adds a Comment:**
    - **Issue:** After a user adds a comment, a gap appears in the UX, breaking the styling of the comments section. This issue is particularly noticeable when there's only one comment, which results in an unintended styling breakage.
@@ -798,8 +798,8 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
       - [x] Issue identified
       - [x] Investigation in progress
       - [x] Fix in development
-      - [ ] Fix in testing
-      - [ ] Fix deployed
+      - [x] Fix in testing
+      - [x] Fix deployed
 
 6. **Character Length in Blog Post:**
    - **Issue:** Character length in blog post has been fixed in development.
@@ -807,8 +807,8 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
       - [x] Issue identified
       - [x] Investigation in progress
       - [x] Fix in development
-      - [ ] Fix in testing
-      - [ ] Fix deployed
+      - [x] Fix in testing
+      - [x] Fix deployed
 
 
 ## **Technologies**
