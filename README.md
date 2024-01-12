@@ -973,6 +973,18 @@ For local development of a Trader Tribe clone, it's vital to have an <code>env.p
 
 ### **Testing code**
 
+- **List Flip 4:**
+  - *Formatting Issues:* Some input elements experience formatting issues on very narrow screens.
+
+- **iPad Pro:**
+  - *Formatting Issue:* The sidebar appears highly condensed, affecting the overall layout.
+
+- **Samsung 22:**
+  - *Performance:* Works well with no notable formatting issues.
+
+- **Razer Laptop (13-inch):**
+  - *Performance:* Works well, displaying content appropriately without formatting concerns.
+
 
 #### **JavaScript Validation**  using *[jshint](https://jshint.com/)* :
 
