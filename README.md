@@ -974,7 +974,7 @@ For local development of a Trader Tribe clone, it's vital to have an <code>env.p
 
 ### **Testing code**
 
-- **List Flip 4:**
+- **Flip 4:**
   - *Formatting Issues:* Some input elements experience formatting issues on very narrow screens.
 
 - **iPad Pro:**
