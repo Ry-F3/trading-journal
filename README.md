@@ -881,9 +881,6 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
 | **4.** | As a user, I want to be notified when my FAQ has been approved. | To be Implemented | Users will receive notifications when their submitted FAQs are reviewed and approved. This feature is yet to be implemented. |
 
 
-
-### **Testing functionality**
-
 ### **Deployment**
 
 ***Project set up***
