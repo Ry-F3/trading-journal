@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
 
+
 # User Model
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -14,7 +15,7 @@ class UserProfile(models.Model):
     last_realized_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
 
-# Porfolio Tracker Model    
+# Porfolio Tracker Model  
 class PortfolioHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -23,6 +24,7 @@ class PortfolioHistory(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.timestamp}"
+        
 
 # Trade Journalling Model    
 class Trade(models.Model):
@@ -49,7 +51,6 @@ class Trade(models.Model):
     return_pnl = models.DecimalField(max_digits=10, decimal_places=2)
     row_number = models.IntegerField(editable=False)
 
-
     def save(self, *args, **kwargs):
         if not self.row_number:
             # Calculate row_number based on existing rows for the specific user
@@ -62,12 +63,10 @@ class Trade(models.Model):
             else:
                 # If no existing rows, start from 1
                 self.row_number = 1
-                
             if isinstance(self.date, str):
                 self.date = datetime.strptime(self.date, '%Y-%m-%d').date()
 
         super().save(*args, **kwargs)
-   
         # Print the user ID and the list of rows for the user
         all_users = User.objects.all()
         for user in all_users:
@@ -91,7 +90,6 @@ class Trade(models.Model):
 
         existing_trade.save()
       
-
     def delete(self, user, *args, **kwargs):
         # Ensure that the user deleting the trade is the owner of the trade
         if self.user != user:
@@ -108,15 +106,17 @@ class Trade(models.Model):
         for index, trade in enumerate(remaining_trades, start=1):
             trade.row_number = index
             trade.save()
-           
+            
     def __str__(self):
         return f"{self.symbol} - {self.row_number}"
     
+
 class Meta:
     permissions = [
         ("delete_trade", "Can delete trades"),
     ]
-    
+
+
 # Blog Post Model
 class BlogPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -139,34 +139,36 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.likes} -{self.title} - {self.timestamp}"
-    
+ 
     def number_of_likes(self):
         return self.likes.count()
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     content = models.TextField()
+    
 
 # FAQ models
-   
 class FAQRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
     question = models.TextField()
-    is_approved = models.BooleanField(default=False)  
+    is_approved = models.BooleanField(default=False)
     
     def __str__(self):
         return self.title
-    
+        
     class Meta:
         verbose_name_plural = "FAQ Requests"
+        
 
 class AdminResponse(models.Model):
     faq_request = models.ForeignKey(FAQRequest, on_delete=models.CASCADE)
     admin = models.ForeignKey(User, on_delete=models.CASCADE)
     response = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_sent = models.BooleanField(default=False) 
+    is_sent = models.BooleanField(default=False)

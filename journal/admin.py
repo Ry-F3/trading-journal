@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Trade, BlogPost, FAQRequest, Comment, AdminResponse
 
+
 class TradeAdmin(admin.ModelAdmin):
     list_display = ('display_user', 'id', 'symbol', 'date', 'status', 'long_short', 'position', 'margin', 'leverage', 'open_price', 'current_price', 'return_pnl')
     list_filter = ('user', 'date', 'symbol', 'long_short')
@@ -37,6 +38,7 @@ class TradeAdmin(admin.ModelAdmin):
 
 admin.site.register(Trade, TradeAdmin)
 
+
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'display_user', 'slug', 'timestamp', 'display_blog_post_likes')
     list_filter = ('user', 'timestamp')
@@ -63,8 +65,10 @@ class BlogPostAdmin(admin.ModelAdmin):
         if obj is not None and obj.user != request.user:
             return False
         return super().has_delete_permission(request, obj)
+        
 
 admin.site.register(BlogPost, BlogPostAdmin)
+
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'post', 'content', 'timestamp')
@@ -84,12 +88,15 @@ class CommentAdmin(admin.ModelAdmin):
         if obj is not None and obj.user != request.user:
             return False
         return super().has_delete_permission(request, obj)
+        
 
 admin.site.register(Comment, CommentAdmin)
+
 
 class AdminResponseInline(admin.TabularInline):
     model = AdminResponse
     extra = 1  # Set the number of empty forms to display
+    
 
 @admin.register(FAQRequest)
 class FAQRequestAdmin(admin.ModelAdmin):
@@ -111,4 +118,4 @@ class FAQRequestAdmin(admin.ModelAdmin):
         if obj is not None and obj.user != request.user:
             return False
         return super().has_delete_permission(request, obj)
-
+        

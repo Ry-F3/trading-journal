@@ -98,7 +98,7 @@
                         for (var i = 0; i < response.length; i++) {
                             detailsHtml += `${response[i].symbol} on ${response[i].date}<br>`;
                             // Set selected trade details
-                            selectedTradeDetails = JSON.stringify(response[i]);
+                       
 
                             toggleAttachTradeContainer(response.length > 0);
                         }
@@ -229,15 +229,6 @@
             $('#download-image-link').hide();
         });
 
-        // Function to toggle the visibility of the checkbox container
-        function toggleAttachTradeContainer(showContainer) {
-            if (showContainer) {
-                $('#attach-trade-container').css('display', 'flex');
-            } else {
-                $('#attach-trade-container').css('display', 'none');
-            }
-        }
-
         // Event listener for "Share Trade" button
         $('#share-trade-btn').on('click', function () {
             // Toggle the visibility of the trade container
@@ -261,15 +252,14 @@
             // Validate required fields
             var title = $('input[name="title"]').val();
             var content = $('textarea[name="content"]').val();
-            var selectedTradeDetails = $('#selected-trade-details').val();
+
 
             if (!title || !content) {
                 alert('Please fill in all required fields.');
                 return;
             }
 
-            // Call the function before posting
-            handleTradeDetails();
+       
 
             alert('Posting trade image with attached trade details...');
         });

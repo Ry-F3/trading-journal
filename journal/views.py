@@ -11,7 +11,7 @@ from django.contrib.auth.views import TemplateView
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from reportlab.lib.pagesizes import letter
-from datetime import date, timedelta 
+from datetime import date, timedelta
 from django.utils import timezone
 from reportlab.pdfgen import canvas
 from io import BytesIO
@@ -39,6 +39,7 @@ def get_trade_list(user, request):
 
     return trades, paginator.num_pages, page
 
+
 def get_portfolio_balance(request):
     if request.user.is_authenticated:
         portfolio_balance = request.user.userprofile.portfolio_balance
@@ -49,26 +50,22 @@ def get_portfolio_balance(request):
 
 class HomeView(View):
     home = 'trade_list.html'
+
     def get(self, request):
         if request.user.is_authenticated:
             time_interval = request.GET.get('time_interval', 'hourly')
-            user_name = request.user.username 
+            user_name = request.user.username
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             trades, last_page, current_page = get_trade_list(request.user, request)
             form = TradeForm()
-            
-                        
             # Use get_trade_list to get trades, last_page, and current_page
             trades, last_page, current_page = get_trade_list(request.user, request)
-
-            
             # Get the user's portfolio balance
             portfolio_balance = user_profile.portfolio_balance
-            
             # Initialize the Portfolio Balance Form
             portfolio_balance_form = PortfolioBalanceForm()
-            
-           # Check if the welcome back message and update portfolio message have already been shown
+            # Check if the welcome back message and
+            # update portfolio message have already been shown
             messages_to_display = []
 
             if created:
@@ -86,17 +83,12 @@ class HomeView(View):
                             messages_to_display.append(('warning', f'Your portfolio balance is ${portfolio_balance}. Don\'t forget to update it!'))
                             request.session['update_portfolio_message_shown'] = True
 
-
-                                
             # Generate the base64-encoded image data
             image_base64 = plot_realized_profits_chart(request)
-            
             # Calculate PnL data
             pnl_data = calculate_pnl(request.user)
-            
             # Initialize filter form here
             filter_form = TradeFilterForm(request.GET)  # Pass request.GET to initialize with query parameters
-            
             context = {
                 'trades': trades,
                 'form': form,
@@ -107,10 +99,9 @@ class HomeView(View):
                 'user_name': user_name,
                 'time_interval': time_interval,
                 'image_base64': image_base64,
-                'filter_form': filter_form, 
+                'filter_form': filter_form,
                 'messages_to_display': messages_to_display,
             }
-    
             return render(request, self.home, context)
         else:
             return redirect('account/login')
@@ -118,7 +109,8 @@ class HomeView(View):
     def post(self, request):
         # Handle POST request if needed
         return HttpResponse("POST request")
-    
+        
+        
 class TradeFilterView(ListView):
     model = Trade
     template_name = 'trade_list.html'
@@ -129,62 +121,49 @@ class TradeFilterView(ListView):
             return redirect('account/login')
 
         time_interval = request.GET.get('time_interval', 'hourly')
-        user_name = request.user.username 
+        user_name = request.user.username
         user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-        
         # Get the user's trades with filtering
         trades, num_pages, current_page = self.get_filtered_trades(request.user, request)
-        
         form = TradeForm()
         # Generate the base64-encoded image data
         image_base64 = plot_realized_profits_chart(request)
-        
         # Calculate PnL data
         pnl_data = calculate_pnl(request.user)
-        
         # Get the user's portfolio balance
         portfolio_balance = user_profile.portfolio_balance
-        
         # Initialize the Portfolio Balance Form
         portfolio_balance_form = PortfolioBalanceForm()
-        
         # Initialise filter form here
-        filter_form = TradeFilterForm(request.GET) 
-        
-        
+        filter_form = TradeFilterForm(request.GET)
         # Preserve the filter parameters in pagination links
         get_params = request.GET.copy()
         if 'page' in get_params:
             del get_params['page']
 
-        
         context = {
             'trades': trades,
             'form': form,
             'pnl_data': pnl_data,
             'get_params': get_params,
-            'num_pages': num_pages, 
+            'num_pages': num_pages,
             'current_page': current_page,
             'portfolio_balance_form': portfolio_balance_form,
             'user_name': user_name,
             'time_interval': time_interval,
             'image_base64': image_base64,
-            'filter_form': filter_form, 
+            'filter_form': filter_form,
         }
-        
         return render(request, self.template_name, context)
 
     def get_filtered_trades(self, user, request):
         queryset = Trade.objects.filter(user=user).order_by('row_number')
-        
         messages.success(request, 'Filter applied successfully!')
-        
         # Filter trades based on request parameters
         date_filter = request.GET.get('date_filter')
         symbol_filter = request.GET.get('symbol_filter')
         long_short_filter = request.GET.get('long_short_filter')
         pnl_filter = request.GET.get('pnl_filter')
-
         # Separate fields for custom date range
         date_filter_month = self.request.GET.get('date_filter_month')
         date_filter_day = self.request.GET.get('date_filter_day')
@@ -220,7 +199,6 @@ class TradeFilterView(ListView):
             queryset = queryset.filter(return_pnl__gt=0)
         elif pnl_filter == 'loss':
             queryset = queryset.filter(return_pnl__lt=0)
-            
         paginator = Paginator(queryset, 4)
         page = 1  # Default to the first page if not specified
         try:
@@ -245,11 +223,11 @@ def delete_trade(request, trade_id):
         Trade.objects.filter(user=request.user, row_number__gt=deleted_row_number).update(
             row_number=F('row_number') - 1
         )
-        
 
         return JsonResponse({'success': True, 'deleted_row_number': deleted_row_number})
     except Trade.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
+
 
 def handle_portfolio_balance_form_submission(request, user_profile):
     if request.method == 'POST':
@@ -276,11 +254,13 @@ def handle_portfolio_balance_form_submission(request, user_profile):
             return HttpResponseRedirect(request.path)
     else:
         portfolio_balance_form = PortfolioBalanceForm()
-    
+        
+        
 def update_portfolio_balance(request):
     user_profile = request.user.userprofile  # Assuming userprofile is related to the User model
     handle_portfolio_balance_form_submission(request, user_profile)
     return redirect('trade_list')  # Redirect back to the trade list after updating the balance
+
 
 @login_required
 def trade_list(request):
@@ -289,32 +269,25 @@ def trade_list(request):
     image_base64 = plot_realized_profits_chart(request)  # Initialize the chart
     # Initialize the PortfolioBalanceForm
     portfolio_balance_form = PortfolioBalanceForm()
-    
     if request.method == 'POST':
         form = TradeForm(request.POST)
         if form.is_valid():
             trade = form.save(commit=False)
             trade.user = request.user  # Set the user to the logged-in user
             save_type = request.POST.get('save_type', 'regular')
- 
             if save_type == 'regular':
                 # Save the trade as usual
                 trade.save()
-                
                 # Add success message for creating a new trade
                 messages.success(request, 'Trade created successfully!')
                 messages.success(request, 'Balance Updated!')
                 messages.success(request, 'PnL Updated!')
-                
-                 # Retrieve or create the UserProfile associated with the logged-in user
+                # Retrieve or create the UserProfile associated with the logged-in user
                 user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-
                 # Calculate PnL only if the form is valid
                 pnl_data = calculate_pnl(request.user)
-
                 # Redirect to the same page to avoid reposting on refresh
                 return HttpResponseRedirect(request.path)
-                
             if save_type == 'overwrite':
                 overwrite_id = request.POST.get('current_trade_id', None)
                 overwrite_row = request.POST.get('current_row_number', None)
@@ -332,7 +305,6 @@ def trade_list(request):
                     'current_price': request.POST.get('current_price'),
                     'return_pnl': request.POST.get('return_pnl'),
                 }
-                
                 # Add success message for editing a trade
                 messages.success(request, 'Trade edited successfully!')
                 messages.success(request, 'Balance Updated!')
@@ -346,7 +318,6 @@ def trade_list(request):
                     trade.save()
 
         else:
-            
             return render(request, 'trade_list.html', {
                 'trades': trades,
                 'form': form,
@@ -360,26 +331,19 @@ def trade_list(request):
 
     else:
         form = TradeForm()
-        
     # Filter trades based on the logged-in user
     trades = Trade.objects.filter(user=request.user).order_by('row_number')
-    
     # Calculate PnL
     pnl_data = calculate_pnl(request.user)
     total_realized_pnl = pnl_data['total_realized_pnl']  # Capture the value
-    
     time_interval = request.GET.get('time_interval', 'hourly')
-    
     # Initialise the Trade Filter Form
     filter_form = TradeFilterForm(request.GET)
-    
     # Generate the base64-encoded image data
     image_base64 = plot_realized_profits_chart(request)
-    
     # Pagination
     paginator = Paginator(trades, 4)  # Show 5 trades per page
     page = request.GET.get('page', 1)
-
     # Determine the last page dynamically
     last_page = paginator.num_pages
 
@@ -405,8 +369,6 @@ def trade_list(request):
             'time_interval': time_interval,
             'filter_form': filter_form,
         })
-   
-
     return render(request, 'trade_list.html', {
         'trades': trades,
         'form': form,
@@ -417,6 +379,7 @@ def trade_list(request):
         'time_interval': time_interval,
         'filter_form': filter_form,
     })
+    
     
 def plot_realized_profits_chart(request):
     # Extract timestamps and realized profits
@@ -441,8 +404,6 @@ def plot_realized_profits_chart(request):
     if earliest_timestamp_with_trade and timestamps and earliest_timestamp_with_trade > timestamps[0]:
         timestamps.insert(0, timestamps[0])
         realized_profits.insert(0, 0)
-
-
     # Get the time interval from the URL parameter (default to 'hourly')
     time_interval = request.GET.get('time_interval', 'hourly')
 
@@ -550,17 +511,16 @@ def calculate_pnl(user):
     user_profile.last_realized_pnl = total_realized_pnl
     user_profile.save()
     
-     # Create a new PortfolioHistory entry
+    # Create a new PortfolioHistory entry
     portfolio_history_entry = PortfolioHistory.objects.create(
         user=user,
         total_realized_pnl=total_realized_pnl
     )
-
-
     return {
         'total_realized_pnl': total_realized_pnl,
         'total_unrealized_pnl': total_unrealized_pnl,
     }
+
 
 def calculate_unrealized_pnl(open_returns):
     # Logic for calculating unrealized PnL from open trades
@@ -579,7 +539,6 @@ def calculate_unrealized_pnl(open_returns):
 @login_required
 def get_trade_details(request, row_number, trade_id):
     try:
-       
         trade = Trade.objects.get(row_number=row_number, id=trade_id, user=request.user)
         trade_details = {
             'symbol': str(trade.symbol),
@@ -592,9 +551,7 @@ def get_trade_details(request, row_number, trade_id):
             'open_price': trade.open_price,
             'current_price': trade.current_price,
             'return_pnl': trade.return_pnl,
-           
         }
-        
         return JsonResponse({'success': True, 'trade_details': trade_details})
     except Trade.DoesNotExist as e:
         return JsonResponse({'success': False, 'error': 'Trade not found or does not belong to the user'})
@@ -604,7 +561,6 @@ def generate_pdf_report(user, trades):
     # Create a PDF with trade data
     pdf_buffer = BytesIO()
     p = canvas.Canvas(pdf_buffer, pagesize=letter)
-    
     # Title and date
     p.setFont("Helvetica-Bold", 16)
     p.drawString(50, 740, f'Trade Report ')  # Adjusted x-coordinate
@@ -636,8 +592,10 @@ def generate_pdf_report(user, trades):
 
     return pdf_data
 
+# Can be used for other file types if needed in the future e.g csv
 
-def generate_report(request): # Can be used for other file types if needed in the future e.g csv
+
+def generate_report(request):
     if request.user.is_authenticated:
         user = request.user
         trades = Trade.objects.filter(user=user).order_by('row_number')
@@ -662,4 +620,3 @@ def generate_report(request): # Can be used for other file types if needed in th
             return HttpResponse("Unsupported format")
     else:
         return redirect('account/login')
-    

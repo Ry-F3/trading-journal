@@ -1,6 +1,7 @@
 from django import forms
 from .models import Trade, BlogPost, Comment, AdminResponse, FAQRequest
 
+
 class TradeForm(forms.ModelForm):
     class Meta:
         model = Trade
@@ -10,7 +11,6 @@ class TradeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(TradeForm, self).__init__(*args, **kwargs)
-            
         self.fields['symbol'].widget = forms.TextInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Symbol'})
         self.fields['date'].widget = forms.DateInput(attrs={'class':  'form-control form-control-sm', 'type': 'date'})
         self.fields['status'].widget = forms.Select(attrs={'class':  'form-control form-control-sm'})
@@ -21,7 +21,6 @@ class TradeForm(forms.ModelForm):
         self.fields['open_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Open Price'})
         self.fields['current_price'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Current Price'})
         self.fields['return_pnl'].widget = forms.NumberInput(attrs={'class':  'form-control form-control-sm', 'placeholder': 'Enter Return PnL'})
-        
         self.fields['open_price'].widget.attrs['step'] = 'any'  # Allow any step value
         self.fields['open_price'].widget.attrs['min'] = 0  # Set the minimum allowed value if needed
         self.fields['open_price'].widget.attrs['max'] = 1000000000000  # Set the maximum allowed value if needed
@@ -46,7 +45,8 @@ class TradeForm(forms.ModelForm):
         cleaned_data = super().clean()
         # Add additional cleaning logic if needed
         return cleaned_data
-    
+
+   
 class PortfolioBalanceForm(forms.Form):
     portfolio_balance = forms.DecimalField(
         label='Enter your desired amount:',
@@ -104,6 +104,7 @@ class TradeFilterForm(forms.Form):
         ]
 
         self.fields['pnl_filter'] = forms.ChoiceField(choices=pnl_choices, required=False)
+
         
 class BlogPostForm(forms.ModelForm):
     profit_percentage = forms.FloatField(required=False)
@@ -125,7 +126,6 @@ class BlogPostForm(forms.ModelForm):
                 'leverage': forms.HiddenInput(),
                 'trade_type': forms.HiddenInput(),
         }
-        
         labels = {
             'title': 'Post Title',
             'content': 'Content',
@@ -141,12 +141,12 @@ class BlogPostForm(forms.ModelForm):
         required = {
             'title': True,
             'content': True,
-            'likes': False,  
-            'profit_loss': False,  
-            'entry_price': False,  
-            'exit_price': False,  
-            'leverage': False,  
-            'trade_type': False,  
+            'likes': False,
+            'profit_loss': False,
+            'entry_price': False,
+            'exit_price': False,
+            'leverage': False,
+            'trade_type': False,
             'trade_image': True,
         }
         
@@ -154,17 +154,19 @@ class BlogPostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['timestamp'].widget = forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']       
+        fields = ['content']
         
         
 class FAQForm(forms.ModelForm):
     class Meta:
         model = FAQRequest
-        fields = ['title', 'question'] 
-        
+        fields = ['title', 'question']
+
+
 class AdminResponseForm(forms.ModelForm):
     class Meta:
         model = AdminResponse

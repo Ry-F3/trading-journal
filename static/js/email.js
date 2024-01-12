@@ -6,21 +6,23 @@ function sendMail(contactForm) {
     })
         .then(
             function (response) {
-                console.log("SUCCESS", response);
+                alert("SUCCESS", response);
                 // Check if the email was successfully sent
                 if (response.status === 200) {
                     // Show the thank you message
                     showThankYouMessage();
                 } else {
                     // Handle other success responses or consider them as failures
-                    console.log("Email not sent successfully. Handle accordingly.");
+                    alert("Email not sent successfully. Handle accordingly.");
                 }
             },
             function (error) {
-                console.log("FAILED", error);
+                alert("FAILED", error);
                 // Handle the error response
             });
     return false;
+
+    // Code implimented and copied from email.js documentation
 }
 
 function showThankYouMessage() {

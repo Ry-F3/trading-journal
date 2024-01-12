@@ -682,7 +682,287 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 
 #### **JavaScript Validation**  using *[jshint](https://jshint.com/)* :
- 
+
+**global.js** /
+**currencySwap.js** /
+**editButton.js** /
+**formFunction.js**/
+**longShort.js**
+
+**Note:** these JavaScript files have been composed to work in tandem, revealing instances of undeclared variables when inspected independently.
+
+**41 warnings**
+* 3	    'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 4	    'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 5	    'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 6	    'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 7	    'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 8	    'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 14	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 15	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 37	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 43	'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+* 45	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 49	'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+* 86	'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+* 93	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 93	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 97	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 131	Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function.
+    * *fixed error editButton.js*
+* 152	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 303	'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+* 311	'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 311	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 487	'arrow function syntax (=>)' is only available in ES6 (use 'esversion: 6').
+* 501	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 502	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 503	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 504	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 507	'let' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 511	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 512	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 526	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 577	Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function.
+    * *fixed error formFunction.js*
+* 631	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 635	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 659	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 660	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 670	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 670	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 675	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 675	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 713	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 715	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+
+**email.js**
+
+**Errors**
+
+* One undefined variable - emailjs
+* One unused variable - sendMail
+
+Please be aware that the code was copied and utilised based on the guidance received from the email.js service.
+
+**likeButton.js**
+
+**No Errors**
+
+**blog.html - block script code**
+
+* File issues:
+    * In the blog.html file, the image generator and search trade code are embedded within the block script due to dependencies that are essential for the proper functioning of the code. Attempts to place these components in separate files may result in functionality issues. Therefore, it is recommended to keep them within the blog.html block script for seamless operation.
+    * Additionally this is the case for Javascript left at the bottom of base.html and signup.html
+
+**Ten warnings**
+* 24	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 33	Function declarations should not be placed in blocks. Use a function expression or move the statement to the top of the outer function.
+* 44	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 45	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 68	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 69	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 78	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 80	'const' is available in ES6 (use 'esversion: 6') or Mozilla JS extensions (use moz).
+* 86	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+* 87	'template literal syntax' is only available in ES6 (use 'esversion: 6').
+
+#### **Python Validation** using [CI Python Linter](https://pep8ci.herokuapp.com/#):
+
+**Errors remaining:**
+
+**views.py**
+
+* 29: E501 line too long (80 > 79 characters)
+* 38: E501 line too long (84 > 79 characters)
+* 58: E501 line too long (88 > 79 characters)
+* 59: E501 line too long (83 > 79 characters)
+* 62: E501 line too long (83 > 79 characters)
+* 72: E501 line too long (86 > 79 characters)
+* 73: E501 line too long (132 > 79 characters)
+* 76: E501 line too long (91 > 79 characters)
+* 81: E501 line too long (99 > 79 characters)
+* 83: E501 line too long (147 > 79 characters)
+* 84: E501 line too long (84 > 79 characters)
+* 91: E501 line too long (110 > 79 characters)
+* 112: W293 blank line contains whitespace
+* 113: W293 blank line contains whitespace
+* 125: E501 line too long (84 > 79 characters)
+* 127: E501 line too long (89 > 79 characters)
+* 208: E501 line too long (88 > 79 characters)
+* 219: E501 line too long (85 > 79 characters)
+* 223: E501 line too long (90 > 79 characters)
+* 227: E501 line too long (88 > 79 characters)
+* 229: E501 line too long (106 > 79 characters)
+* 236: E501 line too long (83 > 79 characters)
+* 237: E501 line too long (84 > 79 characters)
+* 257: W293 blank line contains whitespace
+* 258: W293 blank line contains whitespace
+* 260: E501 line too long (96 > 79 characters)
+* 262: E501 line too long (95 > 79 characters)
+* 268: E501 line too long (80 > 79 characters)
+* 285: E501 line too long (87 > 79 characters)
+* 286: E501 line too long (92 > 79 characters)
+* 315: E501 line too long (133 > 79 characters)
+* 382: W293 blank line contains whitespace
+* 383: W293 blank line contains whitespace
+* 390: E501 line too long (153 > 79 characters)
+* 392: E501 line too long (91 > 79 characters)
+* 395: E501 line too long (91 > 79 characters)
+* 401: E501 line too long (105 > 79 characters)
+* 404: E501 line too long (102 > 79 characters)
+* 417: E501 line too long (90 > 79 characters)
+* 435: E501 line too long (100 > 79 characters)
+* 441: E501 line too long (85 > 79 characters)
+* 444: E501 line too long (91 > 79 characters)
+* 446: E501 line too long (80 > 79 characters)
+* 447: E501 line too long (94 > 79 characters)
+* 454: E501 line too long (96 > 79 characters)
+* 501: W293 blank line contains whitespace
+* 513: W293 blank line contains whitespace
+* 528: E501 line too long (84 > 79 characters)
+* 529: E501 line too long (84 > 79 characters)
+* 542: E501 line too long (88 > 79 characters)
+* 557: E501 line too long (106 > 79 characters)
+* 558: W293 blank line contains whitespace
+* 580: E501 line too long (110 > 79 characters)
+* 581: E501 line too long (82 > 79 characters)
+* 582: E501 line too long (86 > 79 characters)
+* 583: E501 line too long (92 > 79 characters)
+* 608: E501 line too long (87 > 79 characters)
+* 614: E501 line too long (87 > 79 characters)
+
+**views_contact.py**
+
+* 26: E501 line too long (88 > 79 characters)
+* 29: E501 line too long (113 > 79 characters)
+* 39: E501 line too long (92 > 79 characters)
+* 42: E501 line too long (110 > 79 characters)
+* 45: E501 line too long (122 > 79 characters)
+* 47: E501 line too long (99 > 79 characters)
+* 50: E501 line too long (80 > 79 characters)
+* 52: E501 line too long (119 > 79 characters)
+* 113: W293 blank line contains whitespace
+* 117: E501 line too long (121 > 79 characters)
+
+**views_blog**
+
+* 29: E501 line too long (103 > 79 characters)
+* 38: E501 line too long (90 > 79 characters)
+* 59: W293 blank line contains whitespace
+* 70: E501 line too long (86 > 79 characters)
+* 81: E501 line too long (90 > 79 characters)
+* 86: W293 blank line contains whitespace
+* 106: E501 line too long (115 > 79 characters)
+* 112: E501 line too long (100 > 79 characters)
+* 115: E501 line too long (127 > 79 characters)
+* 116: W293 blank line contains whitespace
+* 161: E501 line too long (111 > 79 characters)
+* 170: E501 line too long (94 > 79 characters)
+* 179: E501 line too long (108 > 79 characters)
+* 182: E501 line too long (90 > 79 characters)
+* 198: E501 line too long (104 > 79 characters)
+* 206: E501 line too long (86 > 79 characters)
+* 210: W293 blank line contains whitespace
+* 213: W293 blank line contains whitespace
+* 222: E501 line too long (125 > 79 characters)
+* 223: E501 line too long (98 > 79 characters)
+* 224: E501 line too long (90 > 79 characters)
+* 225: E501 line too long (95 > 79 characters)
+* 226: E501 line too long (99 > 79 characters)
+* 227: E501 line too long (105 > 79 characters)
+* 228: E501 line too long (99 > 79 characters)
+* 236: W293 blank line contains whitespace
+* 271: E501 line too long (104 > 79 characters)
+* 276: E501 line too long (104 > 79 characters)
+* 287: E501 line too long (84 > 79 characters)
+
+**models.py**
+
+* 12: E501 line too long (87 > 79 characters)
+* 13: E501 line too long (88 > 79 characters)
+* 14: E501 line too long (90 > 79 characters)
+* 15: E501 line too long (87 > 79 characters)
+* 18: W291 trailing whitespace
+* 22: E501 line too long (88 > 79 characters)
+* 23: E501 line too long (88 > 79 characters)
+* 27: W293 blank line contains whitespace
+* 29: W291 trailing whitespace
+* 44: E501 line too long (84 > 79 characters)
+* 57: E501 line too long (130 > 79 characters)
+* 58: E501 line too long (89 > 79 characters)
+* 73: E501 line too long (115 > 79 characters)
+* 76: E501 line too long (82 > 79 characters)
+* 83: E501 line too long (89 > 79 characters)
+* 92: W293 blank line contains whitespace
+* 96: E501 line too long (86 > 79 characters)
+* 104: E501 line too long (86 > 79 characters)
+* 109: W293 blank line contains whitespace
+* 112: W293 blank line contains whitespace
+* 127: E501 line too long (84 > 79 characters)
+* 133: E501 line too long (88 > 79 characters)
+* 134: W293 blank line contains whitespace
+* 141: E501 line too long (86 > 79 characters)
+* 142: W293 blank line contains whitespace
+* 152: W293 blank line contains whitespace
+* 161: W293 blank line contains whitespace
+* 164: W293 blank line contains whitespace
+* 167: W293 blank line contains whitespace
+
+**forms.py**
+
+* 14: E501 line too long (135 > 79 characters)
+* 15: E501 line too long (118 > 79 characters)
+* 16: E501 line too long (101 > 79 characters)
+* 17: E501 line too long (105 > 79 characters)
+* 18: E501 line too long (141 > 79 characters)
+* 19: E501 line too long (137 > 79 characters)
+* 20: E501 line too long (141 > 79 characters)
+* 21: E501 line too long (145 > 79 characters)
+* 22: E501 line too long (151 > 79 characters)
+* 23: E501 line too long (145 > 79 characters)
+* 24: E501 line too long (86 > 79 characters)
+* 25: E501 line too long (100 > 79 characters)
+* 26: E501 line too long (112 > 79 characters)
+* 28: E501 line too long (82 > 79 characters)
+* 29: E501 line too long (96 > 79 characters)
+* 30: E501 line too long (110 > 79 characters)
+* 32: E501 line too long (89 > 79 characters)
+* 33: E501 line too long (103 > 79 characters)
+* 34: E501 line too long (113 > 79 characters)
+* 36: E501 line too long (86 > 79 characters)
+* 37: E501 line too long (113 > 79 characters)
+* 49: W293 blank line contains whitespace
+* 59: E501 line too long (80 > 79 characters)
+* 66: W293 blank line contains whitespace
+* 76: E501 line too long (81 > 79 characters)
+* 77: E501 line too long (96 > 79 characters)
+* 88: E501 line too long (83 > 79 characters)
+* 89: E501 line too long (81 > 79 characters)
+* 90: E501 line too long (82 > 79 characters)
+* 98: E501 line too long (104 > 79 characters)
+* 106: E501 line too long (90 > 79 characters)
+* 108: W293 blank line contains whitespace
+* 117: W293 blank line contains whitespace
+* 120: E501 line too long (144 > 79 characters)
+* 122: E501 line too long (127 > 79 characters)
+* 152: W293 blank line contains whitespace
+* 155: E501 line too long (120 > 79 characters)
+* 162: W293 blank line contains whitespace
+* 163: W293 blank line contains whitespace
+
+**admin.py**
+
+* 6: E501 line too long (162 > 79 characters)
+* 11: E501 line too long (118 > 79 characters)
+* 15: E501 line too long (85 > 79 characters)
+* 43: E501 line too long (92 > 79 characters)
+* 68: W293 blank line contains whitespace
+* 91: W293 blank line contains whitespace
+* 99: W293 blank line contains whitespace
+
+
+Note: Eliminating whitespaces didn't completely resolve the problem for all files, as the code then indicated a requirement for two-line spacing. Moreover, adjusting to the 79-character limit might necessitate extensive code refactoring. Considering the time constraints, addressing this issue may not be feasible.
 
 #### **CSS validation** using [jigsaw](https://jigsaw.w3.org/css-validator/validator) :
 
@@ -708,7 +988,7 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 ![home-validation](/readme/screenshots/main-page-validator.png)
 
-**Please note: All 3 urls displayed the same errors**
+**Please note: All 3 Urls displayed the same errors**
 
 
 

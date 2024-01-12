@@ -126,11 +126,10 @@ $(document).ready(function () {
                     }
                 });
 
-
-                // Function to enable input fields
-                function enableFields() {
+                // Function expression to enable input fields
+                var enableFields = function() {
                     $('#id_symbol, #id_date, #id_status, #id_long_short, #id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', false);
-                }
+                };
 
                 enableFields();
 

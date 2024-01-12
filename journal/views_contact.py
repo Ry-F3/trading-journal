@@ -9,6 +9,7 @@ from .models import FAQRequest
 from django.utils import timezone
 from django.contrib import messages
 
+
 class ContactUsView(View):
     contact = 'contact.html'
 
@@ -49,7 +50,6 @@ class ContactUsView(View):
         # Append all FAQs starting from the fourth one to updated_remaining_faqs
         remainder_index = 3
         updated_remaining_faqs += all_faqs_ordered[remainder_index:] if len(all_faqs_ordered) > remainder_index else []
-              
         # Return the initialised context
         return {
             'faqs_sets': faqs_sets,
@@ -74,14 +74,14 @@ class ContactUsView(View):
             timestamp=timezone.now(),
             title=title,
             question=content,
-            is_approved=False 
+            is_approved=False
         )
 
         # Fetch the updated FAQs for rendering
         context = self.initialize_faq_context()
 
         # Redirect to the same page to avoid form resubmission on page reload
-        return redirect(reverse('contact'))  
+        return redirect(reverse('contact'))
 
 
 @login_required
@@ -106,10 +106,11 @@ def submit_faq_request(request):
         context.update(ContactUsView().initialize_faq_context())
 
         # Redirect to the same page to avoid form resubmission on page reload
-        return redirect(reverse('contact')) 
+        return redirect(reverse('contact'))
 
     # If not a POST request, you can handle it accordingly
     return JsonResponse({'message': 'Invalid request method'})
+    
 
 def faq_list(request):
     # Get all approved FAQRequest objects with their AdminResponse
@@ -131,4 +132,3 @@ def view_faq(request, faq_id):
 
     # Render the HTML with the updated FAQs and the specific FAQ
     return render(request, 'contact.html', context)
-

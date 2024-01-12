@@ -76,9 +76,10 @@ $(document).ready(function () {
             hideCells.toggleClass('hidden-cell', createTradeFormActive);
 
             // Function to enable input fields
-            function disableFields() {
+            var disableFields = function() {
                 $('#id_position, #id_margin, #id_leverage, #id_open_price, #id_current_price, #id_return_pnl').prop('disabled', true);
-            }
+            };
+            
 
             disableFields();
 
