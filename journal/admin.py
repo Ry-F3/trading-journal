@@ -110,12 +110,13 @@ class FAQRequestAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
     def has_change_permission(self, request, obj=None):
-        if obj is not None and obj.user != request.user:
-            return False
-        return super().has_change_permission(request, obj)
+        if request.user.is_superuser or (obj is not None and obj.user == request.user):
+            return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
-        if obj is not None and obj.user != request.user:
-            return False
-        return super().has_delete_permission(request, obj)
+        if request.user.is_superuser or (obj is not None and obj.user == request.user):
+            return True
+        return False
+
         

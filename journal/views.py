@@ -158,7 +158,6 @@ class TradeFilterView(ListView):
 
     def get_filtered_trades(self, user, request):
         queryset = Trade.objects.filter(user=user).order_by('row_number')
-        messages.success(request, 'Filter applied successfully!')
         # Filter trades based on request parameters
         date_filter = request.GET.get('date_filter')
         symbol_filter = request.GET.get('symbol_filter')
@@ -170,34 +169,42 @@ class TradeFilterView(ListView):
         date_filter_year = self.request.GET.get('date_filter_year')
 
         if date_filter == 'today':
+            messages.success(request, 'Filter applied successfully!')
             # Filter trades for today
             today = timezone.now().date()
             queryset = queryset.filter(date=today)
 
         elif date_filter == 'past_7_days':
+            messages.success(request, 'Filter applied successfully!')
             # Filter trades for the past 7 days
             seven_days_ago = timezone.now().date() - timedelta(days=7)
             queryset = queryset.filter(date__gte=seven_days_ago)
 
         elif date_filter == 'this_month':
+            messages.success(request, 'Filter applied successfully!')
             # Filter trades for the current month
             start_of_month = timezone.now().replace(day=1).date()
             queryset = queryset.filter(date__gte=start_of_month)
 
         elif date_filter == 'this_year':
+            messages.success(request, 'Filter applied successfully!')
             # Filter trades for the current year
             start_of_year = timezone.now().replace(month=1, day=1).date()
             queryset = queryset.filter(date__gte=start_of_year)
 
         if symbol_filter:
+            messages.success(request, 'Filter applied successfully!')
             queryset = queryset.filter(symbol=symbol_filter)
 
         if long_short_filter:
+            messages.success(request, 'Filter applied successfully!')
             queryset = queryset.filter(long_short=long_short_filter)
 
         if pnl_filter == 'profit':
+            messages.success(request, 'Filter applied successfully!')
             queryset = queryset.filter(return_pnl__gt=0)
         elif pnl_filter == 'loss':
+            messages.success(request, 'Filter applied successfully!')
             queryset = queryset.filter(return_pnl__lt=0)
         paginator = Paginator(queryset, 4)
         page = 1  # Default to the first page if not specified

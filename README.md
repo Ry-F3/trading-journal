@@ -756,45 +756,59 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
 
 **List of known bugs:**
 
-1. **Username Disappears on FAQ View:** - *(fixed)*
-    * Issue: In certain scenarios, the username disappears on the FAQ view.
-    * Status: 
-
-- [ ] Issue identified
-- [ ] Investigation in progress
-- [x] Fix in development
-- [ ] Fix in testing
-- [ ] Fix deployed
+1. **Username Disappears on FAQ View:** 
+   - **Issue:** In certain scenarios, the username disappears on the FAQ view.
+   - **Status:** 
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [x] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
 2. **Custom Templates for 403, 404, and 500 Errors:**
-    * Issue: Custom error templates (403, 404, and 500) only appear on the login and register initial page due to block content being within user authentication checks. Finding a solution without triggering errors is challenging.
-    * Status: 
-
-- [ ] Issue identified
-- [x] Investigation in progress
-- [ ] Fix in development
-- [ ] Fix in testing
-- [ ] Fix deployed
+   - **Issue:** Custom error templates (403, 404, and 500) only appear on the login and register initial page due to block content being within user authentication checks. Finding a solution without triggering errors is challenging.
+   - **Status:** 
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [ ] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
 3. **Filters Applied Message Duplication:**
-    * Issue: Occasionally, the "filters applied" message shows more than once.
-    * Status: 
+   - **Issue:** Occasionally, the "filters applied" message shows more than once.
+   - **Status:** 
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [ ] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
-- [ ] Issue identified
-- [x] Investigation in progress
-- [ ] Fix in development
-- [ ] Fix in testing
-- [ ] Fix deployed
+4. **Styling Gap in UX When User Adds a Comment:**
+   - **Issue:** After a user adds a comment, a gap appears in the UX, breaking the styling of the comments section. This issue is particularly noticeable when there's only one comment, which results in an unintended styling breakage.
+   - **Status:**
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [x] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
-4. **Styling Gap in UX When User Adds a Comment**
-    * Issue: After a user adds a comment, a gap appears in the UX, breaking the styling of the comments section. This issue is particularly noticeable when there's only one comment, which results in an unintended styling breakage.
-    * Status:
+5. **Admin Approval Issue:**
+   - **Issue:** Admin not allowing admin to approve other users has been fixed in development.
+   - **Status:** 
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [x] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
-- [ ] Issue identified
-- [ ] Investigation in progress
-- [x] Fix in development
-- [ ] Fix in testing
-- [ ] Fix deployed
+6. **Character Length in Blog Post:**
+   - **Issue:** Character length in blog post has been fixed in development.
+   - **Status:** 
+      - [x] Issue identified
+      - [x] Investigation in progress
+      - [x] Fix in development
+      - [ ] Fix in testing
+      - [ ] Fix deployed
 
 
 ## **Technologies**

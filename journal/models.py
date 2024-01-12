@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
+from django.core.validators import MaxLengthValidator
 
 
 # User Model
@@ -121,9 +122,9 @@ class Meta:
 class BlogPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now, blank=True)
-    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
-    title = models.CharField(max_length=255)
-    content = models.TextField()
+    slug = models.SlugField(max_length=20, unique=True, blank=True, null=True)
+    title = models.CharField(max_length=100, validators=[MaxLengthValidator(limit_value=20, message="Title must be 20 characters or fewer.")])
+    content = models.TextField(validators=[MaxLengthValidator(limit_value=100, message="Content must be 100 characters or fewer.")])
     likes = models.ManyToManyField(User, related_name='blog_post_likes', blank=True)
     profit_loss = models.FloatField(null=True, blank=True)
     entry_price = models.FloatField(null=True, blank=True)
@@ -142,6 +143,7 @@ class BlogPost(models.Model):
  
     def number_of_likes(self):
         return self.likes.count()
+
 
 
 class Comment(models.Model):

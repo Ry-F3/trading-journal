@@ -31,11 +31,12 @@
                     {% csrf_token %}
                     <!-- Post Title Input -->
                     <div class="mb-2">
-                        <input type="text" class="form-control" name="title" placeholder="Post Title" required>
+                        <input type="text"  class="form-control" id="title-input" name="title" placeholder="Post Title. Max length 20 characters." required>
+                        <div id="title-error" class="text-danger"></div>
                     </div>
                     <!-- Content Input with Placeholder -->
                     <div class="mb-3">
-                        <textarea class="form-control" name="content" placeholder="What do you want to talk about?"
+                        <textarea class="form-control" id="content-input" name="content" placeholder="What do you want to talk about? Max length 100 characters."
                             required></textarea>
                     </div>
                     <!-- Trade Search Container -->
@@ -253,17 +254,35 @@
             var title = $('input[name="title"]').val();
             var content = $('textarea[name="content"]').val();
 
-
-            if (!title || !content) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-
-       
-
-            alert('Posting trade image with attached trade details...');
         });
 
+        $("#title-input").on("input", function () {
+           var maxTitleLength = 20; // Change this to your desired character limit for title
+           if ($(this).val().length > maxTitleLength) {
+               $(this).val($(this).val().substring(0, maxTitleLength));
+           }
+       });
+
+       $("#content-input").on("input", function () {
+           var maxContentLength = 100; // Change this to your desired character limit for content
+           if ($(this).val().length > maxContentLength) {
+               $(this).val($(this).val().substring(0, maxContentLength));
+           }
+       });
+
+       // Prevent form submission if character limit is exceeded
+       $("form").submit(function (event) {
+           var titleLength = $("#title-input").val().length;
+           var contentLength = $("#content-input").val().length;
+           var maxTitleLength = 20; // Change this to your desired character limit for title
+           var maxContentLength = 100; // Change this to your desired character limit for content
+
+           if (titleLength > maxTitleLength || contentLength > maxContentLength) {
+               alert("Character limit exceeded. Please shorten your input.");
+               event.preventDefault(); // Prevent form submission
+           }
+       });
+   
     });
 
 </script>
