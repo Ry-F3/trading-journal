@@ -721,15 +721,35 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 <br>
 
-### **Future Enhancements:**
-
 
 ## **Favicon** 
 
+The favicon used in this project was generated using [Favicon Generator](https://www.favicon-generator.org/).
 
 ### **Unified colour scheme**
 
+*Color Scheme Inspiration:*
+The color palette, inspired by the work of [DenisKolt](https://www.shutterstock.com/g/DenisKolt), features the following hex codes:
+
+- `--white: #fff;`
+- `--custom-white: #f2f2f2;`
+- `--gray: #b9bbc0;`
+- `--gray-dark: #5a5c69;`
+- `--primary-light: #7ca6bb;`
+- `--primary-medium: #4e85a0;`
+- `--primary-dark: #0231f1;`
+- `--green: #00796b;`
+
+These colors were carefully chosen to enhance the aesthetics of the website, creating a visually appealing and harmonious experience.
+
 ### **Accessibility**
+
+- **Accessibility and Design:**
+  - Aria labels were strategically utilized for improved accessibility.
+  - Addressed concerns related to muted colors to enhance visual experience.
+  - Implemented a distinctive push and pull effect for design dynamics.
+  - Overcame challenges in trade_list.html, where buttons were strategically placed to maintain a clean and organized format.
+  - Ensured the form within the table retained its integrity despite design considerations.
 
 
 ## **Bugs**
@@ -741,7 +761,7 @@ Multiple scripts on the page within the code blocks needed careful handling for 
     * Status: 
 
 - [ ] Issue identified
-- [] Investigation in progress
+- [ ] Investigation in progress
 - [x] Fix in development
 - [ ] Fix in testing
 - [ ] Fix deployed
@@ -777,16 +797,77 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 - [ ] Fix deployed
 
 
-
 ## **Technologies**
+
+- **Bootstrap**: [Bootstrap](https://getbootstrap.com/)
+- **Ajax**: [Ajax](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX)
+- **jQuery**: [jQuery](https://jquery.com/)
+- **JavaScript**: [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- **Python**: [Python](https://www.python.org/)
+- **Django**: [Django](https://www.djangoproject.com/)
+- **Django Libraries and Packages**
+- **ElephantSQL**: [ElephantSQL](https://www.elephantsql.com/): PostgreSQL as a Service.
+- **GitHub**: [GitHub](https://github.com/)
+- **Gitpod**: [Gitpod](https://www.gitpod.io/): Online IDE for GitHub.
+- **Heroku**: [Heroku](https://www.heroku.com/): Cloud platform for deploying and managing applications.
+- **Browser Developer Tools**: 
+  - [Google Chrome DevTools](https://developer.chrome.com/docs/devtools/)
+- **Email.js**: [Email.js](https://www.emailjs.com/): JavaScript library for sending emails.
+ 
 
 ## **Testing**
 
 ### **Testing User Stories**
 
+<br>
+
+**test_list.html**
+
+| User Story | Description | Status | Outcome |
+|------------|-------------|--------|---------|
+| **1.** | As a user, I want to navigate different chart functions over time (date, month, year) by clicking arrows. | Successful | The chart functions should smoothly transition between different time frames as I click the arrows. |
+| **2.** | As a user, I want to update my portfolio balance by depositing or withdrawing money. | Successful | I should be able to perform deposit and withdrawal actions, and the portfolio balance should accurately reflect these changes. |
+| **3.** | As a user, I want to see messages indicating that values have been updated. | Successful | Messages should appear on the interface confirming successful updates to values such as portfolio balance. |
+| **4.** | As a user, I want to filter between trades based on specific criteria. | Successful | The filter options should effectively narrow down the displayed trades according to my chosen criteria. |
+| **5.** | As a user, I want to use pagination to navigate through the trades list. | Successful | Pagination controls should allow me to easily move between different pages of the trades list. |
+| **6.** | As a user, I want to create new trades. | Successful | The process of creating new trades should be intuitive and result in accurate entries in the trades list. |
+| **7.** | As a user, I want to cancel trades. | Successful | I should be able to cancel a trade, and the associated changes should be reflected in the trades list and portfolio balance. |
+| **8.** | As a user, I want to delete trades. | Successful | The deletion of trades should be straightforward, with the trades list updating accordingly. |
+| **9.** | As a user, I want to edit existing trades. | Successful | The editing functionality should allow me to modify details of existing trades accurately. |
+| **10.** | As a user, I want to generate a PDF trade report. | Successful | The system should provide an option to generate a comprehensive PDF report summarizing my trades. |
+| **11.** | As a user, I want to be able to track my progress. | Successful | Tools and features should be available to monitor and assess my trading progress over time. |
+| **12.** | As a user, I want to have information available to guide me (help icon). | Successful | A help icon should provide access to informative resources to assist users in understanding the platform and its features. |
+
+<br>
+
+**blog.html**
+
+| User Story | Description | Status | Outcome |
+|------------|-------------|--------|---------|
+| **1.** | As a user, I want to create posts. | Working | Successfully create and publish blog posts. |
+| **2.** | As a user, I want to upload images for my posts. | Working | Images are successfully uploaded and displayed in the posts. |
+| **3.** | As a user, I want to share my trades through posts. | Working | Successfully share trade details in blog posts. |
+| **4.** | As a user, I want to create a downloadable image for a trade. | Working | Successfully generate and share downloadable trade images. |
+| **5.** | As a user, I want to navigate through recent posts. | Working | Easily browse and view the latest blog posts. |
+| **6.** | As a user, I want to add comments to posts. | Working | Successfully engage with other users by adding comments. |
+| **7.** | As a user, I want to see other people's posts. | Working | View posts created by other users in the community. |
+| **8.** | As a user, I want to be able to like posts. | Working | Express appreciation for posts by liking them. |
+| **9.** | As a user, I want to delete my post. | Not Available | Feature currently not implemented. |
+| **10.** | As a user, I want to update my post. | Not Available | Feature currently not implemented. |
+| **11.** | As a user, I want to delete my comments. | Not Available | Feature currently not implemented. |
+
+
+**contact.html**
+
+| User Story | Description | Status | Outcome |
+|------------|-------------|--------|---------|
+| **1.** | As a user, I want to be able to make FAQ requests. | To be Implemented | The system should allow users to submit requests for new Frequently Asked Questions (FAQs). |
+| **2.** | As a user, I want to be able to make suggestions. | To be Implemented | Users should have the ability to submit suggestions for improvements or new features. |
+| **3.** | As a user, I want to be able to view FAQ requests. | To be Implemented | There should be a section where users can see the status and details of submitted FAQ requests. |
+| **4.** | As a user, I want to be notified when my FAQ has been approved. | To be Implemented | Users should receive notifications when their submitted FAQs have been reviewed and approved. This feature needs to be implemented. |
+
 
 ### **Testing functionality**
-
 
 ### **Deployment**
 
@@ -1210,15 +1291,11 @@ Note: Eliminating whitespaces didn't completely resolve the problem for all file
 
 Developed by **Rhys.Alexander.Few**
 
-### **Code**
-
-**Peer Review**
-
-
-**Other Resources**
-
 
 **Bibliography:**
+
+**Favicon**
+[Favicon Generator](https://www.favicon-generator.org/)
 
 **Picture Artist:**
 [DenisKolt - Shutterstock](https://www.shutterstock.com/g/DenisKolt)

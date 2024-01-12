@@ -563,8 +563,37 @@ hr {
 
 /* --------------------------------------------------------------- Media qQeries */
 
-@media (min-width: 1200px) {
+@media (min-width: 1600px) {
     /* Styles for extra large devices */
+    .font-size-heading-1 {
+        font-size: 2em;
+    }
+
+    .pnl-label {
+        font-size: 2em;
+        margin-top: 25px;
+    }
+
+    .txt-container {
+        max-width: 700px;
+    }
+
+    .response-item-scale {
+        min-width: 250px;
+    }
+
+    .response-item-scale-3 {
+        min-width: 250px;
+    }
+
+    .img-cat-size {
+        width: 17%;
+    }
+
+    .img-cat-size-blog {
+        width: 17%;
+    }
+
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
