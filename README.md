@@ -875,10 +875,11 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
 
 | User Story | Description | Status | Outcome |
 |------------|-------------|--------|---------|
-| **1.** | As a user, I want to be able to make FAQ requests. | To be Implemented | The system should allow users to submit requests for new Frequently Asked Questions (FAQs). |
-| **2.** | As a user, I want to be able to make suggestions. | To be Implemented | Users should have the ability to submit suggestions for improvements or new features. |
-| **3.** | As a user, I want to be able to view FAQ requests. | To be Implemented | There should be a section where users can see the status and details of submitted FAQ requests. |
-| **4.** | As a user, I want to be notified when my FAQ has been approved. | To be Implemented | Users should receive notifications when their submitted FAQs have been reviewed and approved. This feature needs to be implemented. |
+| **1.** | As a user, I want to be able to make FAQ requests. | Implemented | The system allows users to submit requests for new Frequently Asked Questions (FAQs). |
+| **2.** | As a user, I want to be able to make suggestions. | Implemented | Users have the ability to submit suggestions for improvements or new features. |
+| **3.** | As a user, I want to be able to view FAQ requests. | Implemented | There is now a section where users can see the status and details of submitted FAQ requests. |
+| **4.** | As a user, I want to be notified when my FAQ has been approved. | To be Implemented | Users will receive notifications when their submitted FAQs are reviewed and approved. This feature is yet to be implemented. |
+
 
 
 ### **Testing functionality**
