@@ -832,7 +832,7 @@ These colors were carefully chosen to enhance the aesthetics of the website, cre
 
 ## **Testing**
 
-### **Testing User Stories**
+### **Testing User Stories**- [Link to Kanban Board](https://github.com/users/Ry-F3/projects/1/views/2)
 
 <br>
 
