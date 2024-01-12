@@ -34,7 +34,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['trader-tribe-7c9dc3cf075d.herokuapp.com', 'localhost']
 
-
 # Application definition
 
 INSTALLED_APPS = [

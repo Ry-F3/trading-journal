@@ -17,7 +17,7 @@
 
             <form class="login" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
-                <div class="mb-3 mx-auto" style="min-width: 50px;"> 
+                <div class="mb-3 mx-auto"> 
                     <label for="id_login" class="form-label"></label>
                     {{ form.login }}
                 </div>
@@ -28,7 +28,7 @@
                 </div>
 
                 {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                <input type="hidden" class="input_login" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
 
                 <button class="btn bg-dk-blue btn-block mt-3 mb-3" type="submit">{% trans "Sign In" %}</button>

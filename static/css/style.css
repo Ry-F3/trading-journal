@@ -833,7 +833,28 @@ hr {
         overflow: hidden;
     }
 
-    ul li div input {
+
+    #id_login {
+        max-width: 140px;
+    }
+
+    #id_password {
+        max-width: 140px;
+    }
+
+    #id_email {
+        max-width: 140px;
+    }
+
+    #id_username {
+        max-width: 140px;
+    }
+
+    #id_password1 {
+        max-width: 140px;
+    }
+
+    #id_password2 {
         max-width: 140px;
     }
   
