@@ -736,8 +736,46 @@ Multiple scripts on the page within the code blocks needed careful handling for 
 
 **List of known bugs:**
 
+1. **Username Disappears on FAQ View:** - *(fixed)*
+    * Issue: In certain scenarios, the username disappears on the FAQ view.
+    * Status: 
 
-**List of fixed bugs**
+- [ ] Issue identified
+- [] Investigation in progress
+- [x] Fix in development
+- [ ] Fix in testing
+- [ ] Fix deployed
+
+2. **Custom Templates for 403, 404, and 500 Errors:**
+    * Issue: Custom error templates (403, 404, and 500) only appear on the login and register initial page due to block content being within user authentication checks. Finding a solution without triggering errors is challenging.
+    * Status: 
+
+- [ ] Issue identified
+- [x] Investigation in progress
+- [ ] Fix in development
+- [ ] Fix in testing
+- [ ] Fix deployed
+
+3. **Filters Applied Message Duplication:**
+    * Issue: Occasionally, the "filters applied" message shows more than once.
+    * Status: 
+
+- [ ] Issue identified
+- [x] Investigation in progress
+- [ ] Fix in development
+- [ ] Fix in testing
+- [ ] Fix deployed
+
+4. **Styling Gap in UX When User Adds a Comment**
+    * Issue: After a user adds a comment, a gap appears in the UX, breaking the styling of the comments section. This issue is particularly noticeable when there's only one comment, which results in an unintended styling breakage.
+    * Status:
+
+- [ ] Issue identified
+- [ ] Investigation in progress
+- [x] Fix in development
+- [ ] Fix in testing
+- [ ] Fix deployed
+
 
 
 ## **Technologies**

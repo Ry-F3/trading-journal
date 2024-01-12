@@ -123,9 +123,12 @@ def faq_list(request):
 def view_faq(request, faq_id):
     # Get the specific FAQ based on faq_id
     faq = get_object_or_404(FAQRequest, id=faq_id)
+    user_name = request.user.username
 
     # Fetch the updated FAQs for rendering the FAQ section
     context = ContactUsView().initialize_faq_context()
+    
+    context['user_name'] = user_name
 
     # Add the specific FAQ to the context
     context['faq'] = faq

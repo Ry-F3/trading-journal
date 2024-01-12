@@ -348,34 +348,47 @@
             </h2>
             <ul class="list-unstyled">
                 {% if post.comment_set.all %}
-                {% for comment in post.comment_set.all|slice:":2" %}
-                <li class="mb-2">
-                    <div class="comment-item d-flex flex-column p-2 rounded comment-style">
-                        <div class="d-flex align-items-center mb-1">
-                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                            <strong class="mx-1">{{ comment.user.username }}:</strong>
-                        </div>
-                        {{ comment.content }}
-                    </div>
-                </li>
-                {% endfor %}
+                    {% for comment in post.comment_set.all|slice:":2" %}
+                        <li class="mb-2">
+                            <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                    <strong class="mx-1">{{ comment.user.username }}:</strong>
+                                </div>
+                                {{ comment.content }}
+                            </div>
+                        </li>
+                    {% endfor %}
+        
+                    {% if post.comment_set.count == 1 %}
+                        <!-- Display one additional placeholder for a single comment -->
+                        <li class="mb-2">
+                            <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                    <strong class="mx-1">Placeholder User:</strong>
+                                </div>
+                                No comments yet.
+                            </div>
+                        </li>
+                    {% endif %}
+        
                 {% else %}
-                <!-- Loop three times for no comments placeholders -->
-                {% for _ in "12" %}
-                <li class="mb-2">
-                    <div class="comment-item d-flex flex-column p-2 rounded comment-style">
-                        <div class="d-flex align-items-center mb-1">
-                            <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                            <strong class="mx-1">Placeholder User:</strong>
-                        </div>
-                        No comments yet.
-                    </div>
-                </li>
-                {% endfor %}
+                    <!-- Loop three times for no comments placeholders -->
+                    {% for _ in "23"|slice:":2" %}
+                        <li class="mb-2">
+                            <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                    <strong class="mx-1">Placeholder User:</strong>
+                                </div>
+                                No comments yet.
+                            </div>
+                        </li>
+                    {% endfor %}
                 {% endif %}
             </ul>
         </div>
-
         {% if post.trade_image and 'placeholder' not in post.trade_image.url %}
         <!-- Actual Trade Image -->
         <img src="{{ post.trade_image.url }}" aria-label="Uploaded image e.g sharing your trade" class="img-half-size" alt="Trade Image">
@@ -446,30 +459,44 @@
         </h2>
         <ul class="list-unstyled">
             {% if post.comment_set.all %}
-            {% for comment in post.comment_set.all|slice:":2" %}
-            <li class="mb-2">
-                <div class="comment-item d-flex flex-column p-2 rounded comment-style">
-                    <div class="d-flex align-items-center mb-1">
-                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                        <strong class="mx-1">{{ comment.user.username }}:</strong>
-                    </div>
-                    {{ comment.content }}
-                </div>
-            </li>
-            {% endfor %}
+                {% for comment in post.comment_set.all|slice:":2" %}
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">{{ comment.user.username }}:</strong>
+                            </div>
+                            {{ comment.content }}
+                        </div>
+                    </li>
+                {% endfor %}
+    
+                {% if post.comment_set.count == 1 %}
+                    <!-- Display one additional placeholder for a single comment -->
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">Placeholder User:</strong>
+                            </div>
+                            No comments yet.
+                        </div>
+                    </li>
+                {% endif %}
+    
             {% else %}
-            <!-- Loop three times for no comments placeholders -->
-            {% for _ in "12" %}
-            <li class="mb-2">
-                <div class="comment-item d-flex flex-column p-2 rounded comment-style">
-                    <div class="d-flex align-items-center mb-1">
-                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                        <strong class="mx-1">Placeholder User:</strong>
-                    </div>
-                    No comments yet.
-                </div>
-            </li>
-            {% endfor %}
+                <!-- Loop three times for no comments placeholders -->
+                {% for _ in "23"|slice:":2" %}
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">Placeholder User:</strong>
+                            </div>
+                            No comments yet.
+                        </div>
+                    </li>
+                {% endfor %}
             {% endif %}
         </ul>
     </div>
@@ -544,30 +571,44 @@
         </h2>
         <ul class="list-unstyled">
             {% if post.comment_set.all %}
-            {% for comment in post.comment_set.all|slice:":2" %}
-            <li class="mb-2">
-                <div class="comment-style-1 comment-item d-flex flex-column p-2 rounded">
-                    <div class="d-flex align-items-center mb-1">
-                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                        <strong class="mx-1">{{ comment.user.username }}:</strong>
-                    </div>
-                    {{ comment.content }}
-                </div>
-            </li>
-            {% endfor %}
+                {% for comment in post.comment_set.all|slice:":2" %}
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">{{ comment.user.username }}:</strong>
+                            </div>
+                            {{ comment.content }}
+                        </div>
+                    </li>
+                {% endfor %}
+    
+                {% if post.comment_set.count == 1 %}
+                    <!-- Display one additional placeholder for a single comment -->
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">Placeholder User:</strong>
+                            </div>
+                            No comments yet.
+                        </div>
+                    </li>
+                {% endif %}
+    
             {% else %}
-            <!-- Loop three times for no comments placeholders -->
-            {% for _ in "12" %}
-            <li class="mb-2">
-                <div class="comment-style-1 comment-item d-flex flex-column p-2 rounded">
-                    <div class="d-flex align-items-center mb-1">
-                        <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
-                        <strong class="mx-1">Placeholder User:</strong>
-                    </div>
-                    No comments yet.
-                </div>
-            </li>
-            {% endfor %}
+                <!-- Loop three times for no comments placeholders -->
+                {% for _ in "23"|slice:":2" %}
+                    <li class="mb-2">
+                        <div class="comment-item d-flex flex-column p-2 rounded comment-style">
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="rounded-circle bg-dk-blue overflow-hidden mr-2 circle-sm-size"></div>
+                                <strong class="mx-1">Placeholder User:</strong>
+                            </div>
+                            No comments yet.
+                        </div>
+                    </li>
+                {% endfor %}
             {% endif %}
         </ul>
     </div>
